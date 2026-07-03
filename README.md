@@ -91,7 +91,9 @@ Latest release (see [all releases](../../releases)):
 Packages are built and revision-stamped by CI. Revisions use an alpha scheme
 (Rev A → B → C); the current revision and git hash are stamped into the title
 block and bottom silkscreen at build time, and named in each release's title/tag.
-The links above always resolve to the newest release.
+The links above always resolve to the newest release. See
+[`docs/RELEASE_STRATEGY.md`](docs/RELEASE_STRATEGY.md) for how revisions and
+releases work (a new revision is cut only when the design changes).
 
 ## Status
 

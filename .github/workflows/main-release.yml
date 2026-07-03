@@ -1,18 +1,21 @@
 name: main-release
 
 # Full fabrication/design package + GitHub Release, with build-time revision
-# and git-hash injection. GitHub Releases are the source of truth for the
-# current revision: the next alpha letter is computed from the latest release.
+# and git-hash injection.
 #
-# Trigger is manual (workflow_dispatch) so a release is a deliberate act rather
-# than firing on every merge to main (which would burn through alpha revisions
-# on doc-only changes). Provide `revision` to override the auto-increment.
+# Runs on every merge to main (and can be dispatched manually). A new revision
+# is published ONLY when a design file changed since the last release; docs / CI
+# / script-only merges are a no-op. GIT_HASH is stamped from the last commit
+# that touched a design file, so it stays truthful and stable across doc-only
+# commits. See docs/RELEASE_STRATEGY.md.
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       revision:
-        description: "Revision letter to publish (blank = auto-increment from latest release)"
+        description: "Force-publish this revision letter (blank = automatic)"
         required: false
         default: ""
 
@@ -29,32 +32,72 @@ jobs:
     outputs:
       revision: ${{ steps.rev.outputs.revision }}
       githash: ${{ steps.rev.outputs.githash }}
+      publish: ${{ steps.rev.outputs.publish }}
     steps:
-      - name: Determine revision
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Determine revision & whether to publish
         id: rev
         env:
           GH_TOKEN: ${{ github.token }}
           OVERRIDE: ${{ github.event.inputs.revision }}
         run: |
           set -euo pipefail
-          if [ -n "$OVERRIDE" ]; then
-            next="$OVERRIDE"
-          else
-            latest=$(gh release list --repo "$GITHUB_REPOSITORY" --limit 1 \
-                       --json tagName --jq '.[0].tagName' 2>/dev/null || echo "")
-            if [ -z "$latest" ]; then
-              next="A"
-            else
-              letter="${latest#rev}"
-              next=$(python3 -c "l='${letter}'.strip(); print('A' if not l else chr(ord(l[-1])+1))")
-            fi
+          # Design files — changes here (and only here) trigger an uprev.
+          # Docs, workflows, scripts, and *.kicad_prl (UI state) do not.
+          DESIGN=('*.kicad_sch' '*.kicad_pcb' '*.kicad_pro' '*.kicad_dru'
+                  '*.kicad_sym' 'library/' 'fp-lib-table' 'sym-lib-table')
+
+          # GIT_HASH = last commit that touched a design file, so the stamp
+          # always names the commit that defines the released design and does
+          # not drift on doc-only commits.
+          githash=$(git log -1 --format=%h -- "${DESIGN[@]}")
+          echo "githash=$githash" >> "$GITHUB_OUTPUT"
+
+          latest=$(gh release list --repo "$GITHUB_REPOSITORY" --limit 1 \
+                     --json tagName --jq '.[0].tagName' 2>/dev/null || echo "")
+
+          # Manual override always publishes at the requested letter.
+          if [ -n "${OVERRIDE:-}" ]; then
+            echo "revision=$OVERRIDE" >> "$GITHUB_OUTPUT"
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+            echo "Manual override → publishing rev$OVERRIDE (design commit $githash)." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
           fi
-          echo "revision=$next" >> "$GITHUB_OUTPUT"
-          echo "githash=${GITHUB_SHA::7}" >> "$GITHUB_OUTPUT"
-          echo "Publishing rev$next (git ${GITHUB_SHA::7})" >> "$GITHUB_STEP_SUMMARY"
+
+          # No prior release → first release is Rev A.
+          if [ -z "$latest" ]; then
+            echo "revision=A" >> "$GITHUB_OUTPUT"
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+            echo "No prior release → publishing Rev A (design commit $githash)." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          # Did any design file change since the last release's commit?
+          base=$(git rev-list -1 "$latest")
+          changed=$(git diff --name-only "$base"..HEAD -- "${DESIGN[@]}" || true)
+          letter="${latest#rev}"
+          if [ -n "$changed" ]; then
+            next=$(python3 -c "print(chr(ord('${letter}'[-1]) + 1))")
+            echo "revision=$next" >> "$GITHUB_OUTPUT"
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+            {
+              echo "Design changed since $latest → publishing rev$next (design commit $githash):"
+              echo '```'
+              echo "$changed"
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "revision=$letter" >> "$GITHUB_OUTPUT"
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            echo "No design changes since $latest → no new release (docs / CI-only merge)." >> "$GITHUB_STEP_SUMMARY"
+          fi
 
   build:
     needs: prepare
+    if: needs.prepare.outputs.publish == 'true'
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/kicad/kicad:10.0
@@ -76,6 +119,7 @@ jobs:
 
   release:
     needs: [prepare, build]
+    if: needs.prepare.outputs.publish == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/download-artifact@v8
@@ -86,8 +130,7 @@ jobs:
         run: |
           set -euo pipefail
           # Stable asset names (no rev/hash) so /releases/latest/download/<name>
-          # links stay valid across revisions. Rev + git hash live inside the
-          # files (title block / silkscreen) and in the release title/tag.
+          # links stay valid across revisions.
           cp out/usb3_fiber-schematic.pdf usb3_fiber-schematic.pdf
           ( cd out/gerbers && zip -qr ../../usb3_fiber-gerbers.zip . )
           ( cd out && zip -qr ../usb3_fiber-fabrication.zip . )
@@ -99,11 +142,15 @@ jobs:
           SHA: ${{ needs.prepare.outputs.githash }}
         run: |
           set -euo pipefail
-          gh release create "rev${REV}" \
-            usb3_fiber-fabrication.zip \
-            usb3_fiber-gerbers.zip \
-            usb3_fiber-schematic.pdf \
-            --repo "$GITHUB_REPOSITORY" \
-            --target "$GITHUB_SHA" \
-            --title "Rev ${REV}" \
-            --notes "Fabrication and design package for revision ${REV} (git ${SHA}). Auto-generated by main-release CI."
+          FILES=(usb3_fiber-fabrication.zip usb3_fiber-gerbers.zip usb3_fiber-schematic.pdf)
+          NOTES="Fabrication and design package for revision ${REV} (design commit ${SHA}). Auto-generated by main-release CI."
+          # Idempotent: create the release, or refresh assets if it already
+          # exists (e.g. a manual override re-publishing an existing rev).
+          if gh release view "rev${REV}" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "rev${REV}" "${FILES[@]}" --repo "$GITHUB_REPOSITORY" --clobber
+            gh release edit   "rev${REV}" --repo "$GITHUB_REPOSITORY" --title "Rev ${REV}" --notes "$NOTES"
+          else
+            gh release create "rev${REV}" "${FILES[@]}" \
+              --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+              --title "Rev ${REV}" --notes "$NOTES"
+          fi
