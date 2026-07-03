@@ -10,3 +10,6 @@ fp-info-cache
 # OS
 .DS_Store
 Thumbs.db
+
+# Editor local-history (accidental gitlink removed)
+.history/
