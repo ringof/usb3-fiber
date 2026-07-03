@@ -100,7 +100,7 @@ jobs:
     if: needs.prepare.outputs.publish == 'true'
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/kicad/kicad:10.0
+      image: ghcr.io/inti-cmnb/kicad10_auto:latest
       options: --user root
     env:
       HOME: /root
@@ -130,9 +130,10 @@ jobs:
         run: |
           set -euo pipefail
           # Stable asset names (no rev/hash) so /releases/latest/download/<name>
-          # links stay valid across revisions.
-          cp out/usb3_fiber-schematic.pdf usb3_fiber-schematic.pdf
-          ( cd out/gerbers && zip -qr ../../usb3_fiber-gerbers.zip . )
+          # links stay valid across revisions. Paths follow the KiBot output
+          # dirs (docs/, JLCPCB/gerbers/) — see usb3_fiber.kibot.yaml.
+          cp out/docs/usb3_fiber-schematic.pdf usb3_fiber-schematic.pdf
+          ( cd out/JLCPCB/gerbers && zip -qr ../../../usb3_fiber-gerbers.zip . )
           ( cd out && zip -qr ../usb3_fiber-fabrication.zip . )
           ls -la
       - name: Publish GitHub Release

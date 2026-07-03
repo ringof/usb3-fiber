@@ -4,27 +4,32 @@
 # scripts/inject_provenance.py BEFORE kibot runs; this file only *generates*.
 # See docs/TURNKEY.md for the design rationale.
 #
-# Groups:
-#   docs     — schematic PDF, assembly drawings, iBOM  (dev + release)
-#   fab      — STEP, 3D renders                          (release)
-#   JLCPCB   — gerbers, drill, rotation-corrected CPL, LCSC BOM (release)
+# Output dirs (relative to the -d/--out-dir passed on the CLI):
+#   docs/          schematic PDF, assembly drawings, iBOM   (dev + release)
+#   fab/           STEP, 3D renders                          (release)
+#   JLCPCB/        CPL (rotation-corrected), LCSC BOM        (release)
+#   JLCPCB/gerbers gerbers + drill (the board-fab upload)    (release)
 kibot:
   version: 1
 
 # --- Gate checks run as preflights (ERC/DRC honor the project rules) ----------
+# The workflows decide whether these gate (ENFORCE) by choosing to run or skip
+# preflights; the definitions live here so both dev and release share them.
 preflight:
   erc: true
   drc: true
   update_xml: true
 
 # --- Variants -----------------------------------------------------------------
-# `rotated` applies KiBot's JLCPCB rotation database (+ per-part JLCRotOffset)
-# so the CPL matches how JLCPCB's placement machines orient parts.
+# `rotated` applies KiBot's JLCPCB rotation database via the _rot_footprint
+# transform, so the CPL matches how JLCPCB's placement machines orient parts.
+# Per-part nudges via a `JLCRotOffset` field; no global table to maintain.
 variants:
   - name: rotated
     comment: 'JLCPCB rotation-corrected placement'
     type: kibom
     variant: rotated
+    pre_transform: _rot_footprint
 
 # --- Reusable filters ---------------------------------------------------------
 filters:
@@ -42,7 +47,8 @@ outputs:
     comment: 'Schematic (PDF)'
     type: pdf_sch_print
     dir: docs
-    output: usb3_fiber-schematic.pdf
+    options:
+      output: usb3_fiber-schematic.pdf
 
   - name: assembly_top
     comment: 'Assembly drawing — top'
@@ -50,8 +56,13 @@ outputs:
     dir: docs
     options:
       output: usb3_fiber-assembly-top.pdf
+      format: PDF
+      plot_sheet_reference: true
       pages:
-        - layers: [F.Fab, F.Silkscreen, Edge.Cuts]
+        - layers:
+            - layer: F.Fab
+            - layer: F.Silkscreen
+            - layer: Edge.Cuts
           sheet: 'Assembly Top'
 
   - name: assembly_bottom
@@ -60,9 +71,14 @@ outputs:
     dir: docs
     options:
       output: usb3_fiber-assembly-bottom.pdf
-      mirror: true
+      format: PDF
+      plot_sheet_reference: true
       pages:
-        - layers: [B.Fab, B.Silkscreen, Edge.Cuts]
+        - layers:
+            - layer: B.Fab
+            - layer: B.Silkscreen
+            - layer: Edge.Cuts
+          mirror: true
           sheet: 'Assembly Bottom'
 
   - name: ibom
@@ -87,7 +103,7 @@ outputs:
     dir: fab
     options:
       output: usb3_fiber-3d-top.png
-      ray_tracing: true
+      ray_tracing: false
       view: top
 
   - name: render_bottom
@@ -96,14 +112,14 @@ outputs:
     dir: fab
     options:
       output: usb3_fiber-3d-bottom.png
-      ray_tracing: true
+      ray_tracing: false
       view: bottom
 
   # ---- JLCPCB turnkey (release) ----
   - name: JLCPCB_gerbers
     comment: 'Gerbers (JLCPCB profile)'
     type: gerber
-    dir: JLCPCB
+    dir: JLCPCB/gerbers
     options:
       exclude_edge_layer: true
       exclude_pads_from_silkscreen: true
@@ -118,16 +134,16 @@ outputs:
       gerber_precision: 4.6
       use_gerber_x2_attributes: false
       use_gerber_net_attributes: false
+      line_width: 0.1
       subtract_mask_from_silk: true
+      inner_extension_pattern: '.g%n'
     layers:
       - F.Cu
       - In1.Cu
       - In2.Cu
       - B.Cu
-      - F.Paste
-      - B.Paste
-      - F.Silkscreen
-      - B.Silkscreen
+      - F.SilkS
+      - B.SilkS
       - F.Mask
       - B.Mask
       - Edge.Cuts
@@ -135,12 +151,15 @@ outputs:
   - name: JLCPCB_drill
     comment: 'Drill files (JLCPCB profile)'
     type: excellon
-    dir: JLCPCB
+    dir: JLCPCB/gerbers
     options:
       pth_and_npth_single_file: false
+      pth_id: '-PTH'
+      npth_id: '-NPTH'
       metric_units: true
       map: gerber
       route_mode_for_oval_holes: false
+      output: '%f%i.%x'
 
   - name: JLCPCB_position
     comment: 'CPL / placement (rotation-corrected)'
@@ -151,6 +170,7 @@ outputs:
       output: usb3_fiber-cpl.csv
       format: CSV
       units: millimeters
+      separate_files_for_front_and_back: false
       only_smd: false
       columns:
         - id: Ref
