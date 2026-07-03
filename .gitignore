@@ -2,7 +2,9 @@
 *.bak
 *-backups/
 _autosave-*
-~*.lck
+
+# KiCad editor lock files (per-session, machine-local — e.g. ~foo.kicad_pcb.lck)
+*.lck
 
 # KiCad local preferences
 fp-info-cache
@@ -13,3 +15,7 @@ Thumbs.db
 
 # Editor local-history (accidental gitlink removed)
 .history/
+
+# Python bytecode
+__pycache__/
+*.pyc
