@@ -64,12 +64,12 @@ jobs:
       REVISION: ${{ needs.prepare.outputs.revision }}
       GIT_HASH: ${{ needs.prepare.outputs.githash }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Build fab/design package
         run: |
           chmod +x scripts/build_release.sh
           scripts/build_release.sh
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v6
         with:
           name: release-package
           path: out/
@@ -78,7 +78,7 @@ jobs:
     needs: [prepare, build]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v6
         with:
           name: release-package
           path: out
