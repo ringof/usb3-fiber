@@ -82,10 +82,15 @@ jobs:
         with:
           name: release-package
           path: out
-      - name: Zip package
+      - name: Package release assets
         run: |
           set -euo pipefail
-          ( cd out && zip -qr "../usb3_fiber-rev${{ needs.prepare.outputs.revision }}.zip" . )
+          # Stable asset names (no rev/hash) so /releases/latest/download/<name>
+          # links stay valid across revisions. Rev + git hash live inside the
+          # files (title block / silkscreen) and in the release title/tag.
+          cp out/usb3_fiber-schematic.pdf usb3_fiber-schematic.pdf
+          ( cd out/gerbers && zip -qr ../../usb3_fiber-gerbers.zip . )
+          ( cd out && zip -qr ../usb3_fiber-fabrication.zip . )
           ls -la
       - name: Publish GitHub Release
         env:
@@ -95,7 +100,9 @@ jobs:
         run: |
           set -euo pipefail
           gh release create "rev${REV}" \
-            "usb3_fiber-rev${REV}.zip" \
+            usb3_fiber-fabrication.zip \
+            usb3_fiber-gerbers.zip \
+            usb3_fiber-schematic.pdf \
             --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" \
             --title "Rev ${REV}" \
