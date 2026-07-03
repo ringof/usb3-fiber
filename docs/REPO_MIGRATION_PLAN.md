@@ -26,12 +26,12 @@ and a LICENSE.
 - ✅ **Flattened** to the repo root (out of the former `usb3_fiber/` subdir); an
   orphan `.history` gitlink accidentally committed during the migration was
   removed and `.gitignore`d.
-- ✅ `LICENSE` (CERN-OHL-P v2) added.
+- ✅ `LICENSE` (CERN-OHL-P v2) and root `README.md` added.
 - **Strong** design docs already committed: `docs/fab_specification.txt` and
   `docs/USB3_Fiber_Link_Minimal_Circuit.md`, plus a custom
   `usb3_fiber.kicad_dru` with high-speed rules.
-- **Still missing:** README, any CI (`.github/` absent), `GIT_HASH`/revision
-  provenance (`text_variables: {}`), releases, and any library/fab-rule audit.
+- **Still missing:** any CI (`.github/` absent), `GIT_HASH`/revision provenance
+  (`text_variables: {}`), releases, and any library/fab-rule audit.
 - Known static finding: `In1.Cu`/`In2.Cu` are typed `signal` in the PCB though
   the fab spec defines them as GND/PWR planes (same class as taprx888 #12).
 
