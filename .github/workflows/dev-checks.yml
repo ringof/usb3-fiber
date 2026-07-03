@@ -15,6 +15,13 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Cancel superseded runs of the same event on the same ref (stops rapid pushes
+# from stacking runs). Push and pull_request stay in separate groups so a PR
+# check is never cancelled by its branch's push run.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
