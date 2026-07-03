@@ -1006,8 +1006,8 @@
     ]
   ],
   "text_variables": {
-    "REVISION": "DEV",
-    "GIT_HASH": "local"
+    "GIT_HASH": "local",
+    "REVISION": "DEV"
   },
   "tuning_profiles": {
     "meta": {
