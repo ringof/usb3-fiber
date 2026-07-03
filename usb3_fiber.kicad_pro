@@ -1005,7 +1005,10 @@
       "usb3_fiber"
     ]
   ],
-  "text_variables": {},
+  "text_variables": {
+    "REVISION": "DEV",
+    "GIT_HASH": "local"
+  },
   "tuning_profiles": {
     "meta": {
       "version": 0

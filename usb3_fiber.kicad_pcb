@@ -10,7 +10,8 @@
 	(title_block
 		(title "USB 3.0 to SFP+ Board")
 		(date "2026-03-13")
-		(rev "1")
+		(rev "${REVISION}")
+		(comment 1 "Git: ${GIT_HASH}")
 	)
 	(layers
 		(0 "F.Cu" signal)
