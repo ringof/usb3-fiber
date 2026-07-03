@@ -1,0 +1,45 @@
+name: dev-checks
+
+# Dev CI: ERC, DRC, BOM completeness check, plus schematic PDF + assembly
+# drawings as artifacts. Runs on dev-* pushes and on PRs into main.
+#
+# Gating is off during bring-up (ENFORCE=false): checks run and upload their
+# reports, but do not fail the job — the first run captures the Phase 0 baseline.
+# Flip ENFORCE to "true" (and add these as required status checks in the main
+# ruleset) once the baseline is triaged.
+
+on:
+  push:
+    branches: ['dev-*']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  dev-checks:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/kicad/kicad:10.0
+      options: --user root
+    env:
+      HOME: /root
+      ENFORCE: "false"   # bring-up mode; set "true" to gate on ERC/DRC/BOM
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run ERC / DRC / BOM checks + generate drawings
+        run: |
+          chmod +x scripts/run_checks.sh
+          scripts/run_checks.sh
+
+      - name: Upload reports and drawings
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dev-checks-reports
+          path: reports/
+          if-no-files-found: warn
