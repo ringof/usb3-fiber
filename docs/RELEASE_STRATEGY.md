@@ -88,6 +88,15 @@ optionally set **`revision`** to force-publish a specific letter. Re-publishing
 an existing revision is idempotent: the job refreshes that release's assets
 (`gh release upload --clobber`) instead of failing.
 
+### Dry run (build without publishing)
+
+Dispatch `main-release` with **`dry_run: true`** to build the full turnkey
+package and upload it as **run artifacts** (`release-package`) **without**
+publishing a release. It forces a build even when no design file changed, so the
+pipeline (e.g. a KiBot config change) can be validated before you commit to a
+real release. Provenance is still injected, so the artifacts carry the revision
+they *would* be published under.
+
 ## Edge cases
 
 - **First release:** no prior release → Rev A.
