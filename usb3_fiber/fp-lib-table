@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "usb3_fiber")(type "KiCad")(uri "${KIPRJMOD}/library/usb3_fiber.pretty")(options "")(descr ""))
+)

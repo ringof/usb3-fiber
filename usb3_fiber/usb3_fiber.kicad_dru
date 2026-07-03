@@ -1,0 +1,100 @@
+(version 1)
+
+# USB3 SuperSpeed: USB3-A connector to DS100BR111 (INB/OUTA)
+# Design doc: max 25mm trace length per signal
+(rule "USB3_SS max trace length"
+	(condition "A.NetClass == 'USB3_SS'")
+	(constraint length (max 25mm))
+)
+
+# SFP+ CML: DS100BR111 to SFP+ cage (INA/OUTB, TD, RD)
+# Design doc: max 15mm trace length per signal
+(rule "SFP_SS max trace length"
+	(condition "A.NetClass == 'SFP_SS'")
+	(constraint length (max 15mm))
+)
+
+# Diff pair skew: all high-speed pairs
+# Design doc: <= 0.1mm skew between + and - traces
+(rule "Diff pair skew - USB3_SS"
+	(condition "A.NetClass == 'USB3_SS'")
+	(constraint skew (max 0.1mm))
+)
+
+(rule "Diff pair skew - SFP_SS"
+	(condition "A.NetClass == 'SFP_SS'")
+	(constraint skew (max 0.1mm))
+)
+
+# USB2 High-Speed (480 Mbps): D+/D- skew
+(rule "Diff pair skew - USB2"
+	(condition "A.NetClass == 'USB2'")
+	(constraint skew (max 0.5mm))
+)
+
+# USB2 max trace length (generous bound for solder jumper routing)
+(rule "USB2 max trace length"
+	(condition "A.NetClass == 'USB2'")
+	(constraint length (max 50mm))
+)
+
+# -----------------------------------------------------------
+# Diff pair coupling: keep +/- traces routed together
+# Uncoupled segments destroy differential impedance and
+# convert differential signal to common-mode EMI.
+# -----------------------------------------------------------
+(rule "USB3_SS diff pair coupling"
+	(condition "A.NetClass == 'USB3_SS'")
+	(constraint diff_pair_uncoupled (max 2mm))
+)
+
+(rule "SFP_SS diff pair coupling"
+	(condition "A.NetClass == 'SFP_SS'")
+	(constraint diff_pair_uncoupled (max 2mm))
+)
+
+(rule "USB2 diff pair coupling"
+	(condition "A.NetClass == 'USB2'")
+	(constraint diff_pair_uncoupled (max 5mm))
+)
+
+# -----------------------------------------------------------
+# Crosstalk isolation: enforce extra clearance between
+# different high-speed pairs. Rule of thumb: >= 3x the
+# prepreg thickness (0.21mm) = 0.63mm. Using 0.5mm as a
+# practical floor for this board size.
+# -----------------------------------------------------------
+
+# USB3 TX pair to RX pair
+(rule "USB3 TX-RX isolation"
+	(condition "(A.NetName == '/SSTX+' || A.NetName == '/SSTX-') && (B.NetName == '/SSRX+' || B.NetName == '/SSRX-')")
+	(constraint clearance (min 0.5mm))
+)
+
+# SFP TD pair to RD pair
+(rule "SFP TD-RD isolation"
+	(condition "(A.NetName == '/TD+' || A.NetName == '/TD-') && (B.NetName == '/RD+' || B.NetName == '/RD-')")
+	(constraint clearance (min 0.5mm))
+)
+
+# USB3 to SFP inter-class isolation
+(rule "USB3-SFP inter-class isolation"
+	(condition "A.NetClass == 'USB3_SS' && B.NetClass == 'SFP_SS'")
+	(constraint clearance (min 0.5mm))
+)
+
+# -----------------------------------------------------------
+# Via count: limit layer transitions on high-speed nets.
+# Each via adds parasitic capacitance and impedance
+# discontinuity. On 4-layer board, HS signals should stay
+# on F.Cu/B.Cu signal layers.
+# -----------------------------------------------------------
+(rule "USB3_SS via limit"
+	(condition "A.NetClass == 'USB3_SS'")
+	(constraint via_count (max 2))
+)
+
+(rule "SFP_SS via limit"
+	(condition "A.NetClass == 'SFP_SS'")
+	(constraint via_count (max 2))
+)

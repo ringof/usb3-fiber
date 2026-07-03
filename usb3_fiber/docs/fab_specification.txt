@@ -1,0 +1,103 @@
+USB3 FIBER LINK - PCB FABRICATION SPECIFICATION
+================================================
+
+1. GENERAL REQUIREMENTS
+   Board Name:         USB3 Fiber Link
+   Layers:             4 (TOP / GND / PWR / BOTTOM)
+   Material:           FR4, Standard Tg (150-160C)
+   Finished Thickness: 62 mil (1.575mm) +/- 10%
+   Surface Finish:     ENIG (1u" min gold thickness)
+   Solder Mask:        Green, both sides (LPI)
+   Silkscreen:         White, both sides
+   IPC Class:          2 (Standard)
+   UL Marking:         Not required
+
+2. STACKUP
+   Layer          Type       Thickness    Copper Weight
+   -----          ----       ---------    -------------
+   F.Cu           Signal     0.035mm      1 oz
+   Prepreg        7628       0.21mm       Er=4.5, Df=0.02
+   In1.Cu         GND Plane  0.0175mm     0.5 oz
+   Core           FR4        1.03mm       Er=4.5, Df=0.02
+   In2.Cu         PWR Plane  0.0175mm     0.5 oz
+   Prepreg        7628       0.21mm       Er=4.5, Df=0.02
+   B.Cu           Signal     0.035mm      1 oz
+
+   Note: Exact prepreg/core thicknesses subject to fab stackup
+   optimization for impedance targets below.
+
+3. CONTROLLED IMPEDANCE
+   Net Class       Type           Target     Tolerance
+   ---------       ----           ------     ---------
+   USB3_SS         Differential   100 ohm    +/- 10%
+   USB3_SS         Single-ended   50 ohm     +/- 5 ohm
+   SFP_SS          Differential   100 ohm    +/- 10%
+   SFP_SS          Single-ended   50 ohm     +/- 5 ohm
+   USB2            Differential   90 ohm     +/- 10%
+   USB2            Single-ended   45 ohm     +/- 5 ohm
+
+   Impedance-controlled traces are on F.Cu and B.Cu layers
+   referenced to In1.Cu (GND) plane.
+
+4. MINIMUM DESIGN FEATURES
+   Parameter                    Value
+   ---------                    -----
+   Minimum track width          0.10mm (4 mil)
+   Minimum track spacing        0.10mm (4 mil)
+   Minimum via drill            0.30mm
+   Minimum via pad diameter     0.50mm
+   Minimum annular ring         0.10mm
+   Minimum hole-to-hole         0.25mm
+   Minimum copper-to-edge       0.50mm
+   Minimum solder mask bridge   0.10mm (green, 1oz)
+   Minimum mask-to-trace        0.09mm
+   Minimum silkscreen width     0.153mm (6 mil)
+   Minimum silkscreen height    1.0mm (40 mil)
+
+5. DRILL REQUIREMENTS
+   Plated through-hole tolerance:    +0.13 / -0.08mm
+   Non-plated hole tolerance:        +/- 0.20mm
+   Minimum plated slot width:        0.50mm
+   Minimum non-plated slot width:    1.00mm
+   No blind or buried vias required.
+
+6. VIA TREATMENT
+   All vias to be filled with soldermask (opaque finish).
+   Filled vias must not have soldermask openings on either side.
+   Maximum via diameter for plugging: 0.50mm.
+
+7. DESIGN RULE CONSTRAINTS (enforced in layout)
+   Net Class       Max Length   Diff Pair Skew   Track/Gap       Max Uncoupled
+   ---------       ----------   --------------   ---------       -------------
+   USB3_SS         25mm         0.1mm            0.2mm / 0.2mm   2mm
+   SFP_SS          15mm         0.1mm            0.2mm / 0.2mm   2mm
+   USB2            50mm         0.5mm            0.2mm / 0.15mm  5mm
+   Power           --           --               0.5mm / 0.2mm   --
+   Default         --           --               0.2mm / 0.2mm   --
+
+   Additional high-speed constraints:
+   - USB3 TX/RX pair-to-pair clearance:   0.5mm minimum
+   - SFP TD/RD pair-to-pair clearance:    0.5mm minimum
+   - USB3 to SFP inter-class clearance:   0.5mm minimum
+   - USB3_SS max via count per net:        2
+   - SFP_SS max via count per net:         2
+
+8. NOTES
+   a. All dimensions in millimeters unless otherwise noted.
+   b. Panelization per fabricator requirements.
+   c. Board outline defined in Edge.Cuts layer of Gerber files.
+   d. Fiducials provided (4x, 1mm Cu with 2mm mask opening).
+   e. Mounting holes: 4x M3 (3.2mm), non-plated.
+   f. Fab to verify trace widths against actual stackup using
+      impedance calculator and adjust if necessary.
+   g. Target fabricator: JLCPCB (4-layer standard process).
+
+9. DELIVERABLES REQUIRED FROM FABRICATOR
+   a. Impedance test coupon results
+   b. Cross-section report (if controlled impedance ordered)
+   c. Final stackup confirmation before production
+
+REVISION HISTORY
+   Rev    Date          Description
+   ---    ----------    -----------
+   A      2026-03-13    Initial release
