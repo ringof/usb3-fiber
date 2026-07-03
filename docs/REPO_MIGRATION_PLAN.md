@@ -52,14 +52,16 @@ These decisions drive the plan below:
    nested in a duplicate `usb3_fiber/` folder. Move via history-preserving
    `git mv`. Safe: all internal paths use `${KIPRJMOD}` / `${KICAD8_3DMODEL_DIR}`
    (verified — no hardcoded `usb3_fiber/` references).
-2. **Branch model.** `main` is protected. Work happens on `dev-*` branches.
-   **✅ Configured** via a `main` branch ruleset (Settings → Rules → Rulesets):
-   require a pull request before merging (**0 required approvals**), **restrict
-   deletions**, **block force pushes**, with a **Repository admin bypass**.
-   Required status checks are intentionally **off for now** — the ERC/DRC/BOM
-   gates get added to this ruleset once the dev CI (Phase 3) is live. Merges are
-   **squash-only** (Settings → General → Pull Requests), which also keeps `main`
-   linear.
+2. **Branch model.** Two-tier flow: **feature → `dev` → `main`**. `dev-*` feature
+   branches merge (squash) into the permanent **`dev`** integration branch; `dev`
+   merges (squash) into **`main`** only when cutting a release. Both `dev` and
+   `main` are protected via rulesets (Settings → Rules → Rulesets): require a
+   pull request (**0 required approvals**), **restrict deletions**, **block force
+   pushes**, with a **Repository admin bypass**. `main` is the stricter release
+   gate. Required status checks are intentionally **off for now** — the
+   ERC/DRC/BOM gates get added to both rulesets once dev CI is trusted. Merges
+   are **squash-only** (Settings → General → Pull Requests), keeping both
+   branches linear. `dev-checks` runs on PRs into **both** `dev` and `main`.
 3. **Dev CI** (on `dev-*`): ERC, DRC, BOM check, and generation of schematic PDF
    + assembly-drawing outputs as build artifacts.
 4. **Main CI** (on `main`): produce the full design/fabrication package and

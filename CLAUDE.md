@@ -40,10 +40,13 @@ Do not author changes against the old format; migrate first.
   active plan.
 - **Commit & push only with explicit approval.** Never commit or push without
   being asked to.
-- **Branch discipline.** `main` is protected. Do all work on `dev-*` branches.
-  **Authorization to do work is NOT authorization to create a branch** — do not
-  create a branch unless the user names it. Unrelated fixes go on the current
-  branch as separate commits unless directed otherwise.
+- **Branch discipline.** Flow is **feature → `dev` → `main`**. Both `dev` and
+  `main` are protected. Do work on `dev-*` feature branches, which merge (squash)
+  into the permanent **`dev`** integration branch; `dev` merges (squash) into
+  **`main`** only when cutting a release. **Authorization to do work is NOT
+  authorization to create a branch** — do not create a branch unless the user
+  names it. Unrelated fixes go on the current branch as separate commits unless
+  directed otherwise. (See `docs/RELEASE_STRATEGY.md`.)
 - **Evidence before claims.** Do not assert a design problem or file an issue on
   untested theory. Back every finding with concrete evidence: a `grep`/file read,
   a datasheet reference, or `kicad-cli` ERC/DRC/BOM output. (Example: the
