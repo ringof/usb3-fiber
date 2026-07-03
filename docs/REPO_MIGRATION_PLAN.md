@@ -27,6 +27,8 @@ and a LICENSE.
   orphan `.history` gitlink accidentally committed during the migration was
   removed and `.gitignore`d.
 - ✅ `LICENSE` (CERN-OHL-P v2) and root `README.md` added.
+- ✅ **`main` protected** (see the policy below) and **squash-only merges**
+  configured.
 - **Strong** design docs already committed: `docs/fab_specification.txt` and
   `docs/USB3_Fiber_Link_Minimal_Circuit.md`, plus a custom
   `usb3_fiber.kicad_dru` with high-speed rules.
@@ -44,6 +46,13 @@ These decisions drive the plan below:
    `git mv`. Safe: all internal paths use `${KIPRJMOD}` / `${KICAD8_3DMODEL_DIR}`
    (verified — no hardcoded `usb3_fiber/` references).
 2. **Branch model.** `main` is protected. Work happens on `dev-*` branches.
+   **✅ Configured** via a `main` branch ruleset (Settings → Rules → Rulesets):
+   require a pull request before merging (**0 required approvals**), **restrict
+   deletions**, **block force pushes**, with a **Repository admin bypass**.
+   Required status checks are intentionally **off for now** — the ERC/DRC/BOM
+   gates get added to this ruleset once the dev CI (Phase 3) is live. Merges are
+   **squash-only** (Settings → General → Pull Requests), which also keeps `main`
+   linear.
 3. **Dev CI** (on `dev-*`): ERC, DRC, BOM check, and generation of schematic PDF
    + assembly-drawing outputs as build artifacts.
 4. **Main CI** (on `main`): produce the full design/fabrication package and
