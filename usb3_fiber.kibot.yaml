@@ -1,0 +1,188 @@
+# KiBot pipeline for usb3_fiber — fab-agnostic base, JLCPCB turnkey profile.
+#
+# Provenance (title-block rev + GIT_HASH) is injected by
+# scripts/inject_provenance.py BEFORE kibot runs; this file only *generates*.
+# See docs/TURNKEY.md for the design rationale.
+#
+# Groups:
+#   docs     — schematic PDF, assembly drawings, iBOM  (dev + release)
+#   fab      — STEP, 3D renders                          (release)
+#   JLCPCB   — gerbers, drill, rotation-corrected CPL, LCSC BOM (release)
+kibot:
+  version: 1
+
+# --- Gate checks run as preflights (ERC/DRC honor the project rules) ----------
+preflight:
+  erc: true
+  drc: true
+  update_xml: true
+
+# --- Variants -----------------------------------------------------------------
+# `rotated` applies KiBot's JLCPCB rotation database (+ per-part JLCRotOffset)
+# so the CPL matches how JLCPCB's placement machines orient parts.
+variants:
+  - name: rotated
+    comment: 'JLCPCB rotation-corrected placement'
+    type: kibom
+    variant: rotated
+
+# --- Reusable filters ---------------------------------------------------------
+filters:
+  - name: only_jlc_parts
+    comment: 'Only parts with an LCSC number (orderable turnkey)'
+    type: generic
+    include_only:
+      - column: LCSC
+        regex: '^C\d+'
+
+# --- Outputs ------------------------------------------------------------------
+outputs:
+  # ---- docs (dev checks + release) ----
+  - name: schematic_pdf
+    comment: 'Schematic (PDF)'
+    type: pdf_sch_print
+    dir: docs
+    output: usb3_fiber-schematic.pdf
+
+  - name: assembly_top
+    comment: 'Assembly drawing — top'
+    type: pcb_print
+    dir: docs
+    options:
+      output: usb3_fiber-assembly-top.pdf
+      pages:
+        - layers: [F.Fab, F.Silkscreen, Edge.Cuts]
+          sheet: 'Assembly Top'
+
+  - name: assembly_bottom
+    comment: 'Assembly drawing — bottom'
+    type: pcb_print
+    dir: docs
+    options:
+      output: usb3_fiber-assembly-bottom.pdf
+      mirror: true
+      pages:
+        - layers: [B.Fab, B.Silkscreen, Edge.Cuts]
+          sheet: 'Assembly Bottom'
+
+  - name: ibom
+    comment: 'Interactive HTML BOM'
+    type: ibom
+    dir: docs
+    options:
+      dark_mode: true
+      extra_fields: 'LCSC,Manufacturer,Manufacturer Part Number'
+
+  # ---- fab (release) ----
+  - name: step
+    comment: '3D model (STEP)'
+    type: step
+    dir: fab
+    options:
+      output: usb3_fiber.step
+
+  - name: render_top
+    comment: '3D render — top'
+    type: render_3d
+    dir: fab
+    options:
+      output: usb3_fiber-3d-top.png
+      ray_tracing: true
+      view: top
+
+  - name: render_bottom
+    comment: '3D render — bottom'
+    type: render_3d
+    dir: fab
+    options:
+      output: usb3_fiber-3d-bottom.png
+      ray_tracing: true
+      view: bottom
+
+  # ---- JLCPCB turnkey (release) ----
+  - name: JLCPCB_gerbers
+    comment: 'Gerbers (JLCPCB profile)'
+    type: gerber
+    dir: JLCPCB
+    options:
+      exclude_edge_layer: true
+      exclude_pads_from_silkscreen: true
+      plot_sheet_reference: false
+      plot_footprint_refs: true
+      plot_footprint_values: false
+      force_plot_invisible_refs_vals: false
+      tent_vias: true
+      use_protel_extensions: true
+      create_gerber_job_file: false
+      disable_aperture_macros: true
+      gerber_precision: 4.6
+      use_gerber_x2_attributes: false
+      use_gerber_net_attributes: false
+      subtract_mask_from_silk: true
+    layers:
+      - F.Cu
+      - In1.Cu
+      - In2.Cu
+      - B.Cu
+      - F.Paste
+      - B.Paste
+      - F.Silkscreen
+      - B.Silkscreen
+      - F.Mask
+      - B.Mask
+      - Edge.Cuts
+
+  - name: JLCPCB_drill
+    comment: 'Drill files (JLCPCB profile)'
+    type: excellon
+    dir: JLCPCB
+    options:
+      pth_and_npth_single_file: false
+      metric_units: true
+      map: gerber
+      route_mode_for_oval_holes: false
+
+  - name: JLCPCB_position
+    comment: 'CPL / placement (rotation-corrected)'
+    type: position
+    dir: JLCPCB
+    options:
+      variant: rotated
+      output: usb3_fiber-cpl.csv
+      format: CSV
+      units: millimeters
+      only_smd: false
+      columns:
+        - id: Ref
+          name: Designator
+        - Val
+        - Package
+        - id: PosX
+          name: 'Mid X'
+        - id: PosY
+          name: 'Mid Y'
+        - id: Rot
+          name: Rotation
+        - id: Side
+          name: Layer
+
+  - name: JLCPCB_bom
+    comment: 'BOM (LCSC / JLCPCB)'
+    type: bom
+    dir: JLCPCB
+    options:
+      output: usb3_fiber-bom.csv
+      exclude_filter: only_jlc_parts
+      ref_separator: ','
+      columns:
+        - field: Value
+          name: Comment
+        - field: References
+          name: Designator
+        - Footprint
+        - field: LCSC
+          name: 'LCSC Part #'
+      csv:
+        hide_pcb_info: true
+        hide_stats_info: true
+        quote_all: true
