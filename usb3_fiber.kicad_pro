@@ -978,7 +978,7 @@
       "version": 1
     },
     "net_format_name": "",
-    "page_layout_descr_file": "usb3_fiber.kicad_wks",
+    "page_layout_descr_file": "usb3_fiber-sch.kicad_wks",
     "plot_directory": "",
     "reuse_designators": true,
     "spice_current_sheet_as_root": false,

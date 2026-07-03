@@ -32,7 +32,7 @@ parts turned 90°/180°.
   "actually orderable as turnkey." Expect it to flag parts until the BOM is
   fully populated (issue #14 writ large).
 - **PCB gets its own worksheet.** The board points at `usb3_fiber-fab.kicad_wks`
-  (the schematic keeps `usb3_fiber.kicad_wks`), so the fab/assembly sheet can
+  (the schematic uses `usb3_fiber-sch.kicad_wks`), so the fab/assembly sheet can
   carry documentation-specific zones without disturbing the schematic frame.
   Both start from the same collision-safe title block (`${REVISION}` field +
   `${GIT_HASH}`/`${LICENSE}`/`${DESIGNER}`/`${REPO}` vars), so provenance
