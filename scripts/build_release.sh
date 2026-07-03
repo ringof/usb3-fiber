@@ -20,18 +20,29 @@ OUT="out"
 GERB="$OUT/gerbers"
 mkdir -p "$GERB"
 
-# --- Inject provenance into the project text variables (build-time only) ------
-python3 - "$PRO" "$REVISION" "$GIT_HASH" <<'PY'
-import json, sys
-path, rev, gh = sys.argv[1:4]
-with open(path) as f:
-    pro = json.load(f)
-pro.setdefault("text_variables", {})
-pro["text_variables"]["REVISION"] = rev
-pro["text_variables"]["GIT_HASH"] = gh
-with open(path, "w") as f:
-    json.dump(pro, f, indent=2)
-print(f"Injected REVISION={rev} GIT_HASH={gh}")
+# --- Inject provenance (build-time only; never committed back) ----------------
+# GIT_HASH -> project text variable, rendered as ${GIT_HASH} in the title block.
+# REVISION -> the schematic/board title-block `rev` field, rendered by KiCad's
+# built-in ${REVISION}. Writing the field (not a project var named REVISION)
+# avoids the name clash with that built-in.
+python3 - "$PRO" "$SCH" "$PCB" "$REVISION" "$GIT_HASH" <<'PY'
+import json, re, sys
+pro, sch, pcb, rev, gh = sys.argv[1:6]
+with open(pro) as f:
+    p = json.load(f)
+p.setdefault("text_variables", {})
+p["text_variables"]["GIT_HASH"] = gh
+with open(pro, "w") as f:
+    json.dump(p, f, indent=2)
+for path in (sch, pcb):
+    with open(path) as f:
+        t = f.read()
+    t, n = re.subn(r'\(rev "[^"]*"\)', f'(rev "{rev}")', t, count=1)
+    if n != 1:
+        sys.exit(f"ERROR: expected one (rev ...) in {path}, replaced {n}")
+    with open(path, "w") as f:
+        f.write(t)
+print(f"Injected rev='{rev}' into title blocks; GIT_HASH='{gh}' text var")
 PY
 
 # --- Fabrication outputs ------------------------------------------------------
