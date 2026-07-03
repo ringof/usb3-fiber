@@ -6,10 +6,22 @@ releases. Implemented by `.github/workflows/main-release.yml` (and
 
 ## Branches & CI
 
-- **`main`** is protected; all work happens on `dev-*` branches via pull request
-  (squash-only merges).
-- **`dev-checks`** runs on `dev-*` pushes and PRs into `main`: ERC, DRC, BOM
-  completeness, and schematic + assembly drawings as artifacts.
+Two-tier flow: **feature → `dev` → `main`**.
+
+- **`dev-*`** feature branches are where work happens. They merge (squash) into
+  **`dev`**, the permanent integration branch.
+- **`dev`** collects vetted work. When a release is wanted, `dev` merges (squash)
+  into **`main`**.
+- **`main`** is the release branch. A merge here builds and (if the design
+  changed) publishes a revision.
+- Both `dev` and `main` are protected (PR required); `main` is the stricter
+  release gate.
+
+CI:
+
+- **`dev-checks`** runs on `dev-*` pushes and on **PRs into `dev` and `main`**:
+  ERC, DRC, BOM completeness, and schematic + assembly drawings as artifacts.
+  So the same checks gate both feature→dev and dev→main.
 - **`main-release`** runs on every merge to `main` (and can be dispatched
   manually) and is responsible for revisions and published packages.
 

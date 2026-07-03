@@ -1,18 +1,19 @@
 name: dev-checks
 
 # Dev CI: ERC, DRC, BOM completeness check, plus schematic PDF + assembly
-# drawings as artifacts. Runs on dev-* pushes and on PRs into main.
+# drawings as artifacts. Runs on dev-* pushes and on PRs into dev and main
+# (feature -> dev -> main flow; see docs/RELEASE_STRATEGY.md).
 #
 # Gating is off during bring-up (ENFORCE=false): checks run and upload their
 # reports, but do not fail the job — the first run captures the Phase 0 baseline.
-# Flip ENFORCE to "true" (and add these as required status checks in the main
-# ruleset) once the baseline is triaged.
+# Flip ENFORCE to "true" (and add these as required status checks in the dev/main
+# rulesets) once the baseline is triaged.
 
 on:
   push:
     branches: ['dev-*']
   pull_request:
-    branches: [main]
+    branches: [dev, main]
   workflow_dispatch:
 
 # Cancel superseded runs of the same event on the same ref (stops rapid pushes
