@@ -7,8 +7,7 @@
 	(title_block
 		(title "USB 3.0 to Fiber Link")
 		(date "2026-03-13")
-		(rev "${REVISION}")
-		(comment 1 "Git: ${GIT_HASH}")
+		(rev "DEV")
 	)
 	(lib_symbols
 		(symbol "Device:LED_Small"
