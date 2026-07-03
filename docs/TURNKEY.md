@@ -45,9 +45,11 @@ parts turned 90°/180°.
 
 ## Pipeline shape
 
-- **`dev-checks`** (feature→dev, dev→main PRs): KiBot ERC + DRC preflights, BOM
-  LCSC gate, and the doc outputs (schematic PDF, assembly drawings, iBOM). Still
-  `ENFORCE=false` during bring-up.
+- **`dev-checks`** (feature→dev, dev→main PRs): ERC / DRC / BOM-LCSC **gates run
+  on `kicad-cli`** so the `ENFORCE=false` bring-up toggle stays in our hands
+  (KiBot preflights would hard-gate immediately). **KiBot generates the doc
+  outputs** — schematic PDF, assembly drawings, iBOM — from the shared
+  `usb3_fiber.kibot.yaml`, so dev and release render them the same way.
 - **`main-release`** (merge to main): inject provenance → KiBot generates the
   full turnkey package (gerbers, drill, rotation-corrected CPL, JLCPCB BOM, iBOM,
   3D renders, STEP, schematic PDF, assembly drawings) → publish under the rev.

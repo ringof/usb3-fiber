@@ -30,7 +30,7 @@ jobs:
   dev-checks:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/kicad/kicad:10.0
+      image: ghcr.io/inti-cmnb/kicad10_auto:latest
       options: --user root
     env:
       HOME: /root
