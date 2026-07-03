@@ -26,14 +26,18 @@ mkdir -p "$OUT"
 python3 scripts/inject_provenance.py --revision "$REVISION" --git-hash "$GIT_HASH"
 
 # --- Generate the package with KiBot ------------------------------------------
+# KiBot starts its own virtual display (xvfbwrapper) for the outputs that need
+# one (render_3d, pcb_print frame plotting), so we call it directly — no
+# xvfb-run wrapper (the image ships no xauth).
+#
 # Essential outputs (fab + docs) — a failure here fails the release.
-xvfb-run -a kibot -c "$CFG" -e "$SCH" -b "$PCB" -d "$OUT" --skip-pre all \
+kibot -c "$CFG" -e "$SCH" -b "$PCB" -d "$OUT" --skip-pre all \
   schematic_pdf assembly_top assembly_bottom ibom step \
   JLCPCB_gerbers JLCPCB_drill JLCPCB_position JLCPCB_bom
 
 # 3D renders are best-effort — raytrace/3D can be flaky in headless CI and must
 # not sink an otherwise-complete release.
-xvfb-run -a kibot -c "$CFG" -e "$SCH" -b "$PCB" -d "$OUT" --skip-pre all \
+kibot -c "$CFG" -e "$SCH" -b "$PCB" -d "$OUT" --skip-pre all \
   render_top render_bottom \
   || echo "WARN: 3D render step failed; release continues without renders."
 
