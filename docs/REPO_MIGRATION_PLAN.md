@@ -98,8 +98,8 @@ These decisions drive the plan below:
   tables resolve.
 - Root `README.md` (description from the minimal-circuit doc, architecture
   summary, download-links section pointing at Releases, build-from-source note).
-- `LICENSE` — **choice still open** (taprx888 used MIT; CERN-OHL-S may fit a PCB
-  better).
+- `LICENSE` — **CERN-OHL-P v2** (permissive, hardware-native; SPDX
+  `CERN-OHL-P-2.0`). Added.
 - Extend `.gitignore` for `kicad-cli` output dirs (`fab/`, `gerbers/`, etc.).
 
 ### Phase 2 — Provenance (build-time injection)
@@ -148,6 +148,7 @@ GitHub Releases.
 
 ## 7. Open items
 
-- **LICENSE** choice (MIT vs CERN-OHL-S vs other).
 - **KiCad 8 → 9** migration: deferred to a separate change; revisit after infra
   is green.
+
+*(Resolved: LICENSE = CERN-OHL-P v2.)*
