@@ -82,13 +82,18 @@ impedance, and drill/feature constraints are in
 
 ## Downloads
 
-Fabrication and design packages (Gerbers, drill, BOM, CPL, schematic PDF,
-assembly drawings, STEP) are published as **[GitHub Releases](../../releases)**,
-built and revision-stamped by CI. Revisions use an alpha scheme (Rev A → B → C);
-the current revision and git hash are stamped into the title block and bottom
-silkscreen at build time. *(First release forthcoming — see
-[`docs/REPO_MIGRATION_PLAN.md`](docs/REPO_MIGRATION_PLAN.md) for the CI/release
-roadmap.)*
+Latest release (see [all releases](../../releases)):
+
+- 📄 **[Schematic (PDF)](https://github.com/ringof/usb3-fiber/releases/latest/download/usb3_fiber-schematic.pdf)**
+- 🛠 **[Gerbers — JLCPCB-ready (zip)](https://github.com/ringof/usb3-fiber/releases/latest/download/usb3_fiber-gerbers.zip)**
+- 📦 **[Full fabrication + design package (zip)](https://github.com/ringof/usb3-fiber/releases/latest/download/usb3_fiber-fabrication.zip)** — Gerbers, drill, BOM, CPL, schematic PDF, assembly drawings, STEP
+
+Packages are built and revision-stamped by CI. Revisions use an alpha scheme
+(Rev A → B → C); the current revision and git hash are stamped into the title
+block and bottom silkscreen at build time, and named in each release's title/tag.
+The links above always resolve to the newest release. See
+[`docs/RELEASE_STRATEGY.md`](docs/RELEASE_STRATEGY.md) for how revisions and
+releases work (a new revision is cut only when the design changes).
 
 ## Status
 
