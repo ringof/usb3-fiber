@@ -154,3 +154,16 @@ jobs:
               --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
               --title "Rev ${REV}" --notes "$NOTES"
           fi
+
+          # Self-cleaning: drop any assets not in the current stable set, so a
+          # renamed/legacy asset can never linger on the release.
+          keep=" ${FILES[*]} "
+          gh release view "rev${REV}" --repo "$GITHUB_REPOSITORY" --json assets --jq '.assets[].name' \
+            | while read -r a; do
+                [ -n "$a" ] || continue
+                case "$keep" in
+                  *" $a "*) ;;
+                  *) echo "Removing stale asset: $a"
+                     gh release delete-asset "rev${REV}" "$a" --yes --repo "$GITHUB_REPOSITORY" ;;
+                esac
+              done
