@@ -2,7 +2,9 @@
 *.bak
 *-backups/
 _autosave-*
-~*.lck
+
+# KiCad editor lock files (per-session, machine-local — e.g. ~foo.kicad_pcb.lck)
+*.lck
 
 # KiCad local preferences
 fp-info-cache
