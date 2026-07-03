@@ -21,14 +21,16 @@ and a LICENSE.
 
 ## 2. Current state of this repo
 
-- Currently a KiCad **8.0** project (`version 20240108`), 4-layer, targeting
-  JLCPCB. **The first action is to migrate the project to KiCad 10.0** (latest
-  stable 10.0.4, released 2026-06-21) — this is the baseline for all work below.
-- Project currently nested one level down in `usb3_fiber/`.
+- ✅ Migrated to **KiCad 10.0** (`version 20260206`; latest stable 10.0.4),
+  4-layer, targeting JLCPCB.
+- ✅ **Flattened** to the repo root (out of the former `usb3_fiber/` subdir); an
+  orphan `.history` gitlink accidentally committed during the migration was
+  removed and `.gitignore`d.
+- ✅ `LICENSE` (CERN-OHL-P v2) added.
 - **Strong** design docs already committed: `docs/fab_specification.txt` and
   `docs/USB3_Fiber_Link_Minimal_Circuit.md`, plus a custom
   `usb3_fiber.kicad_dru` with high-speed rules.
-- **Missing:** README, LICENSE, any CI (`.github/` absent), `GIT_HASH`/revision
+- **Still missing:** README, any CI (`.github/` absent), `GIT_HASH`/revision
   provenance (`text_variables: {}`), releases, and any library/fab-rule audit.
 - Known static finding: `In1.Cu`/`In2.Cu` are typed `signal` in the PCB though
   the fab spec defines them as GND/PWR planes (same class as taprx888 #12).

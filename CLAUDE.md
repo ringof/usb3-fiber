@@ -16,9 +16,8 @@ hypothesis, and `docs/fab_specification.txt` for the fab/stackup/impedance spec.
 
 ## Repository layout
 
-> **Migration in progress** — the project currently lives one level down in
-> `usb3_fiber/`; the agreed plan (`docs/REPO_MIGRATION_PLAN.md`) flattens it to
-> the repo root. Until that lands, paths below are under `usb3_fiber/`.
+The KiCad project lives at the **repo root** (flattened from the former
+`usb3_fiber/` subdirectory).
 
 - `usb3_fiber.kicad_pro / .kicad_sch / .kicad_pcb / .kicad_prl` — the design.
 - `usb3_fiber.kicad_dru` — custom design rules (high-speed length/skew/coupling/
