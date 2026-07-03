@@ -13,3 +13,7 @@ Thumbs.db
 
 # Editor local-history (accidental gitlink removed)
 .history/
+
+# Python bytecode
+__pycache__/
+*.pyc
