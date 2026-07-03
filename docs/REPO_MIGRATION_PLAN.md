@@ -21,7 +21,9 @@ and a LICENSE.
 
 ## 2. Current state of this repo
 
-- KiCad **8.0** project (`version 20240108`), 4-layer, targeting JLCPCB.
+- Currently a KiCad **8.0** project (`version 20240108`), 4-layer, targeting
+  JLCPCB. **The first action is to migrate the project to KiCad 10.0** (latest
+  stable 10.0.4, released 2026-06-21) — this is the baseline for all work below.
 - Project currently nested one level down in `usb3_fiber/`.
 - **Strong** design docs already committed: `docs/fab_specification.txt` and
   `docs/USB3_Fiber_Link_Minimal_Circuit.md`, plus a custom
@@ -86,11 +88,14 @@ These decisions drive the plan below:
 
 ## 5. Phased plan
 
-### Phase 0 — Baseline capture (no design changes)
-- Run `kicad-cli sch erc` and `kicad-cli pcb drc` (fed `usb3_fiber.kicad_dru`) to
-  capture a current violation baseline — the reference point for Phase 5 issues.
-- Pin the KiCad version for CI to **8.0** (matches `20240108`); treat any 8→9
-  migration as a separate, later change.
+### Phase 0 — Migrate to KiCad 10.0 + baseline capture
+- **Migrate the project to KiCad 10.0** first: open in KiCad 10 and re-save so all
+  `.kicad_pro/.kicad_sch/.kicad_pcb/.kicad_sym/.kicad_mod` files are rewritten to
+  the v10 S-expression format. This is a large, mechanical diff — keep it in its
+  own commit, separate from any substantive change, so later diffs stay readable.
+- Pin CI to **KiCad 10.0.x** (10.0.4 at time of writing).
+- Then run `kicad-cli sch erc` and `kicad-cli pcb drc` (fed `usb3_fiber.kicad_dru`)
+  to capture a violation baseline — the reference point for Phase 5 issues.
 
 ### Phase 1 — Layout flatten + repo hygiene
 - `git mv usb3_fiber/* .` (and dotfiles) to bring the project to the repo root;
@@ -109,7 +114,7 @@ These decisions drive the plan below:
   letter for `REVISION`. Nothing is committed back to the design files.
 
 ### Phase 3 — Dev CI (`.github/workflows/dev-checks.yml`, on `dev-*`)
-- Headless `kicad-cli` in a pinned KiCad 8 container.
+- Headless `kicad-cli` in a pinned KiCad 10.0.x container.
 - Jobs: **ERC** (gate), **DRC** (gate, incl. custom `.kicad_dru`), **BOM check**
   (gate), **3D-completeness** (warning), **KLC** (warning).
 - Generate **schematic PDF** and **assembly drawings** (fab/assembly PDF + CPL);
@@ -148,7 +153,5 @@ GitHub Releases.
 
 ## 7. Open items
 
-- **KiCad 8 → 9** migration: deferred to a separate change; revisit after infra
-  is green.
-
-*(Resolved: LICENSE = CERN-OHL-P v2.)*
+*(Resolved: LICENSE = CERN-OHL-P v2. KiCad version = 10.0, migrated up front in
+Phase 0.)*

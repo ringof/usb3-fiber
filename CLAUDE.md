@@ -29,8 +29,10 @@ hypothesis, and `docs/fab_specification.txt` for the fab/stackup/impedance spec.
   `3dmodels/` STEP files.
 - `datasheets/`, `docs/`.
 
-KiCad **8.0** (`version 20240108`). A move to KiCad 9 is deferred and must be a
-separate, explicitly-authorized change.
+**KiCad 10.0** is the project baseline (latest stable 10.0.4). The committed
+files are still in the 8.0 format (`version 20240108`) pending the Phase 0
+migration — the first task is to open in KiCad 10 and re-save to the v10 format.
+Do not author changes against the old format; migrate first.
 
 ## Working agreement
 
@@ -90,16 +92,14 @@ Not yet implemented; being built per `docs/REPO_MIGRATION_PLAN.md`. Target model
 | 3D-model completeness (fitted parts) | warning | gate |
 | KLC library compliance | warning | warning |
 
-## Useful `kicad-cli` commands (KiCad 8)
+## Useful `kicad-cli` commands (KiCad 10)
 
 ```sh
 # from the project directory
 kicad-cli sch erc   usb3_fiber.kicad_sch --output erc.rpt
 kicad-cli pcb drc   usb3_fiber.kicad_pcb --output drc.rpt   # honors .kicad_dru
 kicad-cli sch export pdf usb3_fiber.kicad_sch --output schematic.pdf
-# KiCad 8 has no generic BOM export; use the intermediate netlist + a script.
-# (KiCad 9 adds `kicad-cli sch export bom` directly — a point in favor of the 8->9 move.)
-kicad-cli sch export python-bom usb3_fiber.kicad_sch --output bom.xml
+kicad-cli sch export bom usb3_fiber.kicad_sch --output bom.csv
 kicad-cli pcb export gerbers usb3_fiber.kicad_pcb --output gerbers/
 kicad-cli pcb export drill   usb3_fiber.kicad_pcb --output gerbers/
 kicad-cli pcb export pos     usb3_fiber.kicad_pcb --output cpl.csv   # pick-and-place
