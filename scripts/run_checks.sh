@@ -24,6 +24,24 @@ note() {
   [ -n "${GITHUB_STEP_SUMMARY:-}" ] && echo "$1" >> "$GITHUB_STEP_SUMMARY"
 }
 
+emit_report() {
+  # Echo a report file into the run log (collapsible group) and the job summary
+  # (collapsible <details>), so the full ERC/DRC/BOM detail is visible without
+  # downloading the artifact.
+  local title="$1" file="$2"
+  [ -f "$file" ] || return 0
+  echo "::group::$title"
+  cat "$file"
+  echo "::endgroup::"
+  if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
+    {
+      printf '\n<details><summary>%s</summary>\n\n```\n' "$title"
+      cat "$file"
+      printf '\n```\n\n</details>\n'
+    } >> "$GITHUB_STEP_SUMMARY"
+  fi
+}
+
 note "## Dev-CI checks (ENFORCE=$ENFORCE)"
 
 # --- ERC (gate) ---------------------------------------------------------------
@@ -63,6 +81,11 @@ kicad-cli pcb export pdf "$PCB" -o reports/assembly_top.pdf \
 kicad-cli pcb export pdf "$PCB" -o reports/assembly_bottom.pdf \
   --layers "B.Fab,B.Silkscreen,Edge.Cuts" --mirror \
   || note "- ⚠️ bottom assembly drawing export failed"
+
+# --- Report detail (echoed to the run log + job summary) ----------------------
+emit_report "ERC report (erc.rpt)" reports/erc.rpt
+emit_report "DRC report (drc.rpt)" reports/drc.rpt
+emit_report "BOM completeness (bom_check.txt)" reports/bom_check.txt
 
 # --- Verdict ------------------------------------------------------------------
 if [ "$fail" -ne 0 ]; then

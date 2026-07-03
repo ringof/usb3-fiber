@@ -36,7 +36,7 @@ jobs:
       ENFORCE: "false"   # bring-up mode; set "true" to gate on ERC/DRC/BOM
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Run ERC / DRC / BOM checks + generate drawings
         run: |
@@ -45,7 +45,7 @@ jobs:
 
       - name: Upload reports and drawings
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: dev-checks-reports
           path: reports/

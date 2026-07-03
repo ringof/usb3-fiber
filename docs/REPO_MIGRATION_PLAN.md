@@ -29,11 +29,18 @@ and a LICENSE.
 - ✅ `LICENSE` (CERN-OHL-P v2) and root `README.md` added.
 - ✅ **`main` protected** (see the policy below) and **squash-only merges**
   configured.
+- ✅ **Dev CI** (`dev-checks.yml`): ERC/DRC/BOM + schematic/assembly drawings,
+  bring-up mode (`ENFORCE=false`).
+- ✅ **Provenance (title block)**: `${REVISION}` / `${GIT_HASH}` text variables
+  defined and referenced in the schematic + PCB title blocks; injected at build
+  time by the release CI.
 - **Strong** design docs already committed: `docs/fab_specification.txt` and
   `docs/USB3_Fiber_Link_Minimal_Circuit.md`, plus a custom
   `usb3_fiber.kicad_dru` with high-speed rules.
-- **Still missing:** any CI (`.github/` absent), `GIT_HASH`/revision provenance
-  (`text_variables: {}`), releases, and any library/fab-rule audit.
+- **Still missing / in progress:** main-release CI + release packaging (this
+  branch), the **bottom-silkscreen** provenance text (needs placement in KiCad —
+  see Phase 2 note), flipping `ENFORCE=true` + required checks, and the
+  library/fab-rule audit (Phase 5).
 - Known static finding: `In1.Cu`/`In2.Cu` are typed `signal` in the PCB though
   the fab spec defines them as GND/PWR planes (same class as taprx888 #12).
 
