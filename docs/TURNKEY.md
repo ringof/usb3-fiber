@@ -31,6 +31,18 @@ parts turned 90°/180°.
   part that has **no `LCSC`** (was: MPN *or* LCSC). This makes a green build mean
   "actually orderable as turnkey." Expect it to flag parts until the BOM is
   fully populated (issue #14 writ large).
+- **PCB gets its own worksheet.** The board points at `usb3_fiber-fab.kicad_wks`
+  (the schematic keeps `usb3_fiber.kicad_wks`), so the fab/assembly sheet can
+  carry documentation-specific zones without disturbing the schematic frame.
+  Both start from the same collision-safe title block (`${REVISION}` field +
+  `${GIT_HASH}`/`${LICENSE}`/`${DESIGNER}`/`${REPO}` vars), so provenance
+  injection stamps them identically.
+- **Assembly drawings are a multi-page doc set.** `assembly_docs` renders one
+  PDF with Top, Bottom, and Fabrication-Drawing pages, each on the fab
+  worksheet. `Dwgs.User` / `Cmts.User` are included on every page, so
+  dimensions and assembly notes drawn on those layers in the board editor flow
+  into the drawings automatically — KiCad has no true Draftsman editor, so this
+  layer-driven approach is how the documentation gets built up.
 
 ## What KiBot does NOT change (hard constraints)
 

@@ -737,7 +737,7 @@
       "svg": "",
       "vrml": ""
     },
-    "page_layout_descr_file": "usb3_fiber.kicad_wks"
+    "page_layout_descr_file": "usb3_fiber-fab.kicad_wks"
   },
   "schematic": {
     "annotate_start_num": 0,

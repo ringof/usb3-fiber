@@ -32,7 +32,7 @@ python3 scripts/inject_provenance.py --revision "$REVISION" --git-hash "$GIT_HAS
 #
 # Essential outputs (fab + docs) — a failure here fails the release.
 kibot -c "$CFG" -e "$SCH" -b "$PCB" -d "$OUT" --skip-pre all \
-  schematic_pdf assembly_top assembly_bottom ibom step \
+  schematic_pdf assembly_docs ibom step \
   JLCPCB_gerbers JLCPCB_drill JLCPCB_position JLCPCB_bom
 
 # 3D renders are best-effort — raytrace/3D can be flaky in headless CI and must

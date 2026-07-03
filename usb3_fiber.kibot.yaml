@@ -50,36 +50,41 @@ outputs:
     options:
       output: usb3_fiber-schematic.pdf
 
-  - name: assembly_top
-    comment: 'Assembly drawing — top'
+  # Multi-page documentation set on the PCB-specific worksheet
+  # (usb3_fiber-fab.kicad_wks). Dwgs.User / Cmts.User are included on every
+  # page so dimensions and assembly notes drawn on those layers in the board
+  # editor render automatically — the closest KiCad gets to a Draftsman sheet.
+  - name: assembly_docs
+    comment: 'Assembly / fabrication drawings'
     type: pcb_print
     dir: docs
     options:
-      output: usb3_fiber-assembly-top.pdf
+      output: usb3_fiber-assembly.pdf
       format: PDF
       plot_sheet_reference: true
+      sheet_reference_layout: usb3_fiber-fab.kicad_wks
       pages:
         - layers:
             - layer: F.Fab
             - layer: F.Silkscreen
             - layer: Edge.Cuts
-          sheet: 'Assembly Top'
-
-  - name: assembly_bottom
-    comment: 'Assembly drawing — bottom'
-    type: pcb_print
-    dir: docs
-    options:
-      output: usb3_fiber-assembly-bottom.pdf
-      format: PDF
-      plot_sheet_reference: true
-      pages:
+            - layer: Dwgs.User
+            - layer: Cmts.User
+          sheet: 'Assembly — Top'
         - layers:
             - layer: B.Fab
             - layer: B.Silkscreen
             - layer: Edge.Cuts
+            - layer: Dwgs.User
+            - layer: Cmts.User
           mirror: true
-          sheet: 'Assembly Bottom'
+          sheet: 'Assembly — Bottom'
+        - layers:
+            - layer: Edge.Cuts
+            - layer: Dwgs.User
+            - layer: Cmts.User
+            - layer: F.Fab
+          sheet: 'Fabrication Drawing'
 
   - name: ibom
     comment: 'Interactive HTML BOM'
