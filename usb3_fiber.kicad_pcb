@@ -23623,7 +23623,7 @@
 	)
 	(dimension
 		(type aligned)
-		(layer "F.Cu")
+		(layer "Dwgs.User")
 		(uuid "35e12354-7b3d-4a09-bd7a-2c94a896c88f")
 		(pts
 			(xy 186.6 81.0375) (xy 111.6 81.0375)
@@ -23647,7 +23647,7 @@
 		)
 		(gr_text "75.0000 mm"
 			(at 149.1 69.700001 0)
-			(layer "F.Cu")
+			(layer "Dwgs.User")
 			(uuid "35e12354-7b3d-4a09-bd7a-2c94a896c88f")
 			(effects
 				(font
@@ -23659,7 +23659,7 @@
 	)
 	(dimension
 		(type aligned)
-		(layer "F.Cu")
+		(layer "Dwgs.User")
 		(uuid "4cc2dfb3-a248-4098-8ad5-acd48a1fde12")
 		(pts
 			(xy 186.6 121.0375) (xy 186.6 81.0375)
@@ -23683,7 +23683,7 @@
 		)
 		(gr_text "40.0000 mm"
 			(at 191.3 101.0375 90)
-			(layer "F.Cu")
+			(layer "Dwgs.User")
 			(uuid "4cc2dfb3-a248-4098-8ad5-acd48a1fde12")
 			(effects
 				(font
