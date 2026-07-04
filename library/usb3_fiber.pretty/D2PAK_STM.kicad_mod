@@ -1,7 +1,7 @@
 (footprint "D2PAK_STM"
-	(version 20240108)
+	(version 20260206)
 	(generator "pcbnew")
-	(generator_version "8.0")
+	(generator_version "10.0")
 	(layer "F.Cu")
 	(tags "LD1086D2T33TR")
 	(property "Reference" "REF**"
@@ -24,18 +24,6 @@
 		(effects
 			(font
 				(size 1 1)
-				(thickness 0.15)
-			)
-		)
-	)
-	(property "Footprint" ""
-		(at 0 0 0)
-		(layer "F.Fab")
-		(hide yes)
-		(uuid "358abf6e-873d-4703-800a-dbb06cea3d0e")
-		(effects
-			(font
-				(size 1.27 1.27)
 				(thickness 0.15)
 			)
 		)
@@ -65,6 +53,7 @@
 		)
 	)
 	(attr smd)
+	(duplicate_pad_numbers_are_jumpers no)
 	(fp_line
 		(start -5.2705 2.425049)
 		(end -5.2705 4.8006)
@@ -460,21 +449,22 @@
 	(pad "1" smd rect
 		(at -2.54 8.763)
 		(size 0.9906 2.9972)
-		(layers "F.Cu" "F.Paste" "F.Mask")
+		(layers "F.Cu" "F.Mask" "F.Paste")
 		(uuid "edfdd40a-5928-40dd-8727-d1e125c21ae4")
 	)
 	(pad "2" smd rect
 		(at 2.54 8.763)
 		(size 0.9906 2.9972)
-		(layers "F.Cu" "F.Paste" "F.Mask")
+		(layers "F.Cu" "F.Mask" "F.Paste")
 		(uuid "1b3ca3e7-51c2-44a0-92c2-bd34e7331f30")
 	)
 	(pad "3" smd rect
 		(at 0 -2.2479)
 		(size 10.3378 8.7122)
-		(layers "F.Cu" "F.Paste" "F.Mask")
+		(layers "F.Cu" "F.Mask" "F.Paste")
 		(uuid "e3af3493-a35d-4f53-ade6-b1dfcfb9cfe0")
 	)
+	(embedded_fonts no)
 	(model "${KIPRJMOD}/library/3dmodels/D2PAK_STM.step"
 		(offset
 			(xyz 0 0 0)
