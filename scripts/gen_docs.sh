@@ -106,6 +106,18 @@ for L in $FAB_LAYERS; do
     --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=$L"
   fab_pages+=("$page")
 done
+# Drill drawing(s): kicad-cli's native drill map(s) — board outline + a symbol
+# per drill size and a drill table (symbol -> size -> count). PTH and NPTH are
+# mapped separately. These are drill-map PDFs in their own temp dir (so we don't
+# pick up the layer pages), appended after the layer pages.
+DRLTMP="$(mktemp -d)"
+kicad-cli pcb export drill "$PCB" -o "$DRLTMP/" \
+  --format excellon --excellon-separate-th --generate-map --map-format pdf \
+  || echo "WARN: drill map generation failed"
+for m in $(ls "$DRLTMP"/*.pdf 2>/dev/null | sort); do
+  fab_pages+=("$m")
+done
+
 # Fab notes / dimensions page.
 notes="$FABTMP/99_notes.pdf"
 kicad-cli pcb export pdf "$PCB" -o "$notes" --mode-single \
@@ -113,7 +125,7 @@ kicad-cli pcb export pdf "$PCB" -o "$notes" --mode-single \
   --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Fab Notes"
 fab_pages+=("$notes")
 merge_pdf "$DOCS/usb3_fiber-fabrication-drawing.pdf" "${fab_pages[@]}"
-rm -rf "$FABTMP"
+rm -rf "$FABTMP" "$DRLTMP"
 
 echo "Generated framed documentation in $DOCS/:"
 ls -1 "$DOCS"/usb3_fiber-*.pdf
