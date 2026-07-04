@@ -67,8 +67,6 @@ Checking footprint 'AMPHENOL_GSB3111311HR':
   Violating F7.2 - https://klc.kicad.org/footprint/f7/f7.2/
   Violating F7.2 - https://klc.kicad.org/footprint/f7/f7.2/
 Checking footprint 'AMPHENOL_GSB4211311WEU':
-  Violating F5.3 - https://klc.kicad.org/footprint/f5/f5.3/
-  Violating F5.3 - https://klc.kicad.org/footprint/f5/f5.3/
   Violating F7.2 - https://klc.kicad.org/footprint/f7/f7.2/
   Violating F7.2 - https://klc.kicad.org/footprint/f7/f7.2/
 Checking footprint 'AMPHENOL_U77A16382001':
@@ -80,8 +78,6 @@ Checking footprint 'AMPHENOL_UE76A202000T':
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
 Checking footprint 'D2PAK_STM':
-  Violating F5.3 - https://klc.kicad.org/footprint/f5/f5.3/
-  Violating F5.3 - https://klc.kicad.org/footprint/f5/f5.3/
   Violating F6.2 - https://klc.kicad.org/footprint/f6/f6.2/
   Violating F6.2 - https://klc.kicad.org/footprint/f6/f6.2/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
