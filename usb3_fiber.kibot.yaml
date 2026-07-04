@@ -80,6 +80,7 @@ outputs:
             - layer: Dwgs.User
             - layer: Cmts.User
           sheet: 'Assembly — Top'
+          layer_var: 'Top'
         - layers:
             - layer: B.Fab
             - layer: B.Silkscreen
@@ -88,6 +89,7 @@ outputs:
             - layer: Cmts.User
           mirror: true
           sheet: 'Assembly — Bottom'
+          layer_var: 'Bottom'
 
   # 2) Fabrication — notes/stackup drawing, a monochrome page per copper layer,
   #    and a drill map (auto-generated per drill pair). drill_marks show hole
@@ -112,6 +114,7 @@ outputs:
             - layer: Cmts.User
             - layer: User.1
           sheet: 'Fabrication Drawing'
+          layer_var: 'Fabrication'
         # One monochrome page per copper layer (F.Cu, In1.Cu, In2.Cu, B.Cu).
         - layers:
             - layer: F.Cu
@@ -120,6 +123,7 @@ outputs:
           repeat_layers: copper
           monochrome: true
           sheet: 'Copper — %ln'
+          layer_var: '%ln'
         # Drill map, one page per drill pair, drawn on a user layer.
         - layers:
             - layer: Edge.Cuts
@@ -127,6 +131,7 @@ outputs:
           repeat_for_layer: Dwgs.User
           repeat_layers: drill_pairs
           sheet: 'Drill Map — %lpn'
+          layer_var: 'Drill %lpn'
 
   - name: ibom
     comment: 'Interactive HTML BOM'

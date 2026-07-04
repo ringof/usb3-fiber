@@ -133,6 +133,14 @@
 			(size 2.54 2.54) bold)
 		(justify center)
 	)
+	(tbtext "LAYER: ${LAYER}"
+		(name "")
+		(pos 55 21.5)
+		(font
+			(size 2.0 2.0) bold)
+		(justify center)
+		(comment "pcb_print per-page layer callout; fed by layer_var (%ln etc.)")
+	)
 	(tbtext "File: ${FILENAME}"
 		(name "")
 		(pos 73.5 3.8002)
