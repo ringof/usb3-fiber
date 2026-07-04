@@ -3,62 +3,43 @@ checker: kicad-library-utils @ 868b070
 
 --- Symbols (library/usb3_fiber.kicad_sym) ---
 Checking component 'usb3_fiber:10118194-0001LF':
-  Violating S3.6 - https://klc.kicad.org/symbol/s3/s3.6/
   Violating S4.2 - https://klc.kicad.org/symbol/s4/s4.2/
   Violating S6.2 - https://klc.kicad.org/symbol/s6/s6.2/
 Checking component 'usb3_fiber:C_Spec':
-  Violating S3.6 - https://klc.kicad.org/symbol/s3/s3.6/
-  Violating S4.1 - https://klc.kicad.org/symbol/s4/s4.1/
   Violating S5.1 - https://klc.kicad.org/symbol/s5/s5.1/
   Violating S6.2 - https://klc.kicad.org/symbol/s6/s6.2/
 Checking component 'usb3_fiber:DS100BR111SQE_NOPB':
   Violating S3.1 - https://klc.kicad.org/symbol/s3/s3.1/
-  Violating S3.6 - https://klc.kicad.org/symbol/s3/s3.6/
   Violating S4.1 - https://klc.kicad.org/symbol/s4/s4.1/
   Violating S4.2 - https://klc.kicad.org/symbol/s4/s4.2/
-  Violating S4.4 - https://klc.kicad.org/symbol/s4/s4.4/
   Violating S6.2 - https://klc.kicad.org/symbol/s6/s6.2/
 Checking component 'usb3_fiber:FB_Spec':
-  Violating S4.1 - https://klc.kicad.org/symbol/s4/s4.1/
   Violating S6.2 - https://klc.kicad.org/symbol/s6/s6.2/
 Checking component 'usb3_fiber:GSB3111311HR':
-  Violating S3.6 - https://klc.kicad.org/symbol/s3/s3.6/
   Violating S4.2 - https://klc.kicad.org/symbol/s4/s4.2/
   Violating S6.2 - https://klc.kicad.org/symbol/s6/s6.2/
 Checking component 'usb3_fiber:GSB4211311WEU':
-  Violating S3.6 - https://klc.kicad.org/symbol/s3/s3.6/
   Violating S4.2 - https://klc.kicad.org/symbol/s4/s4.2/
-  Violating S6.2 - https://klc.kicad.org/symbol/s6/s6.2/
 Checking component 'usb3_fiber:LD1086D2T33TR':
-  Violating S3.6 - https://klc.kicad.org/symbol/s3/s3.6/
   Violating S4.2 - https://klc.kicad.org/symbol/s4/s4.2/
   Violating S6.2 - https://klc.kicad.org/symbol/s6/s6.2/
 Checking component 'usb3_fiber:LD1117S33TR':
-  Violating S3.6 - https://klc.kicad.org/symbol/s3/s3.6/
   Violating S4.2 - https://klc.kicad.org/symbol/s4/s4.2/
   Violating S6.2 - https://klc.kicad.org/symbol/s6/s6.2/
 Checking component 'usb3_fiber:MCP2221AT-I_ML':
-  Violating S3.6 - https://klc.kicad.org/symbol/s3/s3.6/
   Violating S4.2 - https://klc.kicad.org/symbol/s4/s4.2/
-  Violating S4.6 - https://klc.kicad.org/symbol/s4/s4.6/
   Violating S6.2 - https://klc.kicad.org/symbol/s6/s6.2/
 Checking component 'usb3_fiber:R_Spec':
-  Violating S3.3 - https://klc.kicad.org/symbol/s3/s3.3/
-  Violating S4.1 - https://klc.kicad.org/symbol/s4/s4.1/
   Violating S5.1 - https://klc.kicad.org/symbol/s5/s5.1/
   Violating S6.2 - https://klc.kicad.org/symbol/s6/s6.2/
 Checking component 'usb3_fiber:U77A16382001':
-  Violating S3.6 - https://klc.kicad.org/symbol/s3/s3.6/
 Checking component 'usb3_fiber:UE76A202000T':
-  Violating S3.6 - https://klc.kicad.org/symbol/s3/s3.6/
   Violating S4.4 - https://klc.kicad.org/symbol/s4/s4.4/
 
 --- Footprints (library/usb3_fiber.pretty) ---
 Checking footprint 'AMPHENOL_10118194-0001LF':
   Violating F6.2 - https://klc.kicad.org/footprint/f6/f6.2/
   Violating F6.2 - https://klc.kicad.org/footprint/f6/f6.2/
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F7.4 - https://klc.kicad.org/footprint/f7/f7.4/
   Violating F7.4 - https://klc.kicad.org/footprint/f7/f7.4/
   Violating F7.5 - https://klc.kicad.org/footprint/f7/f7.5/
@@ -74,26 +55,12 @@ Checking footprint 'AMPHENOL_U77A16382001':
   Violating F7.2 - https://klc.kicad.org/footprint/f7/f7.2/
   Violating F7.3 - https://klc.kicad.org/footprint/f7/f7.3/
   Violating F7.3 - https://klc.kicad.org/footprint/f7/f7.3/
-Checking footprint 'AMPHENOL_UE76A202000T':
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
+Checking footprint 'AMPHENOL_UE76A202000T' - No errors
 Checking footprint 'D2PAK_STM':
   Violating F6.2 - https://klc.kicad.org/footprint/f6/f6.2/
   Violating F6.2 - https://klc.kicad.org/footprint/f6/f6.2/
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-Checking footprint 'QFN16_ML_MCH':
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-Checking footprint 'RTW24_2P6X2P6_TEX-L':
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-Checking footprint 'RTW24_2P6X2P6_TEX-M':
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-Checking footprint 'RTW24_2P6X2P6_TEX':
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-Checking footprint 'SOT230P700X180-4N':
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
+Checking footprint 'QFN16_ML_MCH' - No errors
+Checking footprint 'RTW24_2P6X2P6_TEX-L' - No errors
+Checking footprint 'RTW24_2P6X2P6_TEX-M' - No errors
+Checking footprint 'RTW24_2P6X2P6_TEX' - No errors
+Checking footprint 'SOT230P700X180-4N' - No errors
