@@ -43,12 +43,18 @@ filters:
 # --- Outputs ------------------------------------------------------------------
 outputs:
   # ---- docs (dev checks + release) ----
+  # Every worksheet-bearing output names its sheet EXPLICITLY via
+  # sheet_reference_layout, so CI never depends on the project's
+  # page_layout_descr_file. KiCad is free to blank / embed / rewrite the local
+  # sheet setting — CI still renders the correct frame from the .kicad_wks file
+  # on disk. Do not remove these overrides.
   - name: schematic_pdf
     comment: 'Schematic (PDF)'
     type: pdf_sch_print
     dir: docs
     options:
       output: usb3_fiber-schematic.pdf
+      sheet_reference_layout: usb3_fiber-sch.kicad_wks
 
   # Two documentation PDFs, both on the PCB worksheet (usb3_fiber-fab.kicad_wks).
   # Dwgs.User / Cmts.User ride on the relevant pages, so dimensions, notes, and

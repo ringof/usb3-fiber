@@ -37,6 +37,13 @@ parts turned 90°/180°.
   Both start from the same collision-safe title block (`${REVISION}` field +
   `${GIT_HASH}`/`${LICENSE}`/`${DESIGNER}`/`${REPO}` vars), so provenance
   injection stamps them identically.
+- **CI never trusts the local sheet setting.** Every worksheet-bearing output
+  (`schematic_pdf`, `assembly_docs`, `fab_docs`) names its `.kicad_wks`
+  **explicitly** via `sheet_reference_layout`, so the rendered frames come from
+  the files on disk regardless of the project's `page_layout_descr_file`. KiCad
+  is prone to blanking, embedding (`kicad-embed://`), or rewriting that local
+  setting — none of which can affect CI. Keep the worksheets as plain external
+  files (no embedding); the overrides depend on them being on disk.
 - **Two documentation PDFs, both on the fab worksheet.**
   - `assembly_docs` → `usb3_fiber-assembly.pdf`: **Top** + **Bottom** in one PDF
     (Fab + Silk + Edge + `Dwgs.User`/`Cmts.User`) — what a placement operator reads.
