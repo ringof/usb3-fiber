@@ -87,12 +87,33 @@ kicad-cli pcb export pdf "$PCB" -o "$TMP/bottom.pdf" --mode-single \
 merge_pdf "$DOCS/usb3_fiber-assembly.pdf" "$TMP/top.pdf" "$TMP/bottom.pdf"
 rm -rf "$TMP"
 
-# --- Fabrication / dimensions -------------------------------------------------
-# Outline + dimensions/notes (Dwgs.User/Cmts.User, incl. the fab-spec text) +
-# the Fab Notes layer (User.1, the Board Characteristics table).
-kicad-cli pcb export pdf "$PCB" -o "$DOCS/usb3_fiber-fabrication-drawing.pdf" --mode-single \
+# --- Fabrication drawing (multipage: one page per PCB layer) ------------------
+# A real fab drawing shows each fabrication layer on its own page, with the
+# Edge.Cuts outline for reference, followed by a fab-notes page (dimensions,
+# fab-spec text, Board Characteristics table). Each page is rendered on its own
+# (--mode-single, one layer + edge) and the pages are merged, so every page
+# carries the outline and its own LAYER label -- and we sidestep the
+# --mode-multipage "outputs a folder" bug.
+FAB_LAYERS="F.Cu In1.Cu In2.Cu B.Cu F.Silkscreen B.Silkscreen F.Mask B.Mask"
+FABTMP="$(mktemp -d)"
+fab_pages=()
+n=0
+for L in $FAB_LAYERS; do
+  n=$((n + 1))
+  page="$FABTMP/$(printf '%02d' "$n")_${L//./_}.pdf"
+  kicad-cli pcb export pdf "$PCB" -o "$page" --mode-single \
+    --layers "$L,Edge.Cuts" --include-border-title --black-and-white \
+    --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=$L"
+  fab_pages+=("$page")
+done
+# Fab notes / dimensions page.
+notes="$FABTMP/99_notes.pdf"
+kicad-cli pcb export pdf "$PCB" -o "$notes" --mode-single \
   --layers "Edge.Cuts,Dwgs.User,Cmts.User,User.1" --include-border-title --black-and-white \
-  --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Fabrication"
+  --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Fab Notes"
+fab_pages+=("$notes")
+merge_pdf "$DOCS/usb3_fiber-fabrication-drawing.pdf" "${fab_pages[@]}"
+rm -rf "$FABTMP"
 
 echo "Generated framed documentation in $DOCS/:"
 ls -1 "$DOCS"/usb3_fiber-*.pdf
