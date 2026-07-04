@@ -1,4 +1,4 @@
 CI docs for dev-klc-compliance
 
-Source: dev-klc-compliance @ 0af8af10d5d1f10755551ef2cd4be7652f9806cd
-Run: https://github.com/ringof/usb3-fiber/actions/runs/28722018462
+Source: dev-klc-compliance @ 531970df394bd37734d1d72cec56e902c87538c8
+Run: https://github.com/ringof/usb3-fiber/actions/runs/28722062132

@@ -89,8 +89,6 @@ Checking footprint 'RTW24_2P6X2P6_TEX-L':
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
 Checking footprint 'RTW24_2P6X2P6_TEX-M':
-  Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
-  Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
 Checking footprint 'RTW24_2P6X2P6_TEX':
