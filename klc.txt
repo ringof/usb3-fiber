@@ -71,10 +71,6 @@ Checking footprint 'AMPHENOL_10118194-0001LF':
   Violating F7.4 - https://klc.kicad.org/footprint/f7/f7.4/
   Violating F7.5 - https://klc.kicad.org/footprint/f7/f7.5/
   Violating F7.5 - https://klc.kicad.org/footprint/f7/f7.5/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
 Checking footprint 'AMPHENOL_GSB3111311HR':
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
@@ -84,10 +80,6 @@ Checking footprint 'AMPHENOL_GSB3111311HR':
   Violating F5.3 - https://klc.kicad.org/footprint/f5/f5.3/
   Violating F7.2 - https://klc.kicad.org/footprint/f7/f7.2/
   Violating F7.2 - https://klc.kicad.org/footprint/f7/f7.2/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
 Checking footprint 'AMPHENOL_GSB4211311WEU':
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
@@ -97,10 +89,6 @@ Checking footprint 'AMPHENOL_GSB4211311WEU':
   Violating F5.3 - https://klc.kicad.org/footprint/f5/f5.3/
   Violating F7.2 - https://klc.kicad.org/footprint/f7/f7.2/
   Violating F7.2 - https://klc.kicad.org/footprint/f7/f7.2/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
 Checking footprint 'AMPHENOL_U77A16382001':
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
@@ -110,10 +98,6 @@ Checking footprint 'AMPHENOL_U77A16382001':
   Violating F7.2 - https://klc.kicad.org/footprint/f7/f7.2/
   Violating F7.3 - https://klc.kicad.org/footprint/f7/f7.3/
   Violating F7.3 - https://klc.kicad.org/footprint/f7/f7.3/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
 Checking footprint 'AMPHENOL_UE76A202000T':
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
@@ -121,10 +105,6 @@ Checking footprint 'AMPHENOL_UE76A202000T':
   Violating F5.2 - https://klc.kicad.org/footprint/f5/f5.2/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
 Checking footprint 'D2PAK_STM':
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
@@ -136,10 +116,6 @@ Checking footprint 'D2PAK_STM':
   Violating F6.2 - https://klc.kicad.org/footprint/f6/f6.2/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
 Checking footprint 'QFN16_ML_MCH':
   Violating EC01 - (extended check)
   Violating EC01 - (extended check)
@@ -151,19 +127,11 @@ Checking footprint 'QFN16_ML_MCH':
   Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
 Checking footprint 'QFN64_USB2517I':
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
 Checking footprint 'QFP50P900X900X160-48N':
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
@@ -173,42 +141,28 @@ Checking footprint 'QFP50P900X900X160-48N':
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
   Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
 Checking footprint 'RTW24_2P6X2P6_TEX-L':
   Violating EC01 - (extended check)
   Violating EC01 - (extended check)
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
-  Violating F5.2 - https://klc.kicad.org/footprint/f5/f5.2/
-  Violating F5.2 - https://klc.kicad.org/footprint/f5/f5.2/
   Violating F5.3 - https://klc.kicad.org/footprint/f5/f5.3/
   Violating F5.3 - https://klc.kicad.org/footprint/f5/f5.3/
   Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
   Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
 Checking footprint 'RTW24_2P6X2P6_TEX-M':
   Violating EC01 - (extended check)
   Violating EC01 - (extended check)
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
-  Violating F5.2 - https://klc.kicad.org/footprint/f5/f5.2/
-  Violating F5.2 - https://klc.kicad.org/footprint/f5/f5.2/
   Violating F5.3 - https://klc.kicad.org/footprint/f5/f5.3/
   Violating F5.3 - https://klc.kicad.org/footprint/f5/f5.3/
   Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
   Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
 Checking footprint 'RTW24_2P6X2P6_TEX':
   Violating EC01 - (extended check)
   Violating EC01 - (extended check)
@@ -220,10 +174,6 @@ Checking footprint 'RTW24_2P6X2P6_TEX':
   Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
 Checking footprint 'SOT230P700X180-4N':
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
   Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
@@ -231,7 +181,3 @@ Checking footprint 'SOT230P700X180-4N':
   Violating F5.2 - https://klc.kicad.org/footprint/f5/f5.2/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
-  Violating F9.3 - https://klc.kicad.org/footprint/f9/f9.3/
