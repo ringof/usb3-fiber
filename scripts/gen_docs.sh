@@ -136,31 +136,43 @@ drill_tmpl="$FABTMP/drill_template.pdf"
 kicad-cli pcb export pdf "$PCB" -o "$drill_tmpl" --mode-single \
   --layers "Eco1.User" --include-border-title --theme "$THEME" \
   --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Drill Map"
-# Ensure a PDF placement lib (PyMuPDF/fitz). The container's pip is Debian
-# PEP-668 "externally managed", and `pip` may not be on PATH -- use
-# `python3 -m pip` with --break-system-packages. Everything is logged to
-# reports/gen_docs.log (published via ci-docs) so the exact failure is visible.
+# Find a Python that can place PDFs (has PyMuPDF/fitz). The container's
+# /usr/bin/python3 has no pip, so we can't install one -- but KiBot runs in
+# this same image and ships its own Python that already has fitz. Probe the
+# candidates and use whichever works. All logged to reports/gen_docs.log.
 DIAG="$OUT/gen_docs.log"
+PYCOMP=""
 {
-  echo "=== drill framing diagnostics ($(date -u 2>/dev/null || echo n/a)) ==="
-  if python3 -c "import fitz" 2>/dev/null; then
-    echo "fitz already present"
-  else
-    echo "-- python3 -m pip install --break-system-packages pymupdf"
-    python3 -m pip install --break-system-packages pymupdf 2>&1 | tail -6 \
-      || python3 -m pip install pymupdf 2>&1 | tail -6 \
-      || echo "pip install failed"
+  echo "=== drill framing: locating a Python with fitz ($(date -u 2>/dev/null || echo n/a)) ==="
+  CANDS=(python3)
+  KB="$(command -v kibot 2>/dev/null || true)"
+  if [ -n "$KB" ]; then
+    KBPY="$(head -1 "$KB" | sed 's|^#!||; s| .*||')"
+    [ -n "$KBPY" ] && CANDS+=("$KBPY")
   fi
-  python3 -c "import fitz; print('import fitz OK, version', fitz.VersionBind)" 2>&1 \
-    || echo "import fitz STILL FAILING"
+  # also probe common venv locations
+  for extra in /opt/*/bin/python3 /usr/local/bin/python3; do
+    [ -x "$extra" ] && CANDS+=("$extra")
+  done
+  for py in "${CANDS[@]}"; do
+    if "$py" -c "import fitz" 2>/dev/null; then
+      echo "  $py -> fitz OK"; PYCOMP="$py"; break
+    else
+      echo "  $py -> no fitz"
+    fi
+  done
+  if [ -z "$PYCOMP" ]; then
+    echo "  no fitz-capable python; PDF tools present:"
+    for t in qpdf pdftk gs pdfjam mutool convert; do echo "    $t: $(command -v "$t" || echo MISSING)"; done
+  fi
 } >> "$DIAG" 2>&1
-if python3 -c "import fitz" 2>/dev/null; then HAVE_FITZ=1; else HAVE_FITZ=0; fi
-echo "drill framing: PyMuPDF available=$HAVE_FITZ (see $DIAG)"
+if [ -n "$PYCOMP" ]; then HAVE_FITZ=1; else HAVE_FITZ=0; fi
+echo "drill framing: fitz python='$PYCOMP' (see $DIAG)"
 di=0
 for m in $(ls "$DRLTMP"/*.pdf 2>/dev/null | sort); do
   di=$((di + 1))
   framed="$FABTMP/drill_$(printf '%02d' "$di").pdf"
-  if [ "$HAVE_FITZ" = 1 ] && python3 - "$drill_tmpl" "$m" "$framed" <<'PY'
+  if [ "$HAVE_FITZ" = 1 ] && "$PYCOMP" - "$drill_tmpl" "$m" "$framed" <<'PY'
 import sys, fitz
 tmpl, mp, out = sys.argv[1:4]
 base = fitz.open(tmpl); page = base[0]
