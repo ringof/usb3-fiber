@@ -11,7 +11,7 @@
 		(uuid "763808b0-f70b-4018-9b18-98c8c6a3f320")
 		(effects
 			(font
-				(size 1.000693 1.000693)
+				(size 1 1)
 				(thickness 0.15)
 			)
 		)
@@ -22,7 +22,7 @@
 		(uuid "6fa8eb78-0a2b-4d4e-b2eb-c62799f7035c")
 		(effects
 			(font
-				(size 1.000465 1.000465)
+				(size 1 1)
 				(thickness 0.15)
 			)
 		)
@@ -57,7 +57,7 @@
 		(start -1.5 -3.25)
 		(end 1.5 -3.25)
 		(stroke
-			(width 0.15)
+			(width 0.12)
 			(type solid)
 		)
 		(layer "F.SilkS")
@@ -67,7 +67,7 @@
 		(start -1.5 3.25)
 		(end -1.5 -3.25)
 		(stroke
-			(width 0.15)
+			(width 0.12)
 			(type solid)
 		)
 		(layer "F.SilkS")
@@ -77,7 +77,7 @@
 		(start 1.5 -3.25)
 		(end 1.5 3.25)
 		(stroke
-			(width 0.15)
+			(width 0.12)
 			(type solid)
 		)
 		(layer "F.SilkS")
@@ -87,7 +87,7 @@
 		(start 1.5 3.25)
 		(end -1.5 3.25)
 		(stroke
-			(width 0.15)
+			(width 0.12)
 			(type solid)
 		)
 		(layer "F.SilkS")
@@ -97,7 +97,7 @@
 		(center -3.175 -3.683)
 		(end -3.048 -3.683)
 		(stroke
-			(width 0.15)
+			(width 0.12)
 			(type solid)
 		)
 		(fill no)
@@ -189,7 +189,7 @@
 			(xy -1.80657 -2.74637) (xy -1.80657 -1.87836) (xy -3.65884 -1.87836) (xy -3.65884 -2.74637)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
 		(fill yes)
@@ -201,7 +201,7 @@
 			(xy -1.805155 -2.744955) (xy -1.805155 -1.878915) (xy -3.658285 -1.878915) (xy -3.658285 -2.744955)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
 		(fill yes)
@@ -213,7 +213,7 @@
 			(xy -1.805128 -0.433528) (xy -1.805128 0.434962) (xy -3.660762 0.434962) (xy -3.660762 -0.433528)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
 		(fill yes)
@@ -225,7 +225,7 @@
 			(xy -1.804206 -0.432606) (xy -1.804206 0.433275) (xy -3.659075 0.433275) (xy -3.659075 -0.432606)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
 		(fill yes)
@@ -237,7 +237,7 @@
 			(xy -1.803395 1.879605) (xy -1.803395 2.743895) (xy -3.658295 2.743895) (xy -3.658295 1.879605)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
 		(fill yes)
@@ -249,7 +249,7 @@
 			(xy -1.80337 1.87963) (xy -1.80337 2.74571) (xy -3.66011 2.74571) (xy -3.66011 1.87963)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
 		(fill yes)
@@ -261,7 +261,7 @@
 			(xy 3.658912 -1.598888) (xy 3.658912 1.600072) (xy 1.803528 1.600072) (xy 1.803528 -1.598888)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
 		(fill yes)
@@ -273,7 +273,7 @@
 			(xy 3.659558 -1.598242) (xy 3.659558 1.600008) (xy 1.803592 1.600008) (xy 1.803592 -1.598242)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
 		(fill yes)
