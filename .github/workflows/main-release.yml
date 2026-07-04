@@ -121,7 +121,9 @@ jobs:
     if: needs.prepare.outputs.build == 'true'
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/inti-cmnb/kicad10_auto:latest
+      # Pinned in-house CI image: INTI-CMNB kicad10_auto + PyMuPDF (for framed
+      # drill maps). Pinned tag (not :latest) keeps release output reproducible.
+      image: ghcr.io/ringof/kicad-ci:10-20260704
       options: --user root
     env:
       HOME: /root
