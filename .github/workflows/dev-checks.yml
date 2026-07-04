@@ -81,5 +81,14 @@ jobs:
           git -c user.name=ci-bot -c user.email=ci-bot@users.noreply.github.com add -A
           git -c user.name=ci-bot -c user.email=ci-bot@users.noreply.github.com \
             commit -qm "dev-checks docs: ${GITHUB_REF_NAME} @ ${GITHUB_SHA}"
-          git push -f "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" ci-docs
+          # Retry the force-push: GitHub occasionally returns a transient
+          # "fatal error in commit_refs" on ref updates, and a single failure
+          # would silently drop the docs for that commit.
+          REMOTE="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+          ok=0
+          for attempt in 1 2 3 4; do
+            if git push -f "$REMOTE" ci-docs; then ok=1; break; fi
+            echo "ci-docs push attempt $attempt failed; retrying..."; sleep $((attempt * 3))
+          done
+          [ "$ok" = 1 ] || { echo "ci-docs publish failed after retries"; exit 1; }
           echo "Published to ci-docs: raw.githubusercontent.com/${GITHUB_REPOSITORY}/ci-docs/docs/"
