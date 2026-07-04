@@ -1,0 +1,36 @@
+{
+  "meta": {
+    "name": "usb3_fiber",
+    "version": 5
+  },
+  "board": {
+    "background": "rgb(255, 255, 255)",
+    "worksheet": "rgb(128, 0, 0)",
+    "copper": {
+      "f": "rgb(0, 0, 0)",
+      "in1": "rgb(0, 0, 0)",
+      "in2": "rgb(0, 0, 0)",
+      "b": "rgb(0, 0, 0)"
+    },
+    "b_fab": "rgb(0, 0, 0)",
+    "f_fab": "rgb(0, 0, 0)",
+    "b_silks": "rgb(0, 0, 0)",
+    "f_silks": "rgb(0, 0, 0)",
+    "b_mask": "rgb(0, 0, 0)",
+    "f_mask": "rgb(0, 0, 0)",
+    "b_paste": "rgb(0, 0, 0)",
+    "f_paste": "rgb(0, 0, 0)",
+    "edge_cuts": "rgb(0, 0, 0)",
+    "margin": "rgb(0, 0, 0)",
+    "dwgs_user": "rgb(0, 0, 0)",
+    "cmts_user": "rgb(0, 0, 0)",
+    "eco1_user": "rgb(0, 0, 0)",
+    "eco2_user": "rgb(0, 0, 0)",
+    "user_1": "rgb(0, 0, 0)",
+    "user_2": "rgb(0, 0, 0)",
+    "pad_front": "rgb(0, 0, 0)",
+    "pad_back": "rgb(0, 0, 0)",
+    "plated_hole": "rgb(0, 0, 0)",
+    "via_through": "rgb(0, 0, 0)"
+  }
+}

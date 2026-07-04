@@ -5,7 +5,7 @@
 # See docs/TURNKEY.md for the design rationale.
 #
 # Output dirs (relative to the -d/--out-dir passed on the CLI):
-#   docs/          schematic PDF, assembly drawings, iBOM   (dev + release)
+#   docs/          iBOM here; framed PDFs come from gen_docs.sh  (dev + release)
 #   fab/           STEP, 3D renders                          (release)
 #   JLCPCB/        CPL (rotation-corrected), LCSC BOM        (release)
 #   JLCPCB/gerbers gerbers + drill (the board-fab upload)    (release)
@@ -43,44 +43,12 @@ filters:
 # --- Outputs ------------------------------------------------------------------
 outputs:
   # ---- docs (dev checks + release) ----
-  - name: schematic_pdf
-    comment: 'Schematic (PDF)'
-    type: pdf_sch_print
-    dir: docs
-    options:
-      output: usb3_fiber-schematic.pdf
-
-  - name: assembly_top
-    comment: 'Assembly drawing — top'
-    type: pcb_print
-    dir: docs
-    options:
-      output: usb3_fiber-assembly-top.pdf
-      format: PDF
-      plot_sheet_reference: true
-      pages:
-        - layers:
-            - layer: F.Fab
-            - layer: F.Silkscreen
-            - layer: Edge.Cuts
-          sheet: 'Assembly Top'
-
-  - name: assembly_bottom
-    comment: 'Assembly drawing — bottom'
-    type: pcb_print
-    dir: docs
-    options:
-      output: usb3_fiber-assembly-bottom.pdf
-      format: PDF
-      plot_sheet_reference: true
-      pages:
-        - layers:
-            - layer: B.Fab
-            - layer: B.Silkscreen
-            - layer: Edge.Cuts
-          mirror: true
-          sheet: 'Assembly Bottom'
-
+  # The framed documentation PDFs (schematic, assembly, fabrication drawing) are
+  # rendered by scripts/gen_docs.sh with kicad-cli, NOT KiBot: kicad-cli plots
+  # the title block natively and fills every frame variable, whereas KiBot's
+  # pcb_print/pdf_sch_print frame renderer left them blank in our container.
+  # KiBot here produces only the interactive HTML BOM (kicad-cli has no
+  # equivalent). See docs/TURNKEY.md.
   - name: ibom
     comment: 'Interactive HTML BOM'
     type: ibom
