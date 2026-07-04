@@ -123,38 +123,52 @@ for L in $FAB_LAYERS; do
 done
 
 # (3) Drill map(s), given OUR frame. kicad-cli's drill export can't take a
-#     drawing sheet, so we make the bare map(s) plus a framed Edge.Cuts template
-#     (same board/paper -> aligned), and composite each map onto the template
-#     with PyMuPDF. If PyMuPDF or the composite is unavailable, fall back to the
-#     bare (unframed) map so the build never breaks.
+#     drawing sheet, so we PLACE each bare map inside a framed, empty template
+#     page (aspect-fit into the drawing area, above the title block) with
+#     PyMuPDF -- no board-coordinate alignment needed. Falls back to the bare
+#     map if PyMuPDF is unavailable, so the build never breaks.
 DRLTMP="$(mktemp -d)"
 kicad-cli pcb export drill "$PCB" -o "$DRLTMP/" \
   --format excellon --excellon-separate-th --generate-map --map-format pdf \
   || echo "WARN: drill map generation failed"
+# Framed, empty template: border + title block only (Eco1.User has no artwork).
 drill_tmpl="$FABTMP/drill_template.pdf"
 kicad-cli pcb export pdf "$PCB" -o "$drill_tmpl" --mode-single \
-  --layers "Edge.Cuts" --include-border-title --theme "$THEME" \
+  --layers "Eco1.User" --include-border-title --theme "$THEME" \
   --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Drill Map"
-pip install --quiet pymupdf >/dev/null 2>&1 || true
+# Debian's pip is PEP-668 "externally managed"; --break-system-packages is
+# needed for a bare `pip install` to work in the container.
+pip install --quiet --break-system-packages pymupdf 2>/dev/null \
+  || pip install --quiet pymupdf 2>/dev/null || true
+if python3 -c "import fitz" 2>/dev/null; then HAVE_FITZ=1; else HAVE_FITZ=0; fi
+echo "drill framing: PyMuPDF available=$HAVE_FITZ"
 di=0
 for m in $(ls "$DRLTMP"/*.pdf 2>/dev/null | sort); do
   di=$((di + 1))
   framed="$FABTMP/drill_$(printf '%02d' "$di").pdf"
-  if python3 - "$drill_tmpl" "$m" "$framed" <<'PY' 2>/dev/null
-import sys
-try:
-    import fitz
-except Exception:
-    sys.exit(1)
+  if [ "$HAVE_FITZ" = 1 ] && python3 - "$drill_tmpl" "$m" "$framed" <<'PY'
+import sys, fitz
 tmpl, mp, out = sys.argv[1:4]
-base = fitz.open(tmpl)                            # our framed Edge.Cuts template
-base[0].show_pdf_page(base[0].rect, fitz.open(mp), 0)  # drill map on top, aligned
+base = fitz.open(tmpl); page = base[0]
+src = fitz.open(mp); sr = src[0].rect
+mm = 72 / 25.4
+# drawing area: full page minus margins, leaving a bottom strip for the title block
+cx0, cy0 = 8 * mm, 8 * mm
+cx1, cy1 = page.rect.width - 8 * mm, page.rect.height - 40 * mm
+cw, ch = cx1 - cx0, cy1 - cy0
+s = min(cw / sr.width, ch / sr.height)          # aspect-fit
+w, h = sr.width * s, sr.height * s
+x0 = cx0 + (cw - w) / 2
+y0 = cy0 + (ch - h) / 2
+page.show_pdf_page(fitz.Rect(x0, y0, x0 + w, y0 + h), src, 0)
 base.save(out)
 PY
   then
+    echo "  framed drill map $di"
     fab_pages+=("$framed")
   else
-    fab_pages+=("$m")   # fallback: bare, unframed map
+    echo "  WARN: drill map $di left unframed"
+    fab_pages+=("$m")
   fi
 done
 
