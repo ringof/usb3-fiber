@@ -20227,4 +20227,26 @@
 		)
 	)
 	(embedded_fonts no)
+	(embedded_files
+		(file
+			(name "usb3_fiber-sch.kicad_wks")
+			(type worksheet)
+			(data |KLUv/WDBCWUXAOZhaSAQtRtqMSSPVzLCkHYhXlvBbwwLKQ5ktnfhC81MAMAA418AWQBjACFFtXu4
+				+55nD/7H3Qf/RmOznH2tJnMezGccLNQZZW/+syK/FizUONtLNvyRPwEACHxA76GMclIYKuO3n2PA
+				D9UZP5f9uoYACBSuOWdFJe2LbZg9RAAEwo4I83Ge7RAC/te9JmXshyBOpT0TJFpbdl0nZwUI/MWZ
+				2ZV2iD/UpPpH/t1XWVXaspJG2bv2Of94zn4z9h5s2ZLqeBjs2sG33775/i4IZ66p/useD/Zo0/6u
+				W1XLOfsz9wHZQ2OAllGwaqSHWGnX+qhoFdOgmtRn+903myFWggzuk8A13ITq5zwZZzr7h5vISckm
+				iUnJbh+Iu8ZoRKJt2iWjhJxCpZQRq7G2nFNKKx76uk5ZJbHAZJZt00yDRvhzi5wzKQeBAjVYB2lV
+				04qYQUbasqIYxS4sYtcm5Db9ttEecg56vgxbwoGpaA2reFAsnbsDXVMywR9Kc20Ido1YtUUyhfbw
+				rnv20Y5NMmekoW3ZIvvV2NAXlqOSmFSyzLFdseoaqwMkEQmAi6ABNYgUKhopSJJkmANQhEgZLNuH
+				dhlC3Jq7AEBs8QdipyZCu0D8AAAXUsP5uEciQ5FiYLJyf1udrzmJCqx2rdyRgAVwr5FeAmMPWJi6
+				Mcl0uHSLa/xk2H2bMbJknkH1qr5e0N2vYWL51kfr42NyNCA7NOKKTYAdgJet6DjdCmkIrtAtaNmW
+				PoO27UeJzaOuxH5JcOldTalnuNxyAoutzyA9AHzZCO4WFiXZ8FYm6gBdwWn3B4QllGwatAXWdqYg
+				zcko1w9cbKM5WFlOlJKPIMToKVl0fAA0hwenTJvyV/HApAQi8ZvgnUygw7dzR++J7vhiPXs4ypAC
+				BELm0SA7ItBmYk2Mi6y4ZzgVh1w4wF15jc/I3aBLMH97QBi193UugciuO2oQXTdaFXGQQscHbAzX
+				islaJSMO5Iv/f9UkPOPjVQE=|
+			)
+			(checksum "28C9E227FC57486AE8D98C496EEF3B5A")
+		)
+	)
 )
