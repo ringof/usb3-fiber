@@ -136,12 +136,26 @@ drill_tmpl="$FABTMP/drill_template.pdf"
 kicad-cli pcb export pdf "$PCB" -o "$drill_tmpl" --mode-single \
   --layers "Eco1.User" --include-border-title --theme "$THEME" \
   --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Drill Map"
-# Debian's pip is PEP-668 "externally managed"; --break-system-packages is
-# needed for a bare `pip install` to work in the container.
-pip install --quiet --break-system-packages pymupdf 2>/dev/null \
-  || pip install --quiet pymupdf 2>/dev/null || true
+# Ensure a PDF placement lib (PyMuPDF/fitz). The container's pip is Debian
+# PEP-668 "externally managed", and `pip` may not be on PATH -- use
+# `python3 -m pip` with --break-system-packages. Everything is logged to
+# reports/gen_docs.log (published via ci-docs) so the exact failure is visible.
+DIAG="$OUT/gen_docs.log"
+{
+  echo "=== drill framing diagnostics ($(date -u 2>/dev/null || echo n/a)) ==="
+  if python3 -c "import fitz" 2>/dev/null; then
+    echo "fitz already present"
+  else
+    echo "-- python3 -m pip install --break-system-packages pymupdf"
+    python3 -m pip install --break-system-packages pymupdf 2>&1 | tail -6 \
+      || python3 -m pip install pymupdf 2>&1 | tail -6 \
+      || echo "pip install failed"
+  fi
+  python3 -c "import fitz; print('import fitz OK, version', fitz.VersionBind)" 2>&1 \
+    || echo "import fitz STILL FAILING"
+} >> "$DIAG" 2>&1
 if python3 -c "import fitz" 2>/dev/null; then HAVE_FITZ=1; else HAVE_FITZ=0; fi
-echo "drill framing: PyMuPDF available=$HAVE_FITZ"
+echo "drill framing: PyMuPDF available=$HAVE_FITZ (see $DIAG)"
 di=0
 for m in $(ls "$DRLTMP"/*.pdf 2>/dev/null | sort); do
   di=$((di + 1))
