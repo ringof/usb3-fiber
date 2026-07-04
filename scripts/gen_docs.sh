@@ -74,21 +74,24 @@ kicad-cli sch export pdf "$SCH" -o "$DOCS/usb3_fiber-schematic.pdf" \
 
 # --- Assembly: top + bottom in ONE pdf ----------------------------------------
 # Component placement only (Fab + Silk + Edge). No dimensions / fab notes here.
+# --black-and-white: user layers (Dwgs/Cmts/User.1) and the worksheet otherwise
+# plot in faint pastel colors that wash out; B&W renders everything solid and
+# legible, which is what a fab/assembly drawing wants anyway.
 TMP="$(mktemp -d)"
 kicad-cli pcb export pdf "$PCB" -o "$TMP/top.pdf" \
-  --layers "F.Fab,F.Silkscreen,Edge.Cuts" --include-border-title \
+  --layers "F.Fab,F.Silkscreen,Edge.Cuts" --include-border-title --black-and-white \
   --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Top"
 kicad-cli pcb export pdf "$PCB" -o "$TMP/bottom.pdf" \
-  --layers "B.Fab,B.Silkscreen,Edge.Cuts" --mirror --include-border-title \
+  --layers "B.Fab,B.Silkscreen,Edge.Cuts" --mirror --include-border-title --black-and-white \
   --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Bottom"
 merge_pdf "$DOCS/usb3_fiber-assembly.pdf" "$TMP/top.pdf" "$TMP/bottom.pdf"
 rm -rf "$TMP"
 
 # --- Fabrication / dimensions -------------------------------------------------
-# Outline + dimensions/notes (Dwgs.User/Cmts.User) + the Fab Notes layer
-# (User.1, the Board Characteristics table).
+# Outline + dimensions/notes (Dwgs.User/Cmts.User, incl. the fab-spec text) +
+# the Fab Notes layer (User.1, the Board Characteristics table).
 kicad-cli pcb export pdf "$PCB" -o "$DOCS/usb3_fiber-fabrication-drawing.pdf" \
-  --layers "Edge.Cuts,Dwgs.User,Cmts.User,User.1" --include-border-title \
+  --layers "Edge.Cuts,Dwgs.User,Cmts.User,User.1" --include-border-title --black-and-white \
   --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Fabrication"
 
 echo "Generated framed documentation in $DOCS/:"
