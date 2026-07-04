@@ -1006,8 +1006,10 @@
     ]
   ],
   "text_variables": {
+    "DESIGNER": "David Goncalves",
     "GIT_HASH": "local",
-    "REVISION": "DEV"
+    "LICENSE": "CERN-OHL-P-2.0",
+    "REPO": "github.com/ringof/usb3-fiber"
   },
   "tuning_profiles": {
     "meta": {
