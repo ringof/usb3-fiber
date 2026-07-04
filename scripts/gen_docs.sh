@@ -55,6 +55,16 @@ VARS=(--define-var "DESIGNER=$DESIGNER"
       --define-var "REPO=$REPO"
       --define-var "GIT_HASH=$GIT_HASH")
 
+# Install the PCB color theme where kicad-cli looks for it (the versioned colors
+# dir), and reference it by name via --theme. It renders the worksheet/frame in
+# the schematic's maroon (#800000) with black layer artwork, so the PCB
+# drawings match the schematic frame instead of being stark B&W.
+THEME="usb3_fiber"
+KV="$(kicad-cli version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+' | head -1)"
+COLORS_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/kicad/${KV:-10.0}/colors"
+mkdir -p "$COLORS_DIR"
+cp usb3_fiber-colors.json "$COLORS_DIR/$THEME.json"
+
 # Merge PDFs into one file (poppler's pdfunite, else ghostscript).
 merge_pdf() {
   local out="$1"; shift
@@ -74,15 +84,14 @@ kicad-cli sch export pdf "$SCH" -o "$DOCS/usb3_fiber-schematic.pdf" \
 
 # --- Assembly: top + bottom in ONE pdf ----------------------------------------
 # Component placement only (Fab + Silk + Edge). No dimensions / fab notes here.
-# --black-and-white: user layers (Dwgs/Cmts/User.1) and the worksheet otherwise
-# plot in faint pastel colors that wash out; B&W renders everything solid and
-# legible, which is what a fab/assembly drawing wants anyway.
+# --theme usb3_fiber: maroon worksheet (like the schematic) + black layer
+# artwork, instead of KiCad's washed-out pastel user-layer colors.
 TMP="$(mktemp -d)"
 kicad-cli pcb export pdf "$PCB" -o "$TMP/top.pdf" --mode-single \
-  --layers "F.Fab,F.Silkscreen,Edge.Cuts" --include-border-title --black-and-white \
+  --layers "F.Fab,F.Silkscreen,Edge.Cuts" --include-border-title --theme "$THEME" \
   --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Top"
 kicad-cli pcb export pdf "$PCB" -o "$TMP/bottom.pdf" --mode-single \
-  --layers "B.Fab,B.Silkscreen,Edge.Cuts" --mirror --include-border-title --black-and-white \
+  --layers "B.Fab,B.Silkscreen,Edge.Cuts" --mirror --include-border-title --theme "$THEME" \
   --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Bottom"
 merge_pdf "$DOCS/usb3_fiber-assembly.pdf" "$TMP/top.pdf" "$TMP/bottom.pdf"
 rm -rf "$TMP"
@@ -102,7 +111,7 @@ for L in $FAB_LAYERS; do
   n=$((n + 1))
   page="$FABTMP/$(printf '%02d' "$n")_${L//./_}.pdf"
   kicad-cli pcb export pdf "$PCB" -o "$page" --mode-single \
-    --layers "$L,Edge.Cuts" --include-border-title --black-and-white \
+    --layers "$L,Edge.Cuts" --include-border-title --theme "$THEME" \
     --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=$L"
   fab_pages+=("$page")
 done
@@ -121,7 +130,7 @@ done
 # Fab notes / dimensions page.
 notes="$FABTMP/99_notes.pdf"
 kicad-cli pcb export pdf "$PCB" -o "$notes" --mode-single \
-  --layers "Edge.Cuts,Dwgs.User,Cmts.User,User.1" --include-border-title --black-and-white \
+  --layers "Edge.Cuts,Dwgs.User,Cmts.User,User.1" --include-border-title --theme "$THEME" \
   --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Fab Notes"
 fab_pages+=("$notes")
 merge_pdf "$DOCS/usb3_fiber-fabrication-drawing.pdf" "${fab_pages[@]}"
