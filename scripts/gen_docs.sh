@@ -88,47 +88,63 @@ if ! python3 -c "import fitz" 2>/dev/null; then
 fi
 HELPERS="$(mktemp -d)"
 
-# compose.py <template.pdf> <bare.pdf> <out.pdf>
-#   Nest a bare (frameless) vector PDF into the framed template: measure the real
-#   artwork bbox, aspect-fit it into the drawing area (small margin) and center it
-#   in the area ABOVE the title block. Stays fully vector. Used for every board
-#   page (assembly, copper/silk/mask layers, drill maps), so the board comes out
-#   at a consistent size on every sheet instead of tiny at 1:1.
+# compose.py <template.pdf> <bare.pdf> <out.pdf> <outline.pdf|->
+#   Nest a bare (frameless) vector PDF into the framed template, aspect-fit into
+#   the drawing area and centered above the title block. Stays fully vector.
+#   With an outline.pdf (Edge.Cuts alone), the board is NORMALIZED: it fills a
+#   fixed fraction of the sheet regardless of sprawling reference text, so the
+#   board is the same size on every page. EXCEPTIONS that shrink to fit: real
+#   geometry (a component/drawing extending past the outline) is always included,
+#   and a final safety keeps any content (incl. text) from spilling off-sheet.
+#   With "-" (drill maps), it content-fits the map's own board + size legend.
+#   bbox() uses manual min/max so zero-area rects (thin lines) are never dropped
+#   -- fitz's Rect union silently discards them, which sent leader lines off-sheet.
 COMPOSE="$HELPERS/compose.py"
 cat > "$COMPOSE" <<'PY'
 import sys, fitz
-tmpl, bare, out = sys.argv[1:4]
+tmpl, bare, out, outline = sys.argv[1:5]
 base = fitz.open(tmpl); page = base[0]
 src = fitz.open(bare); sp = src[0]; sr = sp.rect
 mm = 72 / 25.4
 top, title, side = 8 * mm, 40 * mm, 8 * mm
 cw = page.rect.width - 2 * side
 ch = page.rect.height - top - title
-# Real content bbox (drawings + text) -- kicad plots leave large blank margins
-# around the board, so we fit/center the artwork, not the page rect.
-content = None
-for d in sp.get_drawings():
-    content = d["rect"] if content is None else content | d["rect"]
-for b in sp.get_text("dict")["blocks"]:
-    r = fitz.Rect(b["bbox"]); content = r if content is None else content | r
-if content is None or content.is_empty:
-    content = fitz.Rect(sr)
+
+def bbox(rects):
+    # thin-line-safe union: manual min/max so zero-area rects (lines) count too.
+    rects = [r for r in rects if r.width >= 0 and r.height >= 0]
+    if not rects:
+        return None
+    return fitz.Rect(min(r.x0 for r in rects), min(r.y0 for r in rects),
+                     max(r.x1 for r in rects), max(r.y1 for r in rects))
+
+draws = [d["rect"] for d in sp.get_drawings()]
+texts = [fitz.Rect(b["bbox"]) for b in sp.get_text("dict")["blocks"]]
+draw_bb = bbox(draws) or fitz.Rect(sr)          # all geometry (components, lines)
+all_bb = bbox(draws + texts) or draw_bb          # + annotation text
+
+if outline != "-":
+    ob = fitz.open(outline)
+    ref = bbox([d["rect"] for d in ob[0].get_drawings()]) or draw_bb
+    s = 0.90 * min(cw / ref.width, ch / ref.height)          # normalize to outline
+    s = min(s, 0.99 * min(cw / draw_bb.width, ch / draw_bb.height))  # incl. overhang
+    s = min(s, 0.99 * min(cw / all_bb.width, ch / all_bb.height))    # never off-sheet
+    ref_c = ref
+else:
+    s = 0.95 * min(cw / all_bb.width, ch / all_bb.height)     # drill: content-fit
+    ref_c = all_bb
+
 ox, oy = sr.x0, sr.y0
-cxc = content.x0 + content.width / 2 - ox
-cyc = content.y0 + content.height / 2 - oy
-# Fit the artwork into the drawing area with a small margin, centered in the area
-# above the title block so it never crowds the block.
-s = 0.95 * min(cw / content.width, ch / content.height)
-ax, ay = side + cw / 2, top + ch / 2
 w, h = sr.width * s, sr.height * s
-x0 = ax - cxc * s
-y0 = ay - cyc * s
-# Clamp so the artwork stays inside the side margins and clear of the title block.
-x0 = max(x0, side - (content.x0 - ox) * s)
-oxo = (x0 + (content.x1 - ox) * s) - (page.rect.width - side)
+ax, ay = side + cw / 2, top + ch / 2
+x0 = ax - (ref_c.x0 + ref_c.width / 2 - ox) * s
+y0 = ay - (ref_c.y0 + ref_c.height / 2 - oy) * s
+# Clamp the full content (incl. text) inside the margins and clear of the block.
+x0 = max(x0, side - (all_bb.x0 - ox) * s)
+oxo = (x0 + (all_bb.x1 - ox) * s) - (page.rect.width - side)
 if oxo > 0: x0 -= oxo
-y0 = max(y0, top - (content.y0 - oy) * s)
-oyo = (y0 + (content.y1 - oy) * s) - (page.rect.height - title)
+y0 = max(y0, top - (all_bb.y0 - oy) * s)
+oyo = (y0 + (all_bb.y1 - oy) * s) - (page.rect.height - title)
 if oyo > 0: y0 -= oyo
 page.show_pdf_page(fitz.Rect(x0, y0, x0 + w, y0 + h), src, 0)
 base.save(out)
@@ -142,6 +158,16 @@ make_template() {  # make_template <label> <pagenum> <pagecount> <out.pdf>
     --drawing-sheet "$FAB_WKS" "${VARS[@]}" \
     --define-var "LAYER=$1" --define-var "PAGENUM=$2" --define-var "PAGECOUNT=$3"
 }
+
+# Board-outline references (Edge.Cuts alone) that compose.py normalizes the board
+# to: normal orientation for top/copper/silk/mask, mirrored for the bottom view.
+# Same page setup as the bare plots, so the outline lands at matching coordinates.
+OUTLINE_N="$HELPERS/outline_n.pdf"
+OUTLINE_M="$HELPERS/outline_m.pdf"
+kicad-cli pcb export pdf "$PCB" -o "$OUTLINE_N" --mode-single \
+  --layers "Edge.Cuts" --theme "$THEME" "${VARS[@]}"
+kicad-cli pcb export pdf "$PCB" -o "$OUTLINE_M" --mode-single \
+  --layers "Edge.Cuts" --mirror --theme "$THEME" "${VARS[@]}"
 
 # --- Schematic ----------------------------------------------------------------
 kicad-cli sch export pdf "$SCH" -o "$DOCS/usb3_fiber-schematic.pdf" \
@@ -158,8 +184,8 @@ kicad-cli pcb export pdf "$PCB" -o "$ATMP/bot_bare.pdf" --mode-single \
   --layers "B.Fab,B.Silkscreen,Edge.Cuts" --mirror --theme "$THEME" "${VARS[@]}"
 make_template "Assembly - Top"    1 2 "$ATMP/top_tmpl.pdf"
 make_template "Assembly - Bottom" 2 2 "$ATMP/bot_tmpl.pdf"
-python3 "$COMPOSE" "$ATMP/top_tmpl.pdf" "$ATMP/top_bare.pdf" "$ATMP/top.pdf"
-python3 "$COMPOSE" "$ATMP/bot_tmpl.pdf" "$ATMP/bot_bare.pdf" "$ATMP/bot.pdf"
+python3 "$COMPOSE" "$ATMP/top_tmpl.pdf" "$ATMP/top_bare.pdf" "$ATMP/top.pdf" "$OUTLINE_N"
+python3 "$COMPOSE" "$ATMP/bot_tmpl.pdf" "$ATMP/bot_bare.pdf" "$ATMP/bot.pdf" "$OUTLINE_M"
 merge_pdf "$DOCS/usb3_fiber-assembly.pdf" "$ATMP/top.pdf" "$ATMP/bot.pdf"
 rm -rf "$ATMP"
 
@@ -209,7 +235,7 @@ for L in $FAB_LAYERS; do
   kicad-cli pcb export pdf "$PCB" -o "$bare" --mode-single \
     --layers "$L,Edge.Cuts" --theme "$THEME" "${VARS[@]}"
   make_template "$L" "$pg" "$PC" "$tmpl"
-  python3 "$COMPOSE" "$tmpl" "$bare" "$page"
+  python3 "$COMPOSE" "$tmpl" "$bare" "$page" "$OUTLINE_N"
   fab_pages+=("$page")
 done
 
@@ -227,7 +253,7 @@ for m in "${drill_maps[@]}"; do
   tmpl="$FABTMP/drill_tmpl_$(printf '%02d' "$di").pdf"
   framed="$FABTMP/drill_$(printf '%02d' "$di").pdf"
   make_template "$drill_label" "$pg" "$PC" "$tmpl"
-  python3 "$COMPOSE" "$tmpl" "$m" "$framed"
+  python3 "$COMPOSE" "$tmpl" "$m" "$framed" -
   echo "  framed $drill_label ($di)"
   fab_pages+=("$framed")
 done
