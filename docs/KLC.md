@@ -50,9 +50,9 @@ completeness* is covered separately by the planned 3D-completeness gate, so no
 real coverage is lost.
 
 (**F9.1** — footprint metadata — is *not* excluded: descriptions, keywords, and
-datasheet URLs are filled in. The one residual is `QFP50P900X900X160-48N`, an
-**unused** footprint with no orderable part / datasheet — a candidate for
-removal.)
+datasheet URLs are filled in, and F9.1 is fully cleared. The unused
+`QFP50P900X900X160-48N` footprint and the unused `USB2517I` part
+(`QFN64_USB2517I` footprint + symbol + 3D model) were removed from the library.)
 
 ### 3. Generic value symbols have no datasheet — part of **S6.2**
 
