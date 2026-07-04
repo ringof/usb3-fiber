@@ -96,16 +96,22 @@ kicad-cli pcb export pdf "$PCB" -o "$TMP/bottom.pdf" --mode-single \
 merge_pdf "$DOCS/usb3_fiber-assembly.pdf" "$TMP/top.pdf" "$TMP/bottom.pdf"
 rm -rf "$TMP"
 
-# --- Fabrication drawing (multipage: one page per PCB layer) ------------------
-# A real fab drawing shows each fabrication layer on its own page, with the
-# Edge.Cuts outline for reference, followed by a fab-notes page (dimensions,
-# fab-spec text, Board Characteristics table). Each page is rendered on its own
-# (--mode-single, one layer + edge) and the pages are merged, so every page
-# carries the outline and its own LAYER label -- and we sidestep the
-# --mode-multipage "outputs a folder" bug.
-FAB_LAYERS="F.Cu In1.Cu In2.Cu B.Cu F.Silkscreen B.Silkscreen F.Mask B.Mask"
+# --- Fabrication drawing (multipage) ------------------------------------------
+# Page order: (1) fab notes, (2) one page per PCB layer, (3) drill map(s).
+# Each layer page (--mode-single, layer + Edge.Cuts) carries the outline and its
+# own LAYER label; pages are merged (sidesteps --mode-multipage's folder bug).
 FABTMP="$(mktemp -d)"
 fab_pages=()
+
+# (1) Fab notes / dimensions -- FIRST page.
+notes="$FABTMP/00_notes.pdf"
+kicad-cli pcb export pdf "$PCB" -o "$notes" --mode-single \
+  --layers "Edge.Cuts,Dwgs.User,Cmts.User,User.1" --include-border-title --theme "$THEME" \
+  --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Fab Notes"
+fab_pages+=("$notes")
+
+# (2) One page per PCB layer.
+FAB_LAYERS="F.Cu In1.Cu In2.Cu B.Cu F.Silkscreen B.Silkscreen F.Mask B.Mask"
 n=0
 for L in $FAB_LAYERS; do
   n=$((n + 1))
@@ -115,24 +121,43 @@ for L in $FAB_LAYERS; do
     --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=$L"
   fab_pages+=("$page")
 done
-# Drill drawing(s): kicad-cli's native drill map(s) — board outline + a symbol
-# per drill size and a drill table (symbol -> size -> count). PTH and NPTH are
-# mapped separately. These are drill-map PDFs in their own temp dir (so we don't
-# pick up the layer pages), appended after the layer pages.
+
+# (3) Drill map(s), given OUR frame. kicad-cli's drill export can't take a
+#     drawing sheet, so we make the bare map(s) plus a framed Edge.Cuts template
+#     (same board/paper -> aligned), and composite each map onto the template
+#     with PyMuPDF. If PyMuPDF or the composite is unavailable, fall back to the
+#     bare (unframed) map so the build never breaks.
 DRLTMP="$(mktemp -d)"
 kicad-cli pcb export drill "$PCB" -o "$DRLTMP/" \
   --format excellon --excellon-separate-th --generate-map --map-format pdf \
   || echo "WARN: drill map generation failed"
+drill_tmpl="$FABTMP/drill_template.pdf"
+kicad-cli pcb export pdf "$PCB" -o "$drill_tmpl" --mode-single \
+  --layers "Edge.Cuts" --include-border-title --theme "$THEME" \
+  --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Drill Map"
+pip install --quiet pymupdf >/dev/null 2>&1 || true
+di=0
 for m in $(ls "$DRLTMP"/*.pdf 2>/dev/null | sort); do
-  fab_pages+=("$m")
+  di=$((di + 1))
+  framed="$FABTMP/drill_$(printf '%02d' "$di").pdf"
+  if python3 - "$drill_tmpl" "$m" "$framed" <<'PY' 2>/dev/null
+import sys
+try:
+    import fitz
+except Exception:
+    sys.exit(1)
+tmpl, mp, out = sys.argv[1:4]
+base = fitz.open(tmpl)                            # our framed Edge.Cuts template
+base[0].show_pdf_page(base[0].rect, fitz.open(mp), 0)  # drill map on top, aligned
+base.save(out)
+PY
+  then
+    fab_pages+=("$framed")
+  else
+    fab_pages+=("$m")   # fallback: bare, unframed map
+  fi
 done
 
-# Fab notes / dimensions page.
-notes="$FABTMP/99_notes.pdf"
-kicad-cli pcb export pdf "$PCB" -o "$notes" --mode-single \
-  --layers "Edge.Cuts,Dwgs.User,Cmts.User,User.1" --include-border-title --theme "$THEME" \
-  --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Fab Notes"
-fab_pages+=("$notes")
 merge_pdf "$DOCS/usb3_fiber-fabrication-drawing.pdf" "${fab_pages[@]}"
 rm -rf "$FABTMP" "$DRLTMP"
 
