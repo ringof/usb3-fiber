@@ -122,57 +122,43 @@ for L in $FAB_LAYERS; do
   fab_pages+=("$page")
 done
 
-# (3) Drill map(s), given OUR frame. kicad-cli's drill export can't take a
-#     drawing sheet, so we PLACE each bare map inside a framed, empty template
-#     page (aspect-fit into the drawing area, above the title block) with
-#     PyMuPDF -- no board-coordinate alignment needed. Falls back to the bare
-#     map if PyMuPDF is unavailable, so the build never breaks.
+# (3) Drill map(s), framed in OUR drawing sheet. kicad-cli's drill export can't
+#     take a drawing sheet, so we nest each native (vector) map inside a framed,
+#     empty template page (aspect-fit above the title block) with PyMuPDF -- the
+#     result stays fully vector. The pinned CI image (ringof/kicad-ci) guarantees
+#     PyMuPDF on `python3`, so a missing fitz is a hard error: we never silently
+#     ship an unframed drill map.
 DRLTMP="$(mktemp -d)"
 kicad-cli pcb export drill "$PCB" -o "$DRLTMP/" \
   --format excellon --excellon-separate-th --generate-map --map-format pdf \
   || echo "WARN: drill map generation failed"
-# Framed, empty template: border + title block only (Eco1.User has no artwork).
-drill_tmpl="$FABTMP/drill_template.pdf"
-kicad-cli pcb export pdf "$PCB" -o "$drill_tmpl" --mode-single \
-  --layers "Eco1.User" --include-border-title --theme "$THEME" \
-  --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Drill Map"
-# Find a Python that can place PDFs (has PyMuPDF/fitz). The container's
-# /usr/bin/python3 has no pip, so we can't install one -- but KiBot runs in
-# this same image and ships its own Python that already has fitz. Probe the
-# candidates and use whichever works. All logged to reports/gen_docs.log.
-DIAG="$OUT/gen_docs.log"
-PYCOMP=""
-{
-  echo "=== drill framing: locating a Python with fitz ($(date -u 2>/dev/null || echo n/a)) ==="
-  CANDS=(python3)
-  KB="$(command -v kibot 2>/dev/null || true)"
-  if [ -n "$KB" ]; then
-    KBPY="$(head -1 "$KB" | sed 's|^#!||; s| .*||')"
-    [ -n "$KBPY" ] && CANDS+=("$KBPY")
-  fi
-  # also probe common venv locations
-  for extra in /opt/*/bin/python3 /usr/local/bin/python3; do
-    [ -x "$extra" ] && CANDS+=("$extra")
-  done
-  for py in "${CANDS[@]}"; do
-    if "$py" -c "import fitz" 2>/dev/null; then
-      echo "  $py -> fitz OK"; PYCOMP="$py"; break
-    else
-      echo "  $py -> no fitz"
-    fi
-  done
-  if [ -z "$PYCOMP" ]; then
-    echo "  no fitz-capable python; PDF tools present:"
-    for t in qpdf pdftk gs pdfjam mutool convert; do echo "    $t: $(command -v "$t" || echo MISSING)"; done
-  fi
-} >> "$DIAG" 2>&1
-if [ -n "$PYCOMP" ]; then HAVE_FITZ=1; else HAVE_FITZ=0; fi
-echo "drill framing: fitz python='$PYCOMP' (see $DIAG)"
+
+if ! python3 -c "import fitz" 2>/dev/null; then
+  echo "ERROR: PyMuPDF (fitz) not importable by python3; cannot frame drill maps." >&2
+  echo "       The CI image must provide PyMuPDF -- see ringof/kicad-ci." >&2
+  exit 1
+fi
+
 di=0
 for m in $(ls "$DRLTMP"/*.pdf 2>/dev/null | sort); do
   di=$((di + 1))
+  # Label each page by plating class from the map filename (test NPTH before
+  # PTH -- 'NPTH' contains 'PTH' as a substring).
+  case "$m" in
+    *NPTH*) drill_label="Drill Map (NPTH)" ;;
+    *PTH*)  drill_label="Drill Map (PTH)" ;;
+    *)      drill_label="Drill Map" ;;
+  esac
+  # Framed, empty template for this page: border + title block only, carrying the
+  # per-page LAYER label (Eco1.User has no artwork).
+  drill_tmpl="$FABTMP/drill_tmpl_$(printf '%02d' "$di").pdf"
+  kicad-cli pcb export pdf "$PCB" -o "$drill_tmpl" --mode-single \
+    --layers "Eco1.User" --include-border-title --theme "$THEME" \
+    --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=$drill_label"
+  # Nest the vector map into the framed template. set -e aborts the build on any
+  # composite failure instead of falling back to a bare, unframed map.
   framed="$FABTMP/drill_$(printf '%02d' "$di").pdf"
-  if [ "$HAVE_FITZ" = 1 ] && "$PYCOMP" - "$drill_tmpl" "$m" "$framed" <<'PY'
+  python3 - "$drill_tmpl" "$m" "$framed" <<'PY'
 import sys, fitz
 tmpl, mp, out = sys.argv[1:4]
 base = fitz.open(tmpl); page = base[0]
@@ -189,13 +175,8 @@ y0 = cy0 + (ch - h) / 2
 page.show_pdf_page(fitz.Rect(x0, y0, x0 + w, y0 + h), src, 0)
 base.save(out)
 PY
-  then
-    echo "  framed drill map $di"
-    fab_pages+=("$framed")
-  else
-    echo "  WARN: drill map $di left unframed"
-    fab_pages+=("$m")
-  fi
+  echo "  framed $drill_label ($di)"
+  fab_pages+=("$framed")
 done
 
 merge_pdf "$DOCS/usb3_fiber-fabrication-drawing.pdf" "${fab_pages[@]}"
