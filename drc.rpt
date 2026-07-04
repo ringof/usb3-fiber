@@ -1,5 +1,5 @@
 ** Drc report for usb3_fiber.kicad_pcb **
-** Created on 2026-07-04T21:27:50 **
+** Created on 2026-07-04T21:32:09 **
 ** Report includes: Errors **
 
 ** Found 53 DRC violations **
@@ -103,14 +103,14 @@
     Rule: netclass 'Power'; error
     @(130.7423 mm, 115.8625 mm): Pad 6 [unconnected-(U1-GP1-Pad6)] of U1 on F.Cu
     @(128.8500 mm, 115.5375 mm): Pad 17 [GND] of U1 on F.Cu
-[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
-    Rule: board setup constraints hole; error
-    @(148.5600 mm, 93.7325 mm): Pad 1 [GND] of C6 on F.Cu
-    @(149.5000 mm, 93.8475 mm): NPTH pad of J1
 [clearance]: Clearance violation (netclass 'Power' clearance 0.2000 mm; actual 0.1016 mm)
     Rule: netclass 'Power'; error
     @(130.7423 mm, 115.2125 mm): Pad 7 [unconnected-(U1-GP2-Pad7)] of U1 on F.Cu
     @(128.8500 mm, 115.5375 mm): Pad 17 [GND] of U1 on F.Cu
+[hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
+    Rule: board setup constraints hole; error
+    @(148.5600 mm, 93.7325 mm): Pad 1 [GND] of C6 on F.Cu
+    @(149.5000 mm, 93.8475 mm): NPTH pad of J1
 [clearance]: Clearance violation (netclass 'Power' clearance 0.2000 mm; actual 0.0400 mm)
     Rule: netclass 'Power'; error
     @(150.4600 mm, 93.7325 mm): Pad 2 [Net-(J2-VccT)] of C6 on F.Cu

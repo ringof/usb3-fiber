@@ -52,8 +52,6 @@ Checking component 'usb3_fiber:U77A16382001':
 Checking component 'usb3_fiber:UE76A202000T':
   Violating S3.6 - https://klc.kicad.org/symbol/s3/s3.6/
   Violating S4.4 - https://klc.kicad.org/symbol/s4/s4.4/
-Checking component 'usb3_fiber:USB2517I':
-  Violating S3.6 - https://klc.kicad.org/symbol/s3/s3.6/
 
 --- Footprints (library/usb3_fiber.pretty) ---
 Checking footprint 'AMPHENOL_10118194-0001LF':
@@ -127,20 +125,6 @@ Checking footprint 'QFN16_ML_MCH':
   Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-Checking footprint 'QFN64_USB2517I':
-  Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
-  Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-Checking footprint 'QFP50P900X900X160-48N':
-  Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
-  Violating F5.1 - https://klc.kicad.org/footprint/f5/f5.1/
-  Violating F5.2 - https://klc.kicad.org/footprint/f5/f5.2/
-  Violating F5.2 - https://klc.kicad.org/footprint/f5/f5.2/
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
-  Violating F9.1 - https://klc.kicad.org/footprint/f9/f9.1/
 Checking footprint 'RTW24_2P6X2P6_TEX-L':
   Violating EC01 - (extended check)
   Violating EC01 - (extended check)
