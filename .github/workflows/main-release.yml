@@ -8,6 +8,10 @@ name: main-release
 # / script-only merges are a no-op. GIT_HASH is stamped from the last commit
 # that touched a design file, so it stays truthful and stable across doc-only
 # commits. See docs/RELEASE_STRATEGY.md.
+#
+# Dispatch with dry_run=true to build the full turnkey package and upload it as
+# run artifacts WITHOUT publishing a release — for validating the pipeline
+# (e.g. the KiBot build) before committing to a real release.
 
 on:
   push:
@@ -18,6 +22,11 @@ on:
         description: "Force-publish this revision letter (blank = automatic)"
         required: false
         default: ""
+      dry_run:
+        description: "Build the package + upload as run artifacts, but do NOT publish a release"
+        type: boolean
+        required: false
+        default: false
 
 concurrency:
   group: main-release
@@ -33,6 +42,7 @@ jobs:
       revision: ${{ steps.rev.outputs.revision }}
       githash: ${{ steps.rev.outputs.githash }}
       publish: ${{ steps.rev.outputs.publish }}
+      build: ${{ steps.rev.outputs.build }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -43,6 +53,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           OVERRIDE: ${{ github.event.inputs.revision }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
         run: |
           set -euo pipefail
           # Design files — changes here (and only here) trigger an uprev.
@@ -54,53 +65,65 @@ jobs:
           # always names the commit that defines the released design and does
           # not drift on doc-only commits.
           githash=$(git log -1 --format=%h -- "${DESIGN[@]}")
-          echo "githash=$githash" >> "$GITHUB_OUTPUT"
 
           latest=$(gh release list --repo "$GITHUB_REPOSITORY" --limit 1 \
                      --json tagName --jq '.[0].tagName' 2>/dev/null || echo "")
 
-          # Manual override always publishes at the requested letter.
+          # Compute revision + publish once (no early exits), so the dry-run
+          # override below can adjust the decision uniformly.
+          changed=""
           if [ -n "${OVERRIDE:-}" ]; then
-            echo "revision=$OVERRIDE" >> "$GITHUB_OUTPUT"
-            echo "publish=true" >> "$GITHUB_OUTPUT"
-            echo "Manual override → publishing rev$OVERRIDE (design commit $githash)." >> "$GITHUB_STEP_SUMMARY"
-            exit 0
-          fi
-
-          # No prior release → first release is Rev A.
-          if [ -z "$latest" ]; then
-            echo "revision=A" >> "$GITHUB_OUTPUT"
-            echo "publish=true" >> "$GITHUB_OUTPUT"
-            echo "No prior release → publishing Rev A (design commit $githash)." >> "$GITHUB_STEP_SUMMARY"
-            exit 0
-          fi
-
-          # Did any design file change since the last release's commit?
-          base=$(git rev-list -1 "$latest")
-          changed=$(git diff --name-only "$base"..HEAD -- "${DESIGN[@]}" || true)
-          letter="${latest#rev}"
-          if [ -n "$changed" ]; then
-            next=$(python3 -c "print(chr(ord('${letter}'[-1]) + 1))")
-            echo "revision=$next" >> "$GITHUB_OUTPUT"
-            echo "publish=true" >> "$GITHUB_OUTPUT"
-            {
-              echo "Design changed since $latest → publishing rev$next (design commit $githash):"
-              echo '```'
-              echo "$changed"
-              echo '```'
-            } >> "$GITHUB_STEP_SUMMARY"
+            revision="$OVERRIDE"; publish=true
+            reason="Manual override → rev$revision"
+          elif [ -z "$latest" ]; then
+            revision="A"; publish=true
+            reason="No prior release → Rev A"
           else
-            echo "revision=$letter" >> "$GITHUB_OUTPUT"
-            echo "publish=false" >> "$GITHUB_OUTPUT"
-            echo "No design changes since $latest → no new release (docs / CI-only merge)." >> "$GITHUB_STEP_SUMMARY"
+            base=$(git rev-list -1 "$latest")
+            changed=$(git diff --name-only "$base"..HEAD -- "${DESIGN[@]}" || true)
+            letter="${latest#rev}"
+            if [ -n "$changed" ]; then
+              revision=$(python3 -c "print(chr(ord('${letter}'[-1]) + 1))"); publish=true
+              reason="Design changed since $latest → rev$revision"
+            else
+              revision="$letter"; publish=false
+              reason="No design changes since $latest → no new release (docs / CI-only merge)"
+            fi
+          fi
+
+          # By default the build job runs exactly when we publish.
+          build="$publish"
+
+          # Dry run: build the package + upload artifacts for inspection, but
+          # never publish a release. Forces a build even when there is no design
+          # change, so the turnkey pipeline can be exercised on demand.
+          if [ "${DRY_RUN:-false}" = "true" ]; then
+            publish=false
+            build=true
+            [ -n "$revision" ] || revision="DRYRUN"
+            reason="DRY RUN → build package for rev${revision}, skip publish"
+          fi
+
+          {
+            echo "revision=$revision"
+            echo "githash=$githash"
+            echo "publish=$publish"
+            echo "build=$build"
+          } >> "$GITHUB_OUTPUT"
+
+          echo "$reason (design commit $githash)." >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$changed" ]; then
+            { echo '```'; echo "$changed"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
           fi
 
   build:
     needs: prepare
-    if: needs.prepare.outputs.publish == 'true'
+    if: needs.prepare.outputs.build == 'true'
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/kicad/kicad:10.0
+      # Pinned in-house CI image: INTI-CMNB kicad10_auto + PyMuPDF (for framed
+      # drill maps). Pinned tag (not :latest) keeps release output reproducible.
+      image: ghcr.io/ringof/kicad-ci:10-20260704
       options: --user root
     env:
       HOME: /root
@@ -130,9 +153,12 @@ jobs:
         run: |
           set -euo pipefail
           # Stable asset names (no rev/hash) so /releases/latest/download/<name>
-          # links stay valid across revisions.
-          cp out/usb3_fiber-schematic.pdf usb3_fiber-schematic.pdf
-          ( cd out/gerbers && zip -qr ../../usb3_fiber-gerbers.zip . )
+          # links stay valid across revisions. docs/ comes from gen_docs.sh
+          # (kicad-cli framed PDFs); JLCPCB/gerbers/ from KiBot.
+          cp out/docs/usb3_fiber-schematic.pdf           usb3_fiber-schematic.pdf
+          cp out/docs/usb3_fiber-assembly.pdf            usb3_fiber-assembly.pdf
+          cp out/docs/usb3_fiber-fabrication-drawing.pdf usb3_fiber-fabrication-drawing.pdf
+          ( cd out/JLCPCB/gerbers && zip -qr ../../../usb3_fiber-gerbers.zip . )
           ( cd out && zip -qr ../usb3_fiber-fabrication.zip . )
           ls -la
       - name: Publish GitHub Release
@@ -142,7 +168,8 @@ jobs:
           SHA: ${{ needs.prepare.outputs.githash }}
         run: |
           set -euo pipefail
-          FILES=(usb3_fiber-fabrication.zip usb3_fiber-gerbers.zip usb3_fiber-schematic.pdf)
+          FILES=(usb3_fiber-fabrication.zip usb3_fiber-gerbers.zip usb3_fiber-schematic.pdf
+                 usb3_fiber-assembly.pdf usb3_fiber-fabrication-drawing.pdf)
           NOTES="Fabrication and design package for revision ${REV} (design commit ${SHA}). Auto-generated by main-release CI."
           # Idempotent: create the release, or refresh assets if it already
           # exists (e.g. a manual override re-publishing an existing rev).

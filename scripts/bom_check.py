@@ -6,7 +6,9 @@ already filtered out) and verifies every remaining (fitted) row has:
 
   - Value
   - Footprint
-  - a sourceable part number: Manufacturer Part Number (MPN) OR LCSC
+  - an LCSC number (turnkey-orderable). MPN is recorded but no longer
+    substitutes for LCSC — a green build means "actually orderable as
+    JLCPCB turnkey."
 
 Exits non-zero if any fitted row is incomplete. Whether that failure *gates*
 CI is decided by the ENFORCE toggle in the workflow, not here — this script
@@ -48,8 +50,8 @@ def main(path):
             missing.append("Value")
         if not norm(row, "Footprint"):
             missing.append("Footprint")
-        if not norm(row, "MPN", "Manufacturer Part Number") and not norm(row, "LCSC"):
-            missing.append("MPN/LCSC")
+        if not norm(row, "LCSC"):
+            missing.append("LCSC")
         if missing:
             problems.append((ref, ", ".join(missing)))
 
@@ -62,7 +64,7 @@ def main(path):
         for ref, miss in problems:
             print(f"  {ref.ljust(width)}  missing: {miss}")
         return 1
-    print("All fitted parts have Value, Footprint, and a part number.")
+    print("All fitted parts have Value, Footprint, and an LCSC number.")
     return 0
 
 

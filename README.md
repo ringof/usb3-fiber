@@ -52,7 +52,7 @@ built to probe.
 | `fp-lib-table` / `sym-lib-table` | Project-local library tables (`${KIPRJMOD}`). |
 | `library/` | Symbols (`usb3_fiber.kicad_sym`), footprints (`.pretty/`), 3D models (`3dmodels/`). |
 | `datasheets/` | Component datasheets. |
-| `docs/` | Design intent, fab spec, and the repo migration plan. |
+| `docs/` | Design intent, fab spec, turnkey/CI pipeline, release strategy, and the repo migration plan. |
 
 ## Requirements
 
@@ -85,8 +85,10 @@ impedance, and drill/feature constraints are in
 Latest release (see [all releases](../../releases)):
 
 - 📄 **[Schematic (PDF)](https://github.com/ringof/usb3-fiber/releases/latest/download/usb3_fiber-schematic.pdf)**
+- 🧩 **[Assembly drawing (PDF)](https://github.com/ringof/usb3-fiber/releases/latest/download/usb3_fiber-assembly.pdf)** — top + bottom component placement
+- 📐 **[Fabrication drawing (PDF)](https://github.com/ringof/usb3-fiber/releases/latest/download/usb3_fiber-fabrication-drawing.pdf)** — overview/spec, per-layer, and drill maps
 - 🛠 **[Gerbers — JLCPCB-ready (zip)](https://github.com/ringof/usb3-fiber/releases/latest/download/usb3_fiber-gerbers.zip)**
-- 📦 **[Full fabrication + design package (zip)](https://github.com/ringof/usb3-fiber/releases/latest/download/usb3_fiber-fabrication.zip)** — Gerbers, drill, BOM, CPL, schematic PDF, assembly drawings, STEP
+- 📦 **[Full fabrication + design package (zip)](https://github.com/ringof/usb3-fiber/releases/latest/download/usb3_fiber-fabrication.zip)** — Gerbers, drill, BOM, CPL, schematic PDF, assembly + fabrication drawings, STEP
 
 Packages are built and revision-stamped by CI. Revisions use an alpha scheme
 (Rev A → B → C); the current revision and git hash are stamped into the title

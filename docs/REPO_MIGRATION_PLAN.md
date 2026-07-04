@@ -31,16 +31,25 @@ and a LICENSE.
   configured.
 - ✅ **Dev CI** (`dev-checks.yml`): ERC/DRC/BOM + schematic/assembly drawings,
   bring-up mode (`ENFORCE=false`).
+- ✅ **Main-release CI** (`main-release.yml`): computes the alpha revision from
+  the latest Release, injects `REVISION`/`GIT_HASH`, builds the full turnkey
+  package, and publishes a GitHub Release with stable-named assets (schematic,
+  assembly + fabrication drawings, gerbers, full package).
+- ✅ **Framed documentation pipeline**: schematic / assembly / fabrication PDFs
+  are rendered natively by `scripts/gen_docs.sh` (kicad-cli) — see
+  `docs/TURNKEY.md`. KiBot is retained only for turnkey data (gerbers, drill,
+  CPL, LCSC BOM, iBOM, STEP, renders). The CI base image is pinned
+  (`ghcr.io/ringof/kicad-ci`, kicad10_auto + PyMuPDF).
 - ✅ **Provenance (title block)**: `${REVISION}` / `${GIT_HASH}` text variables
   defined and referenced in the schematic + PCB title blocks; injected at build
   time by the release CI.
 - **Strong** design docs already committed: `docs/fab_specification.txt` and
   `docs/USB3_Fiber_Link_Minimal_Circuit.md`, plus a custom
   `usb3_fiber.kicad_dru` with high-speed rules.
-- **Still missing / in progress:** main-release CI + release packaging (this
-  branch), the **bottom-silkscreen** provenance text (needs placement in KiCad —
-  see Phase 2 note), flipping `ENFORCE=true` + required checks, and the
-  library/fab-rule audit (Phase 5).
+- **Still open:** the **bottom-silkscreen** provenance text (needs placement in
+  KiCad — see Phase 2 note), flipping `ENFORCE=true` + adding required status
+  checks, the **3D-model-completeness gate** on `main`, and the **KLC + fab-rule
+  audit** (Phase 5). Assembly fit-extent refinement tracked in issue #29.
 - Known static finding: `In1.Cu`/`In2.Cu` are typed `signal` in the PCB though
   the fab spec defines them as GND/PWR planes (same class as taprx888 #12).
 
