@@ -5,7 +5,7 @@
 # See docs/TURNKEY.md for the design rationale.
 #
 # Output dirs (relative to the -d/--out-dir passed on the CLI):
-#   docs/          schematic PDF, assembly drawings, iBOM   (dev + release)
+#   docs/          iBOM here; framed PDFs come from gen_docs.sh  (dev + release)
 #   fab/           STEP, 3D renders                          (release)
 #   JLCPCB/        CPL (rotation-corrected), LCSC BOM        (release)
 #   JLCPCB/gerbers gerbers + drill (the board-fab upload)    (release)
@@ -43,96 +43,12 @@ filters:
 # --- Outputs ------------------------------------------------------------------
 outputs:
   # ---- docs (dev checks + release) ----
-  # Every worksheet-bearing output names its sheet EXPLICITLY via
-  # sheet_reference_layout, so CI never depends on the project's
-  # page_layout_descr_file. KiCad is free to blank / embed / rewrite the local
-  # sheet setting — CI still renders the correct frame from the .kicad_wks file
-  # on disk. Do not remove these overrides.
-  - name: schematic_pdf
-    comment: 'Schematic (PDF)'
-    type: pdf_sch_print
-    dir: docs
-    options:
-      output: usb3_fiber-schematic.pdf
-      sheet_reference_layout: usb3_fiber-sch.kicad_wks
-
-  # Two documentation PDFs, both on the PCB worksheet (usb3_fiber-fab.kicad_wks).
-  # Dwgs.User / Cmts.User ride on the relevant pages, so dimensions, notes, and
-  # KiCad-placed stackup / board-characteristics tables drawn on those layers in
-  # the board editor render automatically — the layer-driven way KiCad
-  # approximates a Draftsman document.
-
-  # 1) Assembly — top + bottom in one PDF (what a placement operator reads).
-  - name: assembly_docs
-    comment: 'Assembly drawings (top + bottom)'
-    type: pcb_print
-    dir: docs
-    options:
-      output: usb3_fiber-assembly.pdf
-      format: PDF
-      plot_sheet_reference: true
-      sheet_reference_layout: usb3_fiber-fab.kicad_wks
-      pages:
-        - layers:
-            - layer: F.Fab
-            - layer: F.Silkscreen
-            - layer: Edge.Cuts
-            - layer: Dwgs.User
-            - layer: Cmts.User
-          sheet: 'Assembly — Top'
-          layer_var: 'Top'
-        - layers:
-            - layer: B.Fab
-            - layer: B.Silkscreen
-            - layer: Edge.Cuts
-            - layer: Dwgs.User
-            - layer: Cmts.User
-          mirror: true
-          sheet: 'Assembly — Bottom'
-          layer_var: 'Bottom'
-
-  # 2) Fabrication — notes/stackup drawing, a monochrome page per copper layer,
-  #    and a drill map (auto-generated per drill pair). drill_marks show hole
-  #    positions on every page.
-  - name: fab_docs
-    comment: 'Fabrication drawings (notes, copper, drill)'
-    type: pcb_print
-    dir: docs
-    options:
-      output: usb3_fiber-fabrication-drawing.pdf
-      format: PDF
-      plot_sheet_reference: true
-      sheet_reference_layout: usb3_fiber-fab.kicad_wks
-      drill_marks: full
-      pages:
-        # Fab/notes drawing: outline + user-layer content. User.1 ("Fab Notes")
-        # carries the Board Characteristics table (fab-only, so it stays off the
-        # assembly pages); Dwgs.User/Cmts.User carry dimensions and notes.
-        - layers:
-            - layer: Edge.Cuts
-            - layer: Dwgs.User
-            - layer: Cmts.User
-            - layer: User.1
-          sheet: 'Fabrication Drawing'
-          layer_var: 'Fabrication'
-        # One monochrome page per copper layer (F.Cu, In1.Cu, In2.Cu, B.Cu).
-        - layers:
-            - layer: F.Cu
-            - layer: Edge.Cuts
-          repeat_for_layer: F.Cu
-          repeat_layers: copper
-          monochrome: true
-          sheet: 'Copper — %ln'
-          layer_var: '%ln'
-        # Drill map, one page per drill pair, drawn on a user layer.
-        - layers:
-            - layer: Edge.Cuts
-            - layer: Dwgs.User
-          repeat_for_layer: Dwgs.User
-          repeat_layers: drill_pairs
-          sheet: 'Drill Map — %lpn'
-          layer_var: 'Drill %lpn'
-
+  # The framed documentation PDFs (schematic, assembly, fabrication drawing) are
+  # rendered by scripts/gen_docs.sh with kicad-cli, NOT KiBot: kicad-cli plots
+  # the title block natively and fills every frame variable, whereas KiBot's
+  # pcb_print/pdf_sch_print frame renderer left them blank in our container.
+  # KiBot here produces only the interactive HTML BOM (kicad-cli has no
+  # equivalent). See docs/TURNKEY.md.
   - name: ibom
     comment: 'Interactive HTML BOM'
     type: ibom

@@ -37,27 +37,31 @@ parts turned 90°/180°.
   Both start from the same collision-safe title block (`${REVISION}` field +
   `${GIT_HASH}`/`${LICENSE}`/`${DESIGNER}`/`${REPO}` vars), so provenance
   injection stamps them identically.
-- **CI never trusts the local sheet setting.** Every worksheet-bearing output
-  (`schematic_pdf`, `assembly_docs`, `fab_docs`) names its `.kicad_wks`
-  **explicitly** via `sheet_reference_layout`, so the rendered frames come from
-  the files on disk regardless of the project's `page_layout_descr_file`. KiCad
-  is prone to blanking, embedding (`kicad-embed://`), or rewriting that local
-  setting — none of which can affect CI. Keep the worksheets as plain external
+- **Framed docs come from kicad-cli, not KiBot.** `scripts/gen_docs.sh` renders
+  the schematic, assembly, and fabrication PDFs with `kicad-cli`, because KiBot's
+  `pcb_print`/`pdf_sch_print` frame renderer left the title-block variables blank
+  in our container. `kicad-cli` plots the frame natively, so `${TITLE}` / rev /
+  date / designer / licence / repo / commit all fill. KiBot keeps only the
+  interactive HTML BOM (kicad-cli has no equivalent) plus the turnkey data.
+- **CI never trusts the local sheet setting.** `gen_docs.sh` passes the worksheet
+  and provenance **explicitly** (`--drawing-sheet usb3_fiber-{sch,fab}.kicad_wks`
+  and `--define-var`), so the rendered frames come from the files on disk
+  regardless of the project's `page_layout_descr_file` or `text_variables`. KiCad
+  is prone to blanking, embedding (`kicad-embed://`), or rewriting those local
+  settings — none of which can affect CI. Keep the worksheets as plain external
   files (no embedding); the overrides depend on them being on disk.
 - **Two documentation PDFs, both on the fab worksheet.**
-  - `assembly_docs` → `usb3_fiber-assembly.pdf`: **Top** + **Bottom** in one PDF
-    (Fab + Silk + Edge + `Dwgs.User`/`Cmts.User`) — what a placement operator reads.
-  - `fab_docs` → `usb3_fiber-fabrication-drawing.pdf`: a **notes/stackup** page, a
-    monochrome page **per copper layer** (`repeat_layers: copper`), and a **drill
-    map** (`repeat_layers: drill_pairs`), with hole positions shown
-    (`drill_marks: full`).
+  - `usb3_fiber-assembly.pdf`: **Top** + **Bottom** in one PDF (Fab + Silk + Edge)
+    — what a placement operator reads.
+  - `usb3_fiber-fabrication-drawing.pdf`: a **notes/stackup** page first, then a
+    page **per PCB layer** (copper / silkscreen / mask), then framed **drill
+    maps** (PTH + NPTH, vector-composited into the sheet with PyMuPDF).
 
-  `Dwgs.User` / `Cmts.User` ride on the relevant pages, so dimensions, notes, and
-  KiCad-placed **stackup / board-characteristics tables** drawn on those layers in
-  the board editor render automatically. KiCad has no true Draftsman editor —
-  this layer-driven approach is how the documentation gets built up. The per-page
-  label comes from `pcb_print`'s `sheet:` (frame variable `${SHEETNAME}`, with
-  `%ln`/`%lpn` expanding the layer / drill-pair name on repeated pages).
+  `Dwgs.User` / `Cmts.User` / `User.1` ride on the relevant pages, so dimensions,
+  notes, and KiCad-placed **stackup / board-characteristics tables** drawn on
+  those layers in the board editor render automatically. KiCad has no true
+  Draftsman editor — this layer-driven approach is how the documentation gets
+  built up. Each page's `${LAYER}` label is injected per page via `--define-var`.
 
 ## What KiBot does NOT change (hard constraints)
 
