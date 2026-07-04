@@ -3,7 +3,7 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "D2PAK / TO-263 3-lead (ST LD1086)")
+	(descr "D2PAK / TO-263 3-lead (ST LD1086), https://www.st.com/resource/en/datasheet/ld1086.pdf")
 	(tags "LD1086D2T33TR")
 	(property "Reference" "REF**"
 		(at 0 11.5 0)

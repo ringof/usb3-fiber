@@ -3,7 +3,8 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "Amphenol 10118194-0001LF USB micro-B receptacle")
+	(descr "Amphenol 10118194-0001LF USB micro-B receptacle, https://cdn.amphenol-cs.com/media/wysiwyg/files/documentation/datasheet/inputoutput/io_usb_micro.pdf")
+	(tags "USB micro-B receptacle connector")
 	(property "Reference" "REF**"
 		(at -0.825 -6.135 0)
 		(layer "F.SilkS")

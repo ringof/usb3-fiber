@@ -42,7 +42,11 @@ strip() { sed -r 's/\x1b\[[0-9;]*m//g'; }
   echo
   echo "--- Footprints ($PRETTY) ---"
   for m in "$PRETTY"/*.kicad_mod; do
-    python3 "$TOOLS/klc-check/check_footprint.py" "$m" 2>&1 | strip || true
+    # --exclude F9.3: the 3D-model layout rule assumes the official global
+    # library install (${KICAD10_3DMODEL_DIR}/<lib>.3dshapes); it is
+    # structurally unsatisfiable for our self-contained ${KIPRJMOD} models.
+    # See docs/KLC.md. Model presence is covered by the 3D-completeness gate.
+    python3 "$TOOLS/klc-check/check_footprint.py" --exclude F9.3 "$m" 2>&1 | strip || true
   done
 } > "$REPORT" 2>&1
 

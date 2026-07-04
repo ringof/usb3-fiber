@@ -3,7 +3,8 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "Amphenol UE76A202000T SFP+ 20-position receptacle")
+	(descr "Amphenol UE76A202000T SFP+ 20-position receptacle, https://mm.digikey.com/Volume0/opasdata/d220001/medias/docus/637/Ux76-A20-x00xx.pdf")
+	(tags "SFP+ 20-position receptacle connector")
 	(property "Reference" "REF**"
 		(at -2.325 -6.385 0)
 		(layer "F.SilkS")

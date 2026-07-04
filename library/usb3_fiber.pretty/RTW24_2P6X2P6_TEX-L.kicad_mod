@@ -3,7 +3,7 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "QFN-24 2.6x2.6mm (TI DS100BR111 RTW24), large courtyard")
+	(descr "QFN-24 2.6x2.6mm (TI DS100BR111 RTW24), large courtyard, https://www.ti.com/lit/gpn/ds100br111")
 	(tags "DS100BR111SQE/NOPB ")
 	(property "Reference" "REF**"
 		(at 0 0 0)
@@ -17,7 +17,7 @@
 			)
 		)
 	)
-	(property "Value" "RTW24_2P6X2P6_TEX"
+	(property "Value" "RTW24_2P6X2P6_TEX-L"
 		(at 0 0 0)
 		(unlocked yes)
 		(layer "F.Fab")

@@ -3,7 +3,8 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "Amphenol U77A16382001 SFP+ cage receptacle")
+	(descr "Amphenol U77A16382001 SFP+ cage receptacle, https://cdn.amphenol-cs.com/media/wysiwyg/files/documentation/datasheet/inputoutput/hsio_cn_expressport_sfp.pdf")
+	(tags "SFP+ cage receptacle connector")
 	(property "Reference" "REF**"
 		(at -4.875 -27.335 0)
 		(layer "F.SilkS")

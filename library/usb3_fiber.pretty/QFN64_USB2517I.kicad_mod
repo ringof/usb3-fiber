@@ -3,7 +3,7 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "QFN-64 (Microchip USB2517I)")
+	(descr "QFN-64 (Microchip USB2517I), https://ww1.microchip.com/downloads/en/DeviceDoc/00001628C.pdf")
 	(tags "USB2517I QFN64 9x9")
 	(property "Reference" "REF**"
 		(at 0 -5.5 0)

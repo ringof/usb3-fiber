@@ -3,7 +3,7 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "QFN-16 3x3mm (Microchip MCP2221A)")
+	(descr "QFN-16 3x3mm (Microchip MCP2221A), https://www.microchip.com/en-us/product/mcp2221a")
 	(tags "MCP2221AT-I/ML ")
 	(property "Reference" "REF**"
 		(at 0 0 0)

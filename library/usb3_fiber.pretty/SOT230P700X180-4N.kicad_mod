@@ -3,7 +3,8 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(layer "F.Cu")
-	(descr "SOT-223 (ST LD1117)")
+	(descr "SOT-223 (ST LD1117), https://www.st.com/resource/en/datasheet/ld1117.pdf")
+	(tags "SOT-223 LDO regulator")
 	(property "Reference" "REF**"
 		(at 0.63544 -4.49892 0)
 		(layer "F.SilkS")

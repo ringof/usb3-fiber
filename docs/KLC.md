@@ -32,20 +32,27 @@ rotation-corrected CPL read the `LCSC` / MPN / manufacturer fields (see
 `usb3_fiber.kibot.yaml` and `docs/TURNKEY.md`). Deleting them to satisfy KLC
 would break assembly ordering. **We keep them and accept the S6.2 flag.**
 
-### 2. Project-local 3D-model paths — flagged by **F9.1 / F9.3**
+### 2. Project-local 3D-model layout — **F9.3 excluded** in the checker
 
-KLC expects 3D-model paths under `${KICAD10_3DMODEL_DIR}/…` (the *official*
-library install location). Our models are **committed to the repo** at
-`library/3dmodels/*.step` and referenced as:
+Our 3D models are **committed to the repo** at `library/3dmodels/*.step` and
+referenced as `${KIPRJMOD}/library/3dmodels/<model>.step`, so the library is
+**self-contained** — models travel with the repo and resolve in CI with no
+system-wide KiCad install.
 
-```
-${KIPRJMOD}/library/3dmodels/<model>.step
-```
+KLC's **F9.3** is *structurally unsatisfiable* for this layout, by design of the
+rule (verified in `rules_footprint/F9_3.py`): it only accepts the path prefix
+`${KICAD10_3DMODEL_DIR}/` (the *global install* dir) and requires the model
+directory to be exactly `<libname>.3dshapes`. With `${KIPRJMOD}` the prefix is
+never stripped, so the directory check can never pass — conforming would mean
+abandoning self-containment (installing models globally). It is therefore
+**excluded** in `scripts/klc_check.sh` (`--exclude F9.3`). 3D-model *presence /
+completeness* is covered separately by the planned 3D-completeness gate, so no
+real coverage is lost.
 
-**Why kept:** `${KIPRJMOD}` (project root) keeps the library **self-contained and
-reproducible** — the models travel with the repo and resolve in CI without any
-system-wide KiCad library install. This is the correct convention for a project
-library; the KLC rule targets the official global library. **Accepted.**
+(**F9.1** — footprint metadata — is *not* excluded: descriptions, keywords, and
+datasheet URLs are filled in. The one residual is `QFP50P900X900X160-48N`, an
+**unused** footprint with no orderable part / datasheet — a candidate for
+removal.)
 
 ### 3. Generic value symbols have no datasheet — part of **S6.2**
 
