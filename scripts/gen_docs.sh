@@ -139,16 +139,22 @@ for b in sp.get_text("dict")["blocks"]:
     r = fitz.Rect(b["bbox"]); content = r if content is None else content | r
 if content is None or content.is_empty:
     content = fitz.Rect(sr)
-if fit == "content":
-    s = min(cw / content.width, ch / content.height)
-else:
-    s = min(cw / sr.width, ch / sr.height)
-w, h = sr.width * s, sr.height * s
 ox, oy = sr.x0, sr.y0
 cxc = content.x0 + content.width / 2 - ox
 cyc = content.y0 + content.height / 2 - oy
-x0 = page.rect.width / 2 - cxc * s          # center the content on the sheet
-y0 = page.rect.height / 2 - cyc * s
+if fit == "content":
+    # Board fills the drawing area with a small margin all round, centered in the
+    # area ABOVE the title block so it never crowds the block.
+    s = 0.95 * min(cw / content.width, ch / content.height)
+    ax, ay = side + cw / 2, top + ch / 2
+else:
+    # Drill maps: fit the source page and center on the full sheet (kicad lays
+    # the board + size legend out with its own margins).
+    s = min(cw / sr.width, ch / sr.height)
+    ax, ay = page.rect.width / 2, page.rect.height / 2
+w, h = sr.width * s, sr.height * s
+x0 = ax - cxc * s
+y0 = ay - cyc * s
 # Clamp so the artwork stays inside the side margins and clear of the title block.
 x0 = max(x0, side - (content.x0 - ox) * s)
 oxo = (x0 + (content.x1 - ox) * s) - (page.rect.width - side)
