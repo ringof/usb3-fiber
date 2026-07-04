@@ -37,12 +37,20 @@ parts turned 90°/180°.
   Both start from the same collision-safe title block (`${REVISION}` field +
   `${GIT_HASH}`/`${LICENSE}`/`${DESIGNER}`/`${REPO}` vars), so provenance
   injection stamps them identically.
-- **Assembly drawings are a multi-page doc set.** `assembly_docs` renders one
-  PDF with Top, Bottom, and Fabrication-Drawing pages, each on the fab
-  worksheet. `Dwgs.User` / `Cmts.User` are included on every page, so
-  dimensions and assembly notes drawn on those layers in the board editor flow
-  into the drawings automatically — KiCad has no true Draftsman editor, so this
-  layer-driven approach is how the documentation gets built up.
+- **Two documentation PDFs, both on the fab worksheet.**
+  - `assembly_docs` → `usb3_fiber-assembly.pdf`: **Top** + **Bottom** in one PDF
+    (Fab + Silk + Edge + `Dwgs.User`/`Cmts.User`) — what a placement operator reads.
+  - `fab_docs` → `usb3_fiber-fabrication-drawing.pdf`: a **notes/stackup** page, a
+    monochrome page **per copper layer** (`repeat_layers: copper`), and a **drill
+    map** (`repeat_layers: drill_pairs`), with hole positions shown
+    (`drill_marks: full`).
+
+  `Dwgs.User` / `Cmts.User` ride on the relevant pages, so dimensions, notes, and
+  KiCad-placed **stackup / board-characteristics tables** drawn on those layers in
+  the board editor render automatically. KiCad has no true Draftsman editor —
+  this layer-driven approach is how the documentation gets built up. The per-page
+  label comes from `pcb_print`'s `sheet:` (frame variable `${SHEETNAME}`, with
+  `%ln`/`%lpn` expanding the layer / drill-pair name on repeated pages).
 
 ## What KiBot does NOT change (hard constraints)
 

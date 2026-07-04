@@ -50,12 +50,15 @@ outputs:
     options:
       output: usb3_fiber-schematic.pdf
 
-  # Multi-page documentation set on the PCB-specific worksheet
-  # (usb3_fiber-fab.kicad_wks). Dwgs.User / Cmts.User are included on every
-  # page so dimensions and assembly notes drawn on those layers in the board
-  # editor render automatically — the closest KiCad gets to a Draftsman sheet.
+  # Two documentation PDFs, both on the PCB worksheet (usb3_fiber-fab.kicad_wks).
+  # Dwgs.User / Cmts.User ride on the relevant pages, so dimensions, notes, and
+  # KiCad-placed stackup / board-characteristics tables drawn on those layers in
+  # the board editor render automatically — the layer-driven way KiCad
+  # approximates a Draftsman document.
+
+  # 1) Assembly — top + bottom in one PDF (what a placement operator reads).
   - name: assembly_docs
-    comment: 'Assembly / fabrication drawings'
+    comment: 'Assembly drawings (top + bottom)'
     type: pcb_print
     dir: docs
     options:
@@ -79,12 +82,43 @@ outputs:
             - layer: Cmts.User
           mirror: true
           sheet: 'Assembly — Bottom'
+
+  # 2) Fabrication — notes/stackup drawing, a monochrome page per copper layer,
+  #    and a drill map (auto-generated per drill pair). drill_marks show hole
+  #    positions on every page.
+  - name: fab_docs
+    comment: 'Fabrication drawings (notes, copper, drill)'
+    type: pcb_print
+    dir: docs
+    options:
+      output: usb3_fiber-fabrication-drawing.pdf
+      format: PDF
+      plot_sheet_reference: true
+      sheet_reference_layout: usb3_fiber-fab.kicad_wks
+      drill_marks: full
+      pages:
+        # Fab/notes drawing: outline + whatever is drawn on the user layers
+        # (dimensions, stackup table, board-characteristics table, notes).
         - layers:
             - layer: Edge.Cuts
             - layer: Dwgs.User
             - layer: Cmts.User
-            - layer: F.Fab
           sheet: 'Fabrication Drawing'
+        # One monochrome page per copper layer (F.Cu, In1.Cu, In2.Cu, B.Cu).
+        - layers:
+            - layer: F.Cu
+            - layer: Edge.Cuts
+          repeat_for_layer: F.Cu
+          repeat_layers: copper
+          monochrome: true
+          sheet: 'Copper — %ln'
+        # Drill map, one page per drill pair, drawn on a user layer.
+        - layers:
+            - layer: Edge.Cuts
+            - layer: Dwgs.User
+          repeat_for_layer: Dwgs.User
+          repeat_layers: drill_pairs
+          sheet: 'Drill Map — %lpn'
 
   - name: ibom
     comment: 'Interactive HTML BOM'

@@ -137,9 +137,10 @@
 		(name "")
 		(pos 73.5 3.8002)
 	)
-	(tbtext "Sheet: ${SHEETPATH}"
+	(tbtext "Sheet: ${SHEETNAME}"
 		(name "")
 		(pos 109 4.0002)
+		(comment "pcb_print per-page label; %ln/%ll expand for repeated layer pages")
 	)
 	(tbtext "Designer: ${DESIGNER}"
 		(name "")

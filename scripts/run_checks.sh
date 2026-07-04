@@ -82,7 +82,7 @@ fi
 # no xvfb-run wrapper (the image ships no xauth).
 kibot -c usb3_fiber.kibot.yaml -e "$SCH" -b "$PCB" \
   -d reports --skip-pre all \
-  schematic_pdf assembly_docs ibom \
+  schematic_pdf assembly_docs fab_docs ibom \
   || note "- ⚠️ KiBot document generation failed"
 
 # --- Report detail (echoed to the run log + job summary) ----------------------
