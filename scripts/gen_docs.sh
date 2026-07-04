@@ -167,11 +167,16 @@ make_template() {  # make_template <label> <out.pdf>
     --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=$1"
 }
 
-# (1) Fab notes -- FIRST page. Full-page text layout; rendered directly at 1:1.
+# (1) Cover / overview -- FIRST page. Requirements + board preview: the spec text
+#     (Cmts.User), board-characteristics table (User.1), and dimensions
+#     (Dwgs.User) sit alongside a preview of the populated board (F.Silkscreen +
+#     F.Fab + Edge.Cuts) -- "here's the spec, and here's what you're building".
+#     Full-page 1:1 layout, so it is rendered directly rather than rescaled.
 notes="$FABTMP/00_notes.pdf"
 kicad-cli pcb export pdf "$PCB" -o "$notes" --mode-single \
-  --layers "Edge.Cuts,Dwgs.User,Cmts.User,User.1" --include-border-title --theme "$THEME" \
-  --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Fab Notes"
+  --layers "F.Silkscreen,F.Fab,Edge.Cuts,Dwgs.User,Cmts.User,User.1" \
+  --include-border-title --theme "$THEME" \
+  --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Overview"
 fab_pages+=("$notes")
 
 # (2) One page per PCB layer, board scaled to fill the sheet. Edge.Cuts is always
