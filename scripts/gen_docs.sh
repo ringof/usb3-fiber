@@ -212,14 +212,15 @@ PC=$((1 + ${#_FL[@]} + ${#drill_maps[@]}))
 pg=0
 
 # (1) Cover / overview -- FIRST page. Requirements + board preview: the spec text
-#     (Cmts.User), board-characteristics table (User.1), and dimensions
-#     (Dwgs.User) sit alongside a preview of the populated board (F.Silkscreen +
-#     F.Fab + Edge.Cuts) -- "here's the spec, and here's what you're building".
+#     (Cmts.User) and dimensions (Dwgs.User) sit alongside a preview of the
+#     populated board (F.Silkscreen + F.Fab + Edge.Cuts) -- "here's the spec, and
+#     here's what you're building". User.1 (the stale board-characteristics table)
+#     is intentionally omitted: it duplicated the FABRICATION SPECIFICATION text.
 #     Full-page 1:1 layout, so it is rendered directly rather than rescaled.
 pg=$((pg + 1))
 notes="$FABTMP/00_notes.pdf"
 kicad-cli pcb export pdf "$PCB" -o "$notes" --mode-single \
-  --layers "F.Silkscreen,F.Fab,Edge.Cuts,Dwgs.User,Cmts.User,User.1" \
+  --layers "F.Silkscreen,F.Fab,Edge.Cuts,Dwgs.User,Cmts.User" \
   --include-border-title --theme "$THEME" --drawing-sheet "$FAB_WKS" "${VARS[@]}" \
   --define-var "LAYER=Overview" --define-var "PAGENUM=$pg" --define-var "PAGECOUNT=$PC"
 fab_pages+=("$notes")
