@@ -36,7 +36,9 @@ strip() { sed -r 's/\x1b\[[0-9;]*m//g'; }
   echo "checker: kicad-library-utils @ $(git -C "$TOOLS" rev-parse --short HEAD)"
   echo
   echo "--- Symbols ($LIBSYM) ---"
-  python3 "$TOOLS/klc-check/check_symbol.py" "$LIBSYM" 2>&1 | strip || true
+  # --footprints library: resolve default-footprint links against our .pretty so
+  # S5.1 (footprint existence) is actually verified, not skipped.
+  python3 "$TOOLS/klc-check/check_symbol.py" --footprints library "$LIBSYM" 2>&1 | strip || true
   echo
   echo "--- Footprints ($PRETTY) ---"
   for m in "$PRETTY"/*.kicad_mod; do

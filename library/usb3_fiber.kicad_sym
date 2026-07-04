@@ -33,6 +33,28 @@
 				(justify left bottom)
 			)
 		)
+		(property "ki_keywords" "USB micro-B receptacle connector"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "AMPHENOL?10118194?0001LF*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Footprint" "usb3_fiber:AMPHENOL_10118194-0001LF"
 			(at 12.192 -30.226 0)
 			(show_name no)
@@ -484,7 +506,7 @@
 				)
 			)
 		)
-		(property "ki_fp_filters" "C_*"
+		(property "ki_fp_filters" "C?*"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -627,7 +649,7 @@
 				)
 			)
 		)
-		(property "ki_keywords" "DS100BR111SQE/NOPB"
+		(property "ki_keywords" "USB3 SuperSpeed redriver signal conditioner"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -638,7 +660,7 @@
 				)
 			)
 		)
-		(property "ki_fp_filters" "RTW24_2P6X2P6_TEX RTW24_2P6X2P6_TEX-M RTW24_2P6X2P6_TEX-L"
+		(property "ki_fp_filters" "RTW24?2P6X2P6?TEX*"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1271,7 +1293,7 @@
 				)
 			)
 		)
-		(property "ki_fp_filters" "Inductor_* L_* *Ferrite*"
+		(property "ki_fp_filters" "Inductor?* L?* *Ferrite*"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1389,6 +1411,28 @@
 					(size 1.27 1.27)
 				)
 				(justify left bottom)
+			)
+		)
+		(property "ki_keywords" "USB 3.1 Gen1 type-A receptacle connector"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "AMPHENOL?GSB3111311HR*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Footprint" "usb3_fiber:AMPHENOL_GSB3111311HR"
@@ -1682,6 +1726,28 @@
 				(justify left bottom)
 			)
 		)
+		(property "ki_keywords" "USB 3.1 Gen2 type-A receptacle connector"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "AMPHENOL?GSB4211311WEU*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Footprint" "usb3_fiber:AMPHENOL_GSB4211311WEU"
 			(at 11.176 -27.686 0)
 			(show_name no)
@@ -1961,6 +2027,28 @@
 				(justify left bottom)
 			)
 		)
+		(property "ki_keywords" "LDO voltage regulator fixed 3.3V"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "D2PAK?STM*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Footprint" "usb3_fiber:D2PAK_STM"
 			(at 0 0 0)
 			(show_name no)
@@ -2106,6 +2194,28 @@
 					(size 1.27 1.27)
 				)
 				(justify left bottom)
+			)
+		)
+		(property "ki_keywords" "LDO voltage regulator fixed 3.3V"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "SOT230P700X180?4N*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Footprint" "usb3_fiber:SOT230P700X180-4N"
@@ -2308,7 +2418,7 @@
 				)
 			)
 		)
-		(property "ki_keywords" "MCP2221AT-I/ML"
+		(property "ki_keywords" "USB I2C UART bridge"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2319,7 +2429,7 @@
 				)
 			)
 		)
-		(property "ki_fp_filters" "QFN16_ML_MCH QFN16_ML_MCH-M QFN16_ML_MCH-L"
+		(property "ki_fp_filters" "QFN16?ML?MCH*"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2804,7 +2914,7 @@
 				)
 			)
 		)
-		(property "ki_fp_filters" "R_*"
+		(property "ki_fp_filters" "R?*"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2897,6 +3007,28 @@
 					(size 1.27 1.27)
 				)
 				(justify left bottom)
+			)
+		)
+		(property "ki_keywords" "SFP+ cage receptacle connector optical"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "AMPHENOL?U77A16382001*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Footprint" "usb3_fiber:AMPHENOL_U77A16382001"
@@ -3122,6 +3254,28 @@
 					(size 1.27 1.27)
 				)
 				(justify left bottom)
+			)
+		)
+		(property "ki_keywords" "SFP+ 20-position receptacle connector"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "AMPHENOL?UE76A202000T*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(property "Footprint" "usb3_fiber:AMPHENOL_UE76A202000T"
@@ -3565,6 +3719,28 @@
 				(justify left bottom)
 			)
 		)
+		(property "ki_keywords" "USB 2.0 hub controller"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "QFN64?USB2517I*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
 		(property "Footprint" "usb3_fiber:QFN64_USB2517I"
 			(at 0 0 0)
 			(show_name no)
@@ -3578,7 +3754,7 @@
 				(justify bottom)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://ww1.microchip.com/downloads/en/DeviceDoc/00001628C.pdf"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)

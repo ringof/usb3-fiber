@@ -3,6 +3,7 @@
 	(generator "pcbnew")
 	(generator_version "10.0")
 	(layer "F.Cu")
+	(descr "SOT-223 (ST LD1117)")
 	(property "Reference" "REF**"
 		(at 0.63544 -4.49892 0)
 		(layer "F.SilkS")
