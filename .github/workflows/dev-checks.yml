@@ -58,7 +58,11 @@ jobs:
       # anywhere (git fetch / raw.githubusercontent.com). Purely a convenience
       # for reviewing CI output without downloading the artifact zip.
       - name: Publish docs to ci-docs branch
-        if: always()
+        # Only the push-event run publishes: two dev-checks runs fire per commit
+        # (push + pull_request) and both force-pushing ci-docs races on the ref
+        # lock. continue-on-error so this convenience step can never gate CI.
+        if: always() && github.event_name == 'push'
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
