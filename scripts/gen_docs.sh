@@ -162,16 +162,33 @@ for m in $(ls "$DRLTMP"/*.pdf 2>/dev/null | sort); do
 import sys, fitz
 tmpl, mp, out = sys.argv[1:4]
 base = fitz.open(tmpl); page = base[0]
-src = fitz.open(mp); sr = src[0].rect
+src = fitz.open(mp); sp = src[0]; sr = sp.rect
 mm = 72 / 25.4
-# drawing area: full page minus margins, leaving a bottom strip for the title block
-cx0, cy0 = 8 * mm, 8 * mm
-cx1, cy1 = page.rect.width - 8 * mm, page.rect.height - 40 * mm
-cw, ch = cx1 - cx0, cy1 - cy0
-s = min(cw / sr.width, ch / sr.height)          # aspect-fit
+# Horizontal drawing area, inside the frame margins.
+cx0, cx1 = 8 * mm, page.rect.width - 8 * mm
+cw = cx1 - cx0
+# Vertical budget: aspect-fit the map while keeping clear of the title-block strip.
+top, title = 8 * mm, 40 * mm
+ch = page.rect.height - top - title
+s = min(cw / sr.width, ch / sr.height)          # aspect-fit (unchanged scale)
 w, h = sr.width * s, sr.height * s
 x0 = cx0 + (cw - w) / 2
-y0 = cy0 + (ch - h) / 2
+# KiCad's drill-map page has a large blank lower margin, so centering the page
+# rect leaves the artwork riding high in the sheet. Measure the real content
+# (drawings + text) and center THAT on the sheet instead. The map's blank margins
+# overlap the frame/title block harmlessly -- KiCad PDFs have no opaque background.
+content = None
+for d in sp.get_drawings():
+    content = d["rect"] if content is None else content | d["rect"]
+for b in sp.get_text("dict")["blocks"]:
+    r = fitz.Rect(b["bbox"]); content = r if content is None else content | r
+if content is None or content.is_empty:
+    content = sr
+y0 = page.rect.height / 2 - (content.y0 + content.height / 2) * s
+y0 = max(y0, top - content.y0 * s)              # don't ride above the top margin
+overflow = (y0 + content.y1 * s) - (page.rect.height - title)
+if overflow > 0:                                # don't spill into the title block
+    y0 -= overflow
 page.show_pdf_page(fitz.Rect(x0, y0, x0 + w, y0 + h), src, 0)
 base.save(out)
 PY
