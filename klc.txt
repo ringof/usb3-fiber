@@ -83,31 +83,17 @@ Checking footprint 'D2PAK_STM':
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
 Checking footprint 'QFN16_ML_MCH':
-  Violating EC01 - (extended check)
-  Violating EC01 - (extended check)
-  Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
-  Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
 Checking footprint 'RTW24_2P6X2P6_TEX-L':
-  Violating EC01 - (extended check)
-  Violating EC01 - (extended check)
-  Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
-  Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
 Checking footprint 'RTW24_2P6X2P6_TEX-M':
-  Violating EC01 - (extended check)
-  Violating EC01 - (extended check)
   Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
   Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
 Checking footprint 'RTW24_2P6X2P6_TEX':
-  Violating EC01 - (extended check)
-  Violating EC01 - (extended check)
-  Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
-  Violating F5.4 - https://klc.kicad.org/footprint/f5/f5.4/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
   Violating F6.3 - https://klc.kicad.org/footprint/f6/f6.3/
 Checking footprint 'SOT230P700X180-4N':
