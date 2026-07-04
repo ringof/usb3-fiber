@@ -4,7 +4,7 @@
 	(generator_version "10.0")
 	(symbol "10118194-0001LF"
 		(pin_names
-			(offset 1.016)
+			(offset 0.508)
 		)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -356,7 +356,7 @@
 			(hide yes)
 		)
 		(pin_names
-			(offset 0.254)
+			(offset 0.508)
 		)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -546,8 +546,8 @@
 		(symbol "C_Spec_1_1"
 			(pin passive line
 				(at 0 3.81 270)
-				(length 2.794)
-				(name ""
+				(length 2.54)
+				(name "~"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -564,8 +564,8 @@
 			)
 			(pin passive line
 				(at 0 -3.81 90)
-				(length 2.794)
-				(name ""
+				(length 2.54)
+				(name "~"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -585,7 +585,7 @@
 	)
 	(symbol "DS100BR111SQE_NOPB"
 		(pin_names
-			(offset 1.016)
+			(offset 0.508)
 		)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1007,7 +1007,7 @@
 					)
 				)
 			)
-			(pin passive line
+			(pin power_in line
 				(at 17.78 13.97 270)
 				(length 5.08)
 				(name "VDD"
@@ -1025,7 +1025,7 @@
 					)
 				)
 			)
-			(pin passive line
+			(pin power_in line
 				(at 21.59 13.97 270)
 				(length 5.08)
 				(name "VDD"
@@ -1346,7 +1346,7 @@
 			(pin passive line
 				(at 0 2.54 270)
 				(length 1.27)
-				(name ""
+				(name "~"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -1364,7 +1364,7 @@
 			(pin passive line
 				(at 0 -2.54 90)
 				(length 1.27)
-				(name ""
+				(name "~"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -1384,7 +1384,7 @@
 	)
 	(symbol "GSB3111311HR"
 		(pin_names
-			(offset 1.016)
+			(offset 0.508)
 		)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1413,7 +1413,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "ki_keywords" "USB 3.1 Gen1 type-A receptacle connector"
+		(property "ki_keywords" "USB 3.1 Gen1 typeA receptacle connector"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1697,7 +1697,7 @@
 	)
 	(symbol "GSB4211311WEU"
 		(pin_names
-			(offset 1.016)
+			(offset 0.508)
 		)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1726,7 +1726,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "ki_keywords" "USB 3.1 Gen2 type-A receptacle connector"
+		(property "ki_keywords" "USB 3.1 Gen2 typeA receptacle connector"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1998,7 +1998,7 @@
 	)
 	(symbol "LD1086D2T33TR"
 		(pin_names
-			(offset 1.016)
+			(offset 0.508)
 		)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2027,7 +2027,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "ki_keywords" "LDO voltage regulator fixed 3.3V"
+		(property "ki_keywords" "LDO low-dropout voltage regulator fixed 3.3V"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2167,7 +2167,7 @@
 	)
 	(symbol "LD1117S33TR"
 		(pin_names
-			(offset 1.016)
+			(offset 0.508)
 		)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2196,7 +2196,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "ki_keywords" "LDO voltage regulator fixed 3.3V"
+		(property "ki_keywords" "LDO low-dropout voltage regulator fixed 3.3V"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -2354,7 +2354,7 @@
 	)
 	(symbol "MCP2221AT-I_ML"
 		(pin_names
-			(offset 1.016)
+			(offset 0.508)
 		)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -2707,6 +2707,7 @@
 			(pin no_connect line
 				(at 35.56 -7.62 180)
 				(length 5.08)
+				(hide yes)
 				(name "NC"
 					(effects
 						(font
@@ -2725,6 +2726,7 @@
 			(pin no_connect line
 				(at 35.56 -5.08 180)
 				(length 5.08)
+				(hide yes)
 				(name "NC"
 					(effects
 						(font
@@ -2934,7 +2936,7 @@
 					(type default)
 				)
 				(fill
-					(type none)
+					(type background)
 				)
 			)
 		)
@@ -2942,7 +2944,7 @@
 			(pin passive line
 				(at 0 3.81 270)
 				(length 1.27)
-				(name ""
+				(name "~"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -2960,7 +2962,7 @@
 			(pin passive line
 				(at 0 -3.81 90)
 				(length 1.27)
-				(name ""
+				(name "~"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -2980,7 +2982,7 @@
 	)
 	(symbol "U77A16382001"
 		(pin_names
-			(offset 1.016)
+			(offset 0.508)
 		)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -3227,7 +3229,7 @@
 	)
 	(symbol "UE76A202000T"
 		(pin_names
-			(offset 1.016)
+			(offset 0.508)
 		)
 		(exclude_from_sim no)
 		(in_bom yes)
