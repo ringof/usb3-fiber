@@ -78,10 +78,10 @@ kicad-cli sch export pdf "$SCH" -o "$DOCS/usb3_fiber-schematic.pdf" \
 # plot in faint pastel colors that wash out; B&W renders everything solid and
 # legible, which is what a fab/assembly drawing wants anyway.
 TMP="$(mktemp -d)"
-kicad-cli pcb export pdf "$PCB" -o "$TMP/top.pdf" \
+kicad-cli pcb export pdf "$PCB" -o "$TMP/top.pdf" --mode-single \
   --layers "F.Fab,F.Silkscreen,Edge.Cuts" --include-border-title --black-and-white \
   --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Top"
-kicad-cli pcb export pdf "$PCB" -o "$TMP/bottom.pdf" \
+kicad-cli pcb export pdf "$PCB" -o "$TMP/bottom.pdf" --mode-single \
   --layers "B.Fab,B.Silkscreen,Edge.Cuts" --mirror --include-border-title --black-and-white \
   --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Bottom"
 merge_pdf "$DOCS/usb3_fiber-assembly.pdf" "$TMP/top.pdf" "$TMP/bottom.pdf"
@@ -90,7 +90,7 @@ rm -rf "$TMP"
 # --- Fabrication / dimensions -------------------------------------------------
 # Outline + dimensions/notes (Dwgs.User/Cmts.User, incl. the fab-spec text) +
 # the Fab Notes layer (User.1, the Board Characteristics table).
-kicad-cli pcb export pdf "$PCB" -o "$DOCS/usb3_fiber-fabrication-drawing.pdf" \
+kicad-cli pcb export pdf "$PCB" -o "$DOCS/usb3_fiber-fabrication-drawing.pdf" --mode-single \
   --layers "Edge.Cuts,Dwgs.User,Cmts.User,User.1" --include-border-title --black-and-white \
   --drawing-sheet "$FAB_WKS" "${VARS[@]}" --define-var "LAYER=Fabrication"
 
