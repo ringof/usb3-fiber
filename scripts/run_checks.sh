@@ -87,10 +87,20 @@ OUT=reports bash scripts/gen_docs.sh || note "- ⚠️ document generation faile
 kibot -c usb3_fiber.kibot.yaml -e "$SCH" -b "$PCB" -d reports --skip-pre all ibom \
   || note "- ⚠️ iBOM generation failed"
 
+# KLC library audit (warning-level; never gates) — kicad-library-utils over the
+# symbol lib + footprints, cloned at runtime. Advisory: it reports but the job
+# outcome is unaffected.
+if klc_summary="$(OUT=reports bash scripts/klc_check.sh)"; then
+  note "- ℹ️ ${klc_summary}"
+else
+  note "- ⚠️ KLC audit failed to run"
+fi
+
 # --- Report detail (echoed to the run log + job summary) ----------------------
 emit_report "ERC report (erc.rpt)" reports/erc.rpt
 emit_report "DRC report (drc.rpt)" reports/drc.rpt
 emit_report "BOM completeness (bom_check.txt)" reports/bom_check.txt
+emit_report "KLC library audit (klc.txt)" reports/klc.txt
 
 # --- Verdict ------------------------------------------------------------------
 if [ "$fail" -ne 0 ]; then
