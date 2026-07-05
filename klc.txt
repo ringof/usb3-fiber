@@ -9,8 +9,6 @@ Checking component 'usb3_fiber:C_Spec':
   Violating S5.1 - https://klc.kicad.org/symbol/s5/s5.1/
   Violating S6.2 - https://klc.kicad.org/symbol/s6/s6.2/
 Checking component 'usb3_fiber:DS100BR111SQE_NOPB':
-  Violating S3.1 - https://klc.kicad.org/symbol/s3/s3.1/
-  Violating S4.1 - https://klc.kicad.org/symbol/s4/s4.1/
   Violating S4.2 - https://klc.kicad.org/symbol/s4/s4.2/
   Violating S6.2 - https://klc.kicad.org/symbol/s6/s6.2/
 Checking component 'usb3_fiber:FB_Spec':
