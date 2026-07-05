@@ -3,9 +3,6 @@
 	(generator "kicad_symbol_editor")
 	(generator_version "10.0")
 	(symbol "10118194-0001LF"
-		(pin_names
-			(offset 0.508)
-		)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -31,28 +28,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left bottom)
-			)
-		)
-		(property "ki_keywords" "USB micro-B receptacle connector"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "ki_fp_filters" "AMPHENOL?10118194?0001LF*"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
 			)
 		)
 		(property "Footprint" "usb3_fiber:AMPHENOL_10118194-0001LF"
@@ -136,6 +111,28 @@
 					(size 1.27 1.27)
 				)
 				(justify bottom)
+			)
+		)
+		(property "ki_keywords" "USB micro-B receptacle connector"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "AMPHENOL?10118194?0001LF*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(symbol "10118194-0001LF_0_0"
@@ -354,9 +351,6 @@
 	(symbol "C_Spec"
 		(pin_numbers
 			(hide yes)
-		)
-		(pin_names
-			(offset 0.508)
 		)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -584,16 +578,13 @@
 		(embedded_fonts no)
 	)
 	(symbol "DS100BR111SQE_NOPB"
-		(pin_names
-			(offset 0.508)
-		)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(in_pos_files yes)
 		(duplicate_pin_numbers_are_jumpers no)
 		(property "Reference" "U"
-			(at 4.826 10.16 0)
+			(at -12.954 32.004 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -604,7 +595,7 @@
 			)
 		)
 		(property "Value" "DS100BR111SQE/NOPB"
-			(at 4.572 -51.054 0)
+			(at -13.208 -30.734 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -615,7 +606,7 @@
 			)
 		)
 		(property "Footprint" "usb3_fiber:RTW24_2P6X2P6_TEX"
-			(at 47.244 7.874 0)
+			(at 29.464 28.194 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
@@ -627,7 +618,7 @@
 			)
 		)
 		(property "Datasheet" "https://www.ti.com/lit/gpn/ds100br111"
-			(at 51.562 5.334 0)
+			(at 33.782 23.114 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
@@ -639,7 +630,7 @@
 			)
 		)
 		(property "Description" "IC REDRIVER SATA 2CH 24WQFN"
-			(at 47.498 9.906 0)
+			(at 29.718 30.226 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(hide yes)
@@ -673,8 +664,8 @@
 		)
 		(symbol "DS100BR111SQE_NOPB_0_1"
 			(rectangle
-				(start 5.08 8.89)
-				(end 30.48 -48.26)
+				(start -12.7 27.94)
+				(end 12.7 -27.94)
 				(stroke
 					(width 0.254)
 					(type default)
@@ -684,7 +675,7 @@
 				)
 			)
 			(pin input line
-				(at 0 -22.86 0)
+				(at -17.78 -2.54 0)
 				(length 5.08)
 				(name "ENSMB"
 					(effects
@@ -702,7 +693,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 0 -15.24 0)
+				(at -17.78 5.08 0)
 				(length 5.08)
 				(name "SDA/DEMA"
 					(effects
@@ -720,7 +711,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 0 -17.78 0)
+				(at -17.78 2.54 0)
 				(length 5.08)
 				(name "SCL/DEMB"
 					(effects
@@ -738,7 +729,7 @@
 				)
 			)
 			(pin input line
-				(at 0 -25.4 0)
+				(at -17.78 -5.08 0)
 				(length 5.08)
 				(name "TX_DIS"
 					(effects
@@ -756,7 +747,7 @@
 				)
 			)
 			(pin output line
-				(at 35.56 0 180)
+				(at 17.78 20.32 180)
 				(length 5.08)
 				(name "OUTA+"
 					(effects
@@ -774,7 +765,7 @@
 				)
 			)
 			(pin output line
-				(at 35.56 -2.54 180)
+				(at 17.78 17.78 180)
 				(length 5.08)
 				(name "OUTA-"
 					(effects
@@ -792,7 +783,7 @@
 				)
 			)
 			(pin input line
-				(at 0 -44.45 0)
+				(at -17.78 -25.4 0)
 				(length 5.08)
 				(name "AD1/EQA1"
 					(effects
@@ -810,7 +801,7 @@
 				)
 			)
 			(pin input line
-				(at 0 -41.91 0)
+				(at -17.78 -22.86 0)
 				(length 5.08)
 				(name "AD0/EQA0"
 					(effects
@@ -828,7 +819,7 @@
 				)
 			)
 			(pin input line
-				(at 35.56 -7.62 180)
+				(at 17.78 12.7 180)
 				(length 5.08)
 				(name "INB+"
 					(effects
@@ -846,7 +837,7 @@
 				)
 			)
 			(pin input line
-				(at 35.56 -10.16 180)
+				(at 17.78 10.16 180)
 				(length 5.08)
 				(name "INB-"
 					(effects
@@ -864,7 +855,7 @@
 				)
 			)
 			(pin output line
-				(at 35.56 -20.32 180)
+				(at 17.78 0 180)
 				(length 5.08)
 				(name "LOS"
 					(effects
@@ -882,7 +873,7 @@
 				)
 			)
 			(pin input line
-				(at 0 -30.48 0)
+				(at -17.78 -10.16 0)
 				(length 5.08)
 				(name "SD_TH"
 					(effects
@@ -899,26 +890,8 @@
 					)
 				)
 			)
-			(pin power_in line
-				(at 13.97 13.97 270)
-				(length 5.08)
-				(name "VIN"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "15"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
 			(pin input line
-				(at 0 -27.94 0)
+				(at -17.78 -7.62 0)
 				(length 5.08)
 				(name "VDD_SEL"
 					(effects
@@ -936,7 +909,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 35.56 -33.02 180)
+				(at 17.78 -12.7 180)
 				(length 5.08)
 				(name "VOD_SEL/~{READEN}"
 					(effects
@@ -954,7 +927,7 @@
 				)
 			)
 			(pin bidirectional line
-				(at 35.56 -35.56 180)
+				(at 17.78 -15.24 180)
 				(length 5.08)
 				(name "MODE/~{DONE}"
 					(effects
@@ -972,7 +945,7 @@
 				)
 			)
 			(pin output line
-				(at 0 -10.16 0)
+				(at -17.78 10.16 0)
 				(length 5.08)
 				(name "OUTB-"
 					(effects
@@ -990,7 +963,7 @@
 				)
 			)
 			(pin output line
-				(at 0 -7.62 0)
+				(at -17.78 12.7 0)
 				(length 5.08)
 				(name "OUTB+"
 					(effects
@@ -1007,44 +980,8 @@
 					)
 				)
 			)
-			(pin power_in line
-				(at 17.78 13.97 270)
-				(length 5.08)
-				(name "VDD"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "21"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
-			(pin power_in line
-				(at 21.59 13.97 270)
-				(length 5.08)
-				(name "VDD"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-				(number "22"
-					(effects
-						(font
-							(size 1.27 1.27)
-						)
-					)
-				)
-			)
 			(pin input line
-				(at 0 -2.54 0)
+				(at -17.78 17.78 0)
 				(length 5.08)
 				(name "INA-"
 					(effects
@@ -1062,7 +999,7 @@
 				)
 			)
 			(pin input line
-				(at 0 0 0)
+				(at -17.78 20.32 0)
 				(length 5.08)
 				(name "INA+"
 					(effects
@@ -1080,7 +1017,7 @@
 				)
 			)
 			(pin power_in line
-				(at 35.56 -45.72 180)
+				(at 17.78 -25.4 180)
 				(length 5.08)
 				(name "GND"
 					(effects
@@ -1100,7 +1037,7 @@
 		)
 		(symbol "DS100BR111SQE_NOPB_1_1"
 			(pin input line
-				(at 0 -36.83 0)
+				(at -17.78 -17.78 0)
 				(length 5.08)
 				(name "AD3/EQB0"
 					(effects
@@ -1118,7 +1055,7 @@
 				)
 			)
 			(pin input line
-				(at 0 -39.37 0)
+				(at -17.78 -20.32 0)
 				(length 5.08)
 				(name "AD2/EQB1"
 					(effects
@@ -1128,6 +1065,60 @@
 					)
 				)
 				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at -5.08 33.02 270)
+				(length 5.08)
+				(name "VIN"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "15"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at 0 33.02 270)
+				(length 5.08)
+				(name "VDD"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "21"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at 5.08 33.02 270)
+				(length 5.08)
+				(name "VDD"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "22"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -1383,9 +1374,6 @@
 		(embedded_fonts no)
 	)
 	(symbol "GSB3111311HR"
-		(pin_names
-			(offset 0.508)
-		)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -1411,28 +1399,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left bottom)
-			)
-		)
-		(property "ki_keywords" "USB 3.1 Gen1 typeA receptacle connector"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "ki_fp_filters" "AMPHENOL?GSB3111311HR*"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
 			)
 		)
 		(property "Footprint" "usb3_fiber:AMPHENOL_GSB3111311HR"
@@ -1480,6 +1446,28 @@
 					(size 1.27 1.27)
 				)
 				(justify bottom)
+			)
+		)
+		(property "ki_keywords" "USB 3.1 Gen1 typeA receptacle connector"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "AMPHENOL?GSB3111311HR*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(symbol "GSB3111311HR_0_0"
@@ -1696,9 +1684,6 @@
 		(embedded_fonts no)
 	)
 	(symbol "GSB4211311WEU"
-		(pin_names
-			(offset 0.508)
-		)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -1726,28 +1711,6 @@
 				(justify left bottom)
 			)
 		)
-		(property "ki_keywords" "USB 3.1 Gen2 typeA receptacle connector"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "ki_fp_filters" "AMPHENOL?GSB4211311WEU*"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 		(property "Footprint" "usb3_fiber:AMPHENOL_GSB4211311WEU"
 			(at 11.176 -27.686 0)
 			(show_name no)
@@ -1773,6 +1736,28 @@
 			)
 		)
 		(property "Description" "CONN RCPT USB3.1 TYPEB 9POS R/A"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "USB 3.1 Gen2 typeA receptacle connector"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "AMPHENOL?GSB4211311WEU*"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -1997,9 +1982,6 @@
 		(embedded_fonts no)
 	)
 	(symbol "LD1086D2T33TR"
-		(pin_names
-			(offset 0.508)
-		)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -2025,28 +2007,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left bottom)
-			)
-		)
-		(property "ki_keywords" "LDO low-dropout voltage regulator fixed 3.3V"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "ki_fp_filters" "D2PAK?STM*"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
 			)
 		)
 		(property "Footprint" "usb3_fiber:D2PAK_STM"
@@ -2094,6 +2054,28 @@
 					(size 1.27 1.27)
 				)
 				(justify bottom)
+			)
+		)
+		(property "ki_keywords" "LDO low-dropout voltage regulator fixed 3.3V"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "D2PAK?STM*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(symbol "LD1086D2T33TR_0_0"
@@ -2166,9 +2148,6 @@
 		(embedded_fonts no)
 	)
 	(symbol "LD1117S33TR"
-		(pin_names
-			(offset 0.508)
-		)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -2194,28 +2173,6 @@
 					(size 1.27 1.27)
 				)
 				(justify left bottom)
-			)
-		)
-		(property "ki_keywords" "LDO low-dropout voltage regulator fixed 3.3V"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "ki_fp_filters" "SOT230P700X180?4N*"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
 			)
 		)
 		(property "Footprint" "usb3_fiber:SOT230P700X180-4N"
@@ -2263,6 +2220,28 @@
 					(size 1.27 1.27)
 				)
 				(justify bottom)
+			)
+		)
+		(property "ki_keywords" "LDO low-dropout voltage regulator fixed 3.3V"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "SOT230P700X180?4N*"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
 			)
 		)
 		(symbol "LD1117S33TR_0_0"
@@ -2353,9 +2332,6 @@
 		(embedded_fonts no)
 	)
 	(symbol "MCP2221AT-I_ML"
-		(pin_names
-			(offset 0.508)
-		)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -2981,9 +2957,6 @@
 		(embedded_fonts no)
 	)
 	(symbol "U77A16382001"
-		(pin_names
-			(offset 0.508)
-		)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -3011,28 +2984,6 @@
 				(justify left bottom)
 			)
 		)
-		(property "ki_keywords" "SFP+ cage receptacle connector optical"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "ki_fp_filters" "AMPHENOL?U77A16382001*"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 		(property "Footprint" "usb3_fiber:AMPHENOL_U77A16382001"
 			(at 0 0 0)
 			(show_name no)
@@ -3058,6 +3009,28 @@
 			)
 		)
 		(property "Description" "EXPRESSPORT SFP + CAGE"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "SFP+ cage receptacle connector optical"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "AMPHENOL?U77A16382001*"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -3228,9 +3201,6 @@
 		(embedded_fonts no)
 	)
 	(symbol "UE76A202000T"
-		(pin_names
-			(offset 0.508)
-		)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -3258,28 +3228,6 @@
 				(justify left bottom)
 			)
 		)
-		(property "ki_keywords" "SFP+ 20-position receptacle connector"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "ki_fp_filters" "AMPHENOL?UE76A202000T*"
-			(at 0 0 0)
-			(show_name no)
-			(do_not_autoplace no)
-			(hide yes)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
 		(property "Footprint" "usb3_fiber:AMPHENOL_UE76A202000T"
 			(at 3.81 -26.67 0)
 			(show_name no)
@@ -3305,6 +3253,28 @@
 			)
 		)
 		(property "Description" "CONN SFP+ RCPT 20POS SLD R/A SMD"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_keywords" "SFP+ 20-position receptacle connector"
+			(at 0 0 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(hide yes)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "ki_fp_filters" "AMPHENOL?UE76A202000T*"
 			(at 0 0 0)
 			(show_name no)
 			(do_not_autoplace no)
