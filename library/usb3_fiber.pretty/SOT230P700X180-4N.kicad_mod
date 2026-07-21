@@ -1,15 +1,17 @@
 (footprint "SOT230P700X180-4N"
-	(version 20240108)
+	(version 20260206)
 	(generator "pcbnew")
-	(generator_version "8.0")
+	(generator_version "10.0")
 	(layer "F.Cu")
+	(descr "SOT-223 (ST LD1117), https://www.st.com/resource/en/datasheet/ld1117.pdf")
+	(tags "SOT-223 LDO regulator")
 	(property "Reference" "REF**"
 		(at 0.63544 -4.49892 0)
 		(layer "F.SilkS")
 		(uuid "763808b0-f70b-4018-9b18-98c8c6a3f320")
 		(effects
 			(font
-				(size 1.000693 1.000693)
+				(size 1 1)
 				(thickness 0.15)
 			)
 		)
@@ -20,19 +22,7 @@
 		(uuid "6fa8eb78-0a2b-4d4e-b2eb-c62799f7035c")
 		(effects
 			(font
-				(size 1.000465 1.000465)
-				(thickness 0.15)
-			)
-		)
-	)
-	(property "Footprint" ""
-		(at 0 0 0)
-		(layer "F.Fab")
-		(hide yes)
-		(uuid "5fa0ea38-6c33-4767-8a64-997fe4e32ad9")
-		(effects
-			(font
-				(size 1.27 1.27)
+				(size 1 1)
 				(thickness 0.15)
 			)
 		)
@@ -62,11 +52,12 @@
 		)
 	)
 	(attr smd)
+	(duplicate_pad_numbers_are_jumpers no)
 	(fp_line
 		(start -1.5 -3.25)
 		(end 1.5 -3.25)
 		(stroke
-			(width 0.15)
+			(width 0.12)
 			(type solid)
 		)
 		(layer "F.SilkS")
@@ -76,7 +67,7 @@
 		(start -1.5 3.25)
 		(end -1.5 -3.25)
 		(stroke
-			(width 0.15)
+			(width 0.12)
 			(type solid)
 		)
 		(layer "F.SilkS")
@@ -86,7 +77,7 @@
 		(start 1.5 -3.25)
 		(end 1.5 3.25)
 		(stroke
-			(width 0.15)
+			(width 0.12)
 			(type solid)
 		)
 		(layer "F.SilkS")
@@ -96,7 +87,7 @@
 		(start 1.5 3.25)
 		(end -1.5 3.25)
 		(stroke
-			(width 0.15)
+			(width 0.12)
 			(type solid)
 		)
 		(layer "F.SilkS")
@@ -106,10 +97,10 @@
 		(center -3.175 -3.683)
 		(end -3.048 -3.683)
 		(stroke
-			(width 0.15)
+			(width 0.12)
 			(type solid)
 		)
-		(fill none)
+		(fill no)
 		(layer "F.SilkS")
 		(uuid "c45ba260-61ca-4159-a3c3-aea27ea9d3da")
 	)
@@ -198,10 +189,10 @@
 			(xy -1.80657 -2.74637) (xy -1.80657 -1.87836) (xy -3.65884 -1.87836) (xy -3.65884 -2.74637)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
-		(fill solid)
+		(fill yes)
 		(layer "F.Fab")
 		(uuid "6aa70e60-1e76-4e38-8cfa-e145346eabd9")
 	)
@@ -210,10 +201,10 @@
 			(xy -1.805155 -2.744955) (xy -1.805155 -1.878915) (xy -3.658285 -1.878915) (xy -3.658285 -2.744955)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
-		(fill solid)
+		(fill yes)
 		(layer "F.Fab")
 		(uuid "4deab255-f63e-49c2-ba1d-eba6759d7ebd")
 	)
@@ -222,10 +213,10 @@
 			(xy -1.805128 -0.433528) (xy -1.805128 0.434962) (xy -3.660762 0.434962) (xy -3.660762 -0.433528)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
-		(fill solid)
+		(fill yes)
 		(layer "F.Fab")
 		(uuid "d439e6dd-141e-4e90-9e90-aff36706e961")
 	)
@@ -234,10 +225,10 @@
 			(xy -1.804206 -0.432606) (xy -1.804206 0.433275) (xy -3.659075 0.433275) (xy -3.659075 -0.432606)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
-		(fill solid)
+		(fill yes)
 		(layer "F.Fab")
 		(uuid "8aa5c642-7b6f-4be0-886f-fa3b5e53154f")
 	)
@@ -246,10 +237,10 @@
 			(xy -1.803395 1.879605) (xy -1.803395 2.743895) (xy -3.658295 2.743895) (xy -3.658295 1.879605)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
-		(fill solid)
+		(fill yes)
 		(layer "F.Fab")
 		(uuid "6f70af31-04e8-4a6b-b4b5-44974a6a626c")
 	)
@@ -258,10 +249,10 @@
 			(xy -1.80337 1.87963) (xy -1.80337 2.74571) (xy -3.66011 2.74571) (xy -3.66011 1.87963)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
-		(fill solid)
+		(fill yes)
 		(layer "F.Fab")
 		(uuid "396690bf-ed06-414a-80e8-e954946f488d")
 	)
@@ -270,10 +261,10 @@
 			(xy 3.658912 -1.598888) (xy 3.658912 1.600072) (xy 1.803528 1.600072) (xy 1.803528 -1.598888)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
-		(fill solid)
+		(fill yes)
 		(layer "F.Fab")
 		(uuid "98c3df1c-60cb-403f-9a8a-26fec182019a")
 	)
@@ -282,10 +273,10 @@
 			(xy 3.659558 -1.598242) (xy 3.659558 1.600008) (xy 1.803592 1.600008) (xy 1.803592 -1.598242)
 		)
 		(stroke
-			(width 0.01)
+			(width 0.1)
 			(type solid)
 		)
-		(fill solid)
+		(fill yes)
 		(layer "F.Fab")
 		(uuid "d1affba8-9d94-425d-a8e4-21c03705ec66")
 	)
@@ -300,34 +291,39 @@
 			)
 		)
 	)
-	(pad "1" smd rect
+	(pad "1" smd roundrect
 		(at -2.9 -2.3)
 		(size 2.15 1)
-		(layers "F.Cu" "F.Paste" "F.Mask")
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
 		(solder_mask_margin 0.102)
 		(uuid "a7d8eb9c-3eaf-40b5-818e-a96bbf0f0a7f")
 	)
-	(pad "2" smd rect
+	(pad "2" smd roundrect
 		(at -2.9 0)
 		(size 2.15 1)
-		(layers "F.Cu" "F.Paste" "F.Mask")
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
 		(solder_mask_margin 0.102)
 		(uuid "40e65eda-f295-42a5-8af0-c9492d09dd56")
 	)
-	(pad "3" smd rect
+	(pad "3" smd roundrect
 		(at -2.9 2.3)
 		(size 2.15 1)
-		(layers "F.Cu" "F.Paste" "F.Mask")
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
 		(solder_mask_margin 0.102)
 		(uuid "935356e6-f899-4a2c-9cf6-eb6deacd088a")
 	)
-	(pad "4" smd rect
+	(pad "4" smd roundrect
 		(at 2.9 0)
 		(size 2.15 3.25)
-		(layers "F.Cu" "F.Paste" "F.Mask")
+		(layers "F.Cu" "F.Mask" "F.Paste")
+		(roundrect_rratio 0.25)
 		(solder_mask_margin 0.102)
 		(uuid "a0f29f4c-5afe-44fc-8cf2-da30f71b4ca2")
 	)
+	(embedded_fonts no)
 	(model "${KIPRJMOD}/library/3dmodels/SOT230P700X180-4N.step"
 		(offset
 			(xyz 0 0 0)
