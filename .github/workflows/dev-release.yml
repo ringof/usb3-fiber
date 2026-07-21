@@ -1,41 +1,43 @@
-name: main-release
+name: dev-release
 
-# Full fabrication/design package + GitHub Release, with build-time revision
-# and git-hash injection.
+# Pre-release pipeline for the dev lane -- the sibling of main-release.
 #
-# Runs on every merge to main (and can be dispatched manually). A new revision
-# is published ONLY when a design file changed since the last PRODUCTION release;
-# docs / CI / script-only merges are a no-op. GIT_HASH is stamped from the last
-# commit that touched a design file, so it stays truthful and stable across
-# doc-only commits. See docs/RELEASE_STRATEGY.md.
+# Runs on every merge to dev. Publishes/refreshes a GitHub *pre-release* only
+# when a design file changed since the last release (of any kind); docs / CI /
+# script-only merges are a no-op.
 #
-# Versioning (semver): every production release is a whole MAJOR bump -- first
-# ever -> v1.0, then v2.0, v3.0, ... The v0.x / v1.x / v2.x PRE-releases live on
-# the dev lane (dev-release.yml) as GitHub *pre-releases* and are ignored here.
-# The policy lives once in scripts/next_version.sh (unit-tested by
-# scripts/test_next_version.sh) and is shared by both lanes so they can't drift.
+# Versioning (semver): a minor increment within the CURRENT major line, whose
+# major follows the latest PRODUCTION (main) release -- 0 while pre-1.0. The
+# first pre-release ever seeds at v0.1; the first pre-release after a main vX.0
+# starts at vX.1. This lane does NOT retire at 1.0 -- after main ships 1.0 it
+# keeps iterating the 1.x line toward the next production spin (2.0), then 2.x,
+# and so on. The policy lives once in scripts/next_version.sh (unit-tested by
+# scripts/test_next_version.sh) and is shared with main-release so the two lanes
+# can't drift. See docs/RELEASE_STRATEGY.md.
 #
-# Dispatch with dry_run=true to build the full turnkey package and upload it as
-# run artifacts WITHOUT publishing a release -- for validating the pipeline
-# (e.g. the KiBot build) before committing to a real release.
+# GIT_HASH is stamped from the last commit that touched a design file. Provenance
+# is injected at build time only.
+#
+# Dispatch with dry_run=true to build the package as run artifacts without
+# publishing; with version=0.7 to force a specific pre-release number.
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
   workflow_dispatch:
     inputs:
       version:
-        description: "Force-publish this version, e.g. 2.0 (blank = automatic next major)"
+        description: "Force this pre-release, e.g. 0.7 (blank = automatic minor bump)"
         required: false
         default: ""
       dry_run:
-        description: "Build the package + upload as run artifacts, but do NOT publish a release"
+        description: "Build the package + upload as run artifacts, but do NOT publish"
         type: boolean
         required: false
         default: false
 
 concurrency:
-  group: main-release
+  group: dev-release-${{ github.ref }}
   cancel-in-progress: false
 
 permissions:
@@ -54,7 +56,7 @@ jobs:
         with:
           fetch-depth: 0
           fetch-tags: true
-      - name: Determine version & whether to publish
+      - name: Determine pre-release version & whether to publish
         id: rev
         env:
           GH_TOKEN: ${{ github.token }}
@@ -62,76 +64,53 @@ jobs:
           DRY_RUN: ${{ github.event.inputs.dry_run }}
         run: |
           set -euo pipefail
-          # Design files — changes here (and only here) trigger an uprev.
-          # Docs, workflows, scripts, and *.kicad_prl (UI state) do not.
-          #
-          # Root board files are listed EXPLICITLY, not as '*.kicad_pcb' globs.
-          # A bare glob is a git pathspec that matches at ANY depth, so once a
-          # sibling KiCad project lands under mechanical/ (enclosure / end
-          # plates), an edit to a panel or case board would false-trigger a
-          # board release. 'library/' and the two lib-tables are root-anchored
-          # path prefixes (not any-depth globs), so they stay as-is — and
-          # 'library/' still covers library/usb3_fiber.kicad_sym and the STEP
-          # models under library/3dmodels/.
+          # Root board files ONLY -- changes here (and only here) trigger an
+          # uprev. Listed explicitly (not '*.kicad_pcb' globs, which match at any
+          # depth) so a future sibling project under mechanical/ can't false-
+          # trigger a board release. 'library/' + the lib-tables are root-anchored
+          # path prefixes; 'library/' covers the .kicad_sym and library/3dmodels/.
           DESIGN=('usb3_fiber.kicad_sch' 'usb3_fiber.kicad_pcb'
                   'usb3_fiber.kicad_pro' 'usb3_fiber.kicad_dru'
                   'library/' 'fp-lib-table' 'sym-lib-table')
-
-          # GIT_HASH = last commit that touched a design file, so the stamp
-          # always names the commit that defines the released design and does
-          # not drift on doc-only commits.
           githash=$(git log -1 --format=%h -- "${DESIGN[@]}")
 
           # All semver releases, newest-first: "<tag> <isPrerelease>". Scoped to
-          # v<MAJOR>.<MINOR> tags so legacy alpha tags (revA/B/C) can't poison the
-          # version math. Feeds the shared policy in scripts/next_version.sh:
-          # main advances to the next whole major .0; dev pre-releases (marked
-          # prerelease) never affect the main number.
+          # v<MAJOR>.<MINOR> so legacy alpha tags (revA/B/C) are ignored. Feeds
+          # the shared policy in scripts/next_version.sh.
           releases=$(gh release list --repo "$GITHUB_REPOSITORY" --limit 100 \
                        --json tagName,isPrerelease \
                        --jq '.[] | "\(.tagName) \(.isPrerelease)"' 2>/dev/null \
                        | grep -E '^v[0-9]+\.[0-9]+ ' || true)
-          # Latest PRODUCTION (non-prerelease) release = base for change
-          # detection. dev-lane pre-releases never gate a production spin.
-          latest_main=$(printf '%s\n' "$releases" | awk '$2=="false"{print $1; exit}')
+          # Most recent release of ANY kind = base for change detection.
+          latest_tag=$(printf '%s\n' "$releases" | awk 'NF{print $1; exit}')
 
-          # Compute version + publish once (no early exits), so the dry-run
-          # override below can adjust the decision uniformly.
           changed=""
           if [ -n "${OVERRIDE:-}" ]; then
             revision="$OVERRIDE"; publish=true
-            reason="Manual override → v$revision"
-          elif [ -z "$latest_main" ]; then
-            # First production release → v1.0 (promotion of the current design;
-            # always publishes, even if design is unchanged since a pre-release).
-            revision=$(printf '%s' "$releases" | bash scripts/next_version.sh main)
+            reason="Manual override -> v$revision (pre-release)"
+          elif [ -z "$latest_tag" ]; then
+            # First release anywhere: seed the pre-release line at v0.1.
+            revision=$(printf '%s' "$releases" | bash scripts/next_version.sh dev 0.1)
             publish=true
-            reason="No prior production release → v$revision"
+            reason="No prior release -> seed v$revision (pre-release)"
           else
-            base=$(git rev-list -1 "$latest_main")
+            base=$(git rev-list -1 "$latest_tag")
             changed=$(git diff --name-only "$base"..HEAD -- "${DESIGN[@]}" || true)
             if [ -n "$changed" ]; then
-              # Next whole major .0 (2.0, 3.0, …). Every production release is a major.
-              revision=$(printf '%s' "$releases" | bash scripts/next_version.sh main)
+              revision=$(printf '%s' "$releases" | bash scripts/next_version.sh dev 0.1)
               publish=true
-              reason="Design changed since $latest_main → v$revision"
+              reason="Design changed since $latest_tag -> v$revision (pre-release)"
             else
-              revision="${latest_main#v}"; publish=false
-              reason="No design change since $latest_main → no new release (docs / CI-only merge)"
+              revision="${latest_tag#v}"; publish=false
+              reason="No design change since $latest_tag -> no new pre-release (docs / CI-only merge)"
             fi
           fi
 
-          # By default the build job runs exactly when we publish.
           build="$publish"
-
-          # Dry run: build the package + upload artifacts for inspection, but
-          # never publish a release. Forces a build even when there is no design
-          # change, so the turnkey pipeline can be exercised on demand.
           if [ "${DRY_RUN:-false}" = "true" ]; then
-            publish=false
-            build=true
+            publish=false; build=true
             [ -n "$revision" ] || revision="DRYRUN"
-            reason="DRY RUN → build package for v${revision}, skip publish"
+            reason="DRY RUN -> build pre-release package for v${revision}, skip publish"
           fi
 
           {
@@ -182,16 +161,16 @@ jobs:
       - name: Package release assets
         run: |
           set -euo pipefail
-          # Stable asset names (no version/hash) so /releases/latest/download/<name>
-          # links stay valid across production revisions. docs/ comes from
-          # gen_docs.sh (kicad-cli framed PDFs); JLCPCB/gerbers/ from KiBot.
+          # Stable asset names (no version/hash in the filename), same set as the
+          # production lane. docs/ comes from gen_docs.sh (framed kicad-cli PDFs);
+          # JLCPCB/gerbers/ from KiBot.
           cp out/docs/usb3_fiber-schematic.pdf           usb3_fiber-schematic.pdf
           cp out/docs/usb3_fiber-assembly.pdf            usb3_fiber-assembly.pdf
           cp out/docs/usb3_fiber-fabrication-drawing.pdf usb3_fiber-fabrication-drawing.pdf
           ( cd out/JLCPCB/gerbers && zip -qr ../../../usb3_fiber-gerbers.zip . )
           ( cd out && zip -qr ../usb3_fiber-fabrication.zip . )
           ls -la
-      - name: Publish GitHub Release
+      - name: Publish GitHub pre-release
         env:
           GH_TOKEN: ${{ github.token }}
           REV: ${{ needs.prepare.outputs.revision }}
@@ -200,16 +179,17 @@ jobs:
           set -euo pipefail
           FILES=(usb3_fiber-fabrication.zip usb3_fiber-gerbers.zip usb3_fiber-schematic.pdf
                  usb3_fiber-assembly.pdf usb3_fiber-fabrication-drawing.pdf)
-          NOTES="Fabrication and design package for v${REV} (design commit ${SHA}). Auto-generated by main-release CI."
-          # Idempotent: create the release, or refresh assets if it already
+          NOTES="Pre-release fabrication and design package for v${REV} (design commit ${SHA}). Auto-generated by dev-release CI."
+          # Idempotent: create the pre-release, or refresh assets if it already
           # exists (e.g. a manual override re-publishing an existing version).
           if gh release view "v${REV}" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             gh release upload "v${REV}" "${FILES[@]}" --repo "$GITHUB_REPOSITORY" --clobber
-            gh release edit   "v${REV}" --repo "$GITHUB_REPOSITORY" --title "v${REV}" --notes "$NOTES"
+            gh release edit   "v${REV}" --repo "$GITHUB_REPOSITORY" --prerelease \
+              --title "v${REV} (pre-release)" --notes "$NOTES"
           else
             gh release create "v${REV}" "${FILES[@]}" \
-              --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
-              --title "v${REV}" --notes "$NOTES"
+              --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease \
+              --title "v${REV} (pre-release)" --notes "$NOTES"
           fi
 
           # Self-cleaning: drop any assets not in the current stable set, so a
