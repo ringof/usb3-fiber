@@ -1,4 +1,4 @@
-CI docs for dev-klc-compliance
+CI docs for dev-klc-outputdiff
 
-Source: dev-klc-compliance @ 4f9cddb8ee9c673a427976af9eb7e0c0d3147c9c
-Run: https://github.com/ringof/usb3-fiber/actions/runs/28746563989
+Source: dev-klc-outputdiff @ 9df4dcb774bf428d95d2f9cd66eb89ec2725db83
+Run: https://github.com/ringof/usb3-fiber/actions/runs/29802401123

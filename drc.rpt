@@ -1,5 +1,5 @@
 ** Drc report for usb3_fiber.kicad_pcb **
-** Created on 2026-07-05T16:00:55 **
+** Created on 2026-07-21T04:52:54 **
 ** Report includes: Errors **
 
 ** Found 53 DRC violations **
@@ -37,10 +37,6 @@
     @(122.6500 mm, 118.0375 mm): Pad 1 [/D-_3] of JP2 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(150.4600 mm, 93.7325 mm): Pad 2 [Net-(J2-VccT)] of C6 on F.Cu
-    @(152.0000 mm, 93.8475 mm): PTH pad SH1 [GND] of J1
-[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
-    Rule: board setup solder mask min width; error
     @(149.5000 mm, 93.8475 mm): NPTH pad of J1
     @(148.5600 mm, 93.7325 mm): Pad 1 [GND] of C6 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
@@ -49,11 +45,15 @@
     @(150.4600 mm, 93.7325 mm): Pad 2 [Net-(J2-VccT)] of C6 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(154.4350 mm, 88.2325 mm): Pad 1 [Net-(J2-VccT)] of FB1 on F.Cu
-    @(155.6000 mm, 89.0375 mm): Pad [<no net>] of FID2 on F.Cu
+    @(150.4600 mm, 93.7325 mm): Pad 2 [Net-(J2-VccT)] of C6 on F.Cu
+    @(152.0000 mm, 93.8475 mm): PTH pad SH1 [GND] of J1
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
+    @(155.6000 mm, 89.0375 mm): Pad [<no net>] of FID2 on F.Cu
     @(156.0100 mm, 88.2325 mm): Pad 2 [+3.3V] of FB1 on F.Cu
+[solder_mask_bridge]: Front solder mask aperture bridges items with different nets
+    Rule: board setup solder mask min width; error
+    @(154.4350 mm, 88.2325 mm): Pad 1 [Net-(J2-VccT)] of FB1 on F.Cu
     @(155.6000 mm, 89.0375 mm): Pad [<no net>] of FID2 on F.Cu
 [unresolved_variable]: Unresolved text variable
     Local override; error
@@ -111,22 +111,22 @@
     Rule: netclass 'Power'; error
     @(130.7423 mm, 114.5625 mm): Pad 8 [unconnected-(U1-GP3-Pad8)] of U1 on F.Cu
     @(128.8500 mm, 115.5375 mm): Pad 17 [GND] of U1 on F.Cu
-[clearance]: Clearance violation (netclass 'Power' clearance 0.2000 mm; actual 0.1016 mm)
-    Rule: netclass 'Power'; error
-    @(129.8250 mm, 113.6452 mm): Pad 9 [/SCL] of U1 on F.Cu
-    @(128.8500 mm, 115.5375 mm): Pad 17 [GND] of U1 on F.Cu
 [hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
     Rule: board setup constraints hole; error
     @(148.5600 mm, 93.7325 mm): Pad 1 [GND] of C6 on F.Cu
     @(149.5000 mm, 93.8475 mm): NPTH pad of J1
 [clearance]: Clearance violation (netclass 'Power' clearance 0.2000 mm; actual 0.1016 mm)
     Rule: netclass 'Power'; error
-    @(129.1750 mm, 113.6452 mm): Pad 10 [/SDA] of U1 on F.Cu
+    @(129.8250 mm, 113.6452 mm): Pad 9 [/SCL] of U1 on F.Cu
     @(128.8500 mm, 115.5375 mm): Pad 17 [GND] of U1 on F.Cu
 [clearance]: Clearance violation (netclass 'Power' clearance 0.2000 mm; actual 0.0400 mm)
     Rule: netclass 'Power'; error
     @(150.4600 mm, 93.7325 mm): Pad 2 [Net-(J2-VccT)] of C6 on F.Cu
     @(152.0000 mm, 93.8475 mm): PTH pad SH1 [GND] of J1
+[clearance]: Clearance violation (netclass 'Power' clearance 0.2000 mm; actual 0.1016 mm)
+    Rule: netclass 'Power'; error
+    @(129.1750 mm, 113.6452 mm): Pad 10 [/SDA] of U1 on F.Cu
+    @(128.8500 mm, 115.5375 mm): Pad 17 [GND] of U1 on F.Cu
 [hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
     Rule: board setup constraints hole; error
     @(150.4600 mm, 93.7325 mm): Pad 2 [Net-(J2-VccT)] of C6 on F.Cu
