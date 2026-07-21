@@ -1,5 +1,5 @@
 ** Drc report for usb3_fiber.kicad_pcb **
-** Created on 2026-07-21T04:52:54 **
+** Created on 2026-07-21T04:53:46 **
 ** Report includes: Errors **
 
 ** Found 53 DRC violations **
@@ -45,8 +45,8 @@
     @(150.4600 mm, 93.7325 mm): Pad 2 [Net-(J2-VccT)] of C6 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
-    @(150.4600 mm, 93.7325 mm): Pad 2 [Net-(J2-VccT)] of C6 on F.Cu
     @(152.0000 mm, 93.8475 mm): PTH pad SH1 [GND] of J1
+    @(150.4600 mm, 93.7325 mm): Pad 2 [Net-(J2-VccT)] of C6 on F.Cu
 [solder_mask_bridge]: Front solder mask aperture bridges items with different nets
     Rule: board setup solder mask min width; error
     @(155.6000 mm, 89.0375 mm): Pad [<no net>] of FID2 on F.Cu
@@ -103,21 +103,13 @@
     Rule: netclass 'Power'; error
     @(130.7423 mm, 115.8625 mm): Pad 6 [unconnected-(U1-GP1-Pad6)] of U1 on F.Cu
     @(128.8500 mm, 115.5375 mm): Pad 17 [GND] of U1 on F.Cu
-[clearance]: Clearance violation (netclass 'Power' clearance 0.2000 mm; actual 0.1016 mm)
-    Rule: netclass 'Power'; error
-    @(130.7423 mm, 115.2125 mm): Pad 7 [unconnected-(U1-GP2-Pad7)] of U1 on F.Cu
-    @(128.8500 mm, 115.5375 mm): Pad 17 [GND] of U1 on F.Cu
-[clearance]: Clearance violation (netclass 'Power' clearance 0.2000 mm; actual 0.1016 mm)
-    Rule: netclass 'Power'; error
-    @(130.7423 mm, 114.5625 mm): Pad 8 [unconnected-(U1-GP3-Pad8)] of U1 on F.Cu
-    @(128.8500 mm, 115.5375 mm): Pad 17 [GND] of U1 on F.Cu
 [hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
     Rule: board setup constraints hole; error
     @(148.5600 mm, 93.7325 mm): Pad 1 [GND] of C6 on F.Cu
     @(149.5000 mm, 93.8475 mm): NPTH pad of J1
 [clearance]: Clearance violation (netclass 'Power' clearance 0.2000 mm; actual 0.1016 mm)
     Rule: netclass 'Power'; error
-    @(129.8250 mm, 113.6452 mm): Pad 9 [/SCL] of U1 on F.Cu
+    @(130.7423 mm, 115.2125 mm): Pad 7 [unconnected-(U1-GP2-Pad7)] of U1 on F.Cu
     @(128.8500 mm, 115.5375 mm): Pad 17 [GND] of U1 on F.Cu
 [clearance]: Clearance violation (netclass 'Power' clearance 0.2000 mm; actual 0.0400 mm)
     Rule: netclass 'Power'; error
@@ -125,12 +117,20 @@
     @(152.0000 mm, 93.8475 mm): PTH pad SH1 [GND] of J1
 [clearance]: Clearance violation (netclass 'Power' clearance 0.2000 mm; actual 0.1016 mm)
     Rule: netclass 'Power'; error
-    @(129.1750 mm, 113.6452 mm): Pad 10 [/SDA] of U1 on F.Cu
+    @(130.7423 mm, 114.5625 mm): Pad 8 [unconnected-(U1-GP3-Pad8)] of U1 on F.Cu
     @(128.8500 mm, 115.5375 mm): Pad 17 [GND] of U1 on F.Cu
 [hole_clearance]: Hole clearance violation (board setup constraints hole clearance 0.2500 mm; actual 0.0000 mm)
     Rule: board setup constraints hole; error
     @(150.4600 mm, 93.7325 mm): Pad 2 [Net-(J2-VccT)] of C6 on F.Cu
     @(149.5000 mm, 93.8475 mm): NPTH pad of J1
+[clearance]: Clearance violation (netclass 'Power' clearance 0.2000 mm; actual 0.1016 mm)
+    Rule: netclass 'Power'; error
+    @(129.8250 mm, 113.6452 mm): Pad 9 [/SCL] of U1 on F.Cu
+    @(128.8500 mm, 115.5375 mm): Pad 17 [GND] of U1 on F.Cu
+[clearance]: Clearance violation (netclass 'Power' clearance 0.2000 mm; actual 0.1016 mm)
+    Rule: netclass 'Power'; error
+    @(129.1750 mm, 113.6452 mm): Pad 10 [/SDA] of U1 on F.Cu
+    @(128.8500 mm, 115.5375 mm): Pad 17 [GND] of U1 on F.Cu
 [clearance]: Clearance violation (netclass 'Power' clearance 0.2000 mm; actual 0.1016 mm)
     Rule: netclass 'Power'; error
     @(127.8750 mm, 113.6452 mm): Pad 12 [Net-(U1-VUSB)] of U1 on F.Cu
@@ -591,7 +591,7 @@
     @(134.7226 mm, 100.0875 mm): Pad 7 [Net-(U2-OUTA+)] of U2 on F.Cu
 [unconnected_items]: Missing connection between items
     Local override; error
-    @(131.3600 mm, 99.8375 mm): Track [/SSRX+] on F.Cu, length 4.3134 mm
+    @(128.3100 mm, 96.7875 mm): PTH pad 9 [/SSRX+] of J4
     @(119.1000 mm, 97.0375 mm): PTH pad 9 [/SSRX+] of J5
 [unconnected_items]: Missing connection between items
     Local override; error
