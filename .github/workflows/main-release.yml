@@ -58,8 +58,18 @@ jobs:
           set -euo pipefail
           # Design files — changes here (and only here) trigger an uprev.
           # Docs, workflows, scripts, and *.kicad_prl (UI state) do not.
-          DESIGN=('*.kicad_sch' '*.kicad_pcb' '*.kicad_pro' '*.kicad_dru'
-                  '*.kicad_sym' 'library/' 'fp-lib-table' 'sym-lib-table')
+          #
+          # Root board files are listed EXPLICITLY, not as '*.kicad_pcb' globs.
+          # A bare glob is a git pathspec that matches at ANY depth, so once a
+          # sibling KiCad project lands under mechanical/ (enclosure / end
+          # plates), an edit to a panel or case board would false-trigger a
+          # board release. 'library/' and the two lib-tables are root-anchored
+          # path prefixes (not any-depth globs), so they stay as-is — and
+          # 'library/' still covers library/usb3_fiber.kicad_sym and the STEP
+          # models under library/3dmodels/.
+          DESIGN=('usb3_fiber.kicad_sch' 'usb3_fiber.kicad_pcb'
+                  'usb3_fiber.kicad_pro' 'usb3_fiber.kicad_dru'
+                  'library/' 'fp-lib-table' 'sym-lib-table')
 
           # GIT_HASH = last commit that touched a design file, so the stamp
           # always names the commit that defines the released design and does
