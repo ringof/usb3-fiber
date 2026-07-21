@@ -90,17 +90,22 @@ Latest release (see [all releases](../../releases)):
 - 🛠 **[Gerbers — JLCPCB-ready (zip)](https://github.com/ringof/usb3-fiber/releases/latest/download/usb3_fiber-gerbers.zip)**
 - 📦 **[Full fabrication + design package (zip)](https://github.com/ringof/usb3-fiber/releases/latest/download/usb3_fiber-fabrication.zip)** — Gerbers, drill, BOM, CPL, schematic PDF, assembly + fabrication drawings, STEP
 
-Packages are built and revision-stamped by CI. Revisions use an alpha scheme
-(Rev A → B → C); the current revision and git hash are stamped into the title
-block and bottom silkscreen at build time, and named in each release's title/tag.
-The links above always resolve to the newest release. See
-[`docs/RELEASE_STRATEGY.md`](docs/RELEASE_STRATEGY.md) for how revisions and
-releases work (a new revision is cut only when the design changes).
+Packages are built and version-stamped by CI. Versioning is semantic
+(`vMAJOR.MINOR`): `dev` publishes `v0.x` pre-releases, and promotion to `main`
+cuts production releases (`v1.0`, then `v2.0`, …). The version and git hash are
+stamped into the title block and bottom silkscreen at build time, and named in
+each release's title/tag. The download links above resolve to the newest
+**production** release; during the pre-1.0 phase (only `v0.x` pre-releases so
+far), grab the assets from the specific pre-release on the
+[Releases page](../../releases). See
+[`docs/RELEASE_STRATEGY.md`](docs/RELEASE_STRATEGY.md) for how versions and
+releases work (a new version is cut only when the design changes).
 
 ## Status
 
-Prototype, **Rev A**. This is an unproven design intended to validate the
-central hypothesis above.
+Prototype. This is an unproven design intended to validate the central
+hypothesis above. The current revision is whatever the latest
+[release](../../releases) is — it's stamped into the board, not hardcoded here.
 
 ## License
 
