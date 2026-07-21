@@ -1,0 +1,16 @@
+usb3_fiber  —  USB3 SuperSpeed over an optical fiber link (DS100BR111 redriver + 10GbE SR SFP+)
+
+Version:  development snapshot
+
+This file names the version of the SOURCE PROJECT in this folder, so a copy
+passed around as a .zip is never anonymous. The working tree is always a
+development snapshot — released fabrication packages carry their exact version
+on this line instead (stamped at build time by scripts/build_release.sh).
+
+The authoritative, fabricated revisions — each stamped with its commit hash on
+the bottom silkscreen and in every exported PDF — are published here:
+
+    https://github.com/ringof/usb3-fiber/releases
+
+Versioning: pre-releases are v0.x; the first production release will be v1.0,
+then v1.1, v1.2, ...  See docs/RELEASE_STRATEGY.md.
