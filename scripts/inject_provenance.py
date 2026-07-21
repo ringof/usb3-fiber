@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 """Inject build-time provenance into the KiCad design, in place.
 
-Writes two things onto the ephemeral CI checkout, just before KiBot exports:
+Writes provenance onto the ephemeral CI checkout, just before KiBot exports:
 
-  - REVISION -> the schematic/board title-block `rev` field. KiCad's built-in
-    ${REVISION} renders it in the title block / custom worksheet. We write the
-    field (not a project text variable named REVISION) to avoid clashing with
-    that built-in.
-  - GIT_HASH -> the `GIT_HASH` project text variable, rendered as ${GIT_HASH}
-    in the title block / worksheet.
+  - REVISION and GIT_HASH -> the ``REVISION`` / ``GIT_HASH`` **project text
+    variables** (usb3_fiber.kicad_pro). The design renders ``${REVISION}`` /
+    ``${GIT_HASH}`` from these — in the custom worksheet title block *and* in the
+    bottom-silkscreen text on the board ("Rev: ${REVISION}  Commit: ${GIT_HASH}").
+    They are committed as placeholders (DEV / local), so BOTH must be set here or
+    the silk/worksheet render the placeholder. (Previously only GIT_HASH was set,
+    so released boards showed "Rev: DEV" while the commit stamped correctly.)
+  - REVISION is ALSO written to the schematic/board title-block ``rev`` field,
+    belt-and-suspenders for the title block's own revision entry.
 
 This is intentionally the *only* place provenance is stamped, so KiBot never
 owns the revision — it just generates from an already-stamped design. Never
@@ -27,16 +30,20 @@ import re
 import sys
 
 
-def inject_git_hash(pro_path, git_hash):
+def inject_project_vars(pro_path, revision, git_hash):
+    """Set the REVISION and GIT_HASH project text variables. ${REVISION} and
+    ${GIT_HASH} on the silkscreen and worksheet resolve from here."""
     with open(pro_path) as f:
         p = json.load(f)
-    p.setdefault("text_variables", {})
-    p["text_variables"]["GIT_HASH"] = git_hash
+    tv = p.setdefault("text_variables", {})
+    tv["REVISION"] = revision
+    tv["GIT_HASH"] = git_hash
     with open(pro_path, "w") as f:
         json.dump(p, f, indent=2)
 
 
 def inject_revision(path, revision):
+    """Stamp the title-block `rev` field (in addition to the project var)."""
     with open(path) as f:
         t = f.read()
     t, n = re.subn(r'\(rev "[^"]*"\)', f'(rev "{revision}")', t, count=1)
@@ -50,9 +57,9 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--revision", default=os.environ.get("REVISION"),
-                    help="title-block rev value (env: REVISION)")
+                    help="revision value (env: REVISION)")
     ap.add_argument("--git-hash", default=os.environ.get("GIT_HASH"),
-                    help="GIT_HASH text variable value (env: GIT_HASH)")
+                    help="GIT_HASH value (env: GIT_HASH)")
     ap.add_argument("--pro", default="usb3_fiber.kicad_pro")
     ap.add_argument("--sch", default="usb3_fiber.kicad_sch")
     ap.add_argument("--pcb", default="usb3_fiber.kicad_pcb")
@@ -63,12 +70,12 @@ def main(argv=None):
     if not args.git_hash:
         ap.error("GIT_HASH required (--git-hash or env GIT_HASH)")
 
-    inject_git_hash(args.pro, args.git_hash)
+    inject_project_vars(args.pro, args.revision, args.git_hash)
     for path in (args.sch, args.pcb):
         inject_revision(path, args.revision)
 
-    print(f"Injected rev='{args.revision}' into title blocks; "
-          f"GIT_HASH='{args.git_hash}' text var")
+    print(f"Injected REVISION='{args.revision}' + GIT_HASH='{args.git_hash}' "
+          f"project text vars; stamped title-block rev")
     return 0
 
 

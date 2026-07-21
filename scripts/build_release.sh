@@ -25,6 +25,14 @@ mkdir -p "$OUT"
 # --- Inject provenance (build-time only; never committed back) ----------------
 python3 scripts/inject_provenance.py --revision "$REVISION" --git-hash "$GIT_HASH"
 
+# --- Version marker stamped into the package ----------------------------------
+# The committed VERSION.txt is a de-numbered "development snapshot" so a zip of
+# the source tree is never anonymous yet never goes stale. The released package
+# carries the exact version + commit on its Version: line. Build-time only —
+# the committed file is untouched.
+sed "s#^Version:.*#Version:  v${REVISION}   (commit ${GIT_HASH})#" \
+  VERSION.txt > "$OUT/VERSION.txt"
+
 # --- Framed documentation PDFs (schematic, assembly, fabrication) -------------
 # Rendered by kicad-cli (gen_docs.sh), NOT KiBot: kicad-cli plots the title
 # block natively and fills every variable, whereas KiBot's frame renderer left
@@ -49,5 +57,5 @@ kibot -c "$CFG" -e "$SCH" -b "$PCB" -d "$OUT" --skip-pre all \
   render_top render_bottom \
   || echo "WARN: 3D render step failed; release continues without renders."
 
-echo "Built package for rev${REVISION} (git ${GIT_HASH}):"
+echo "Built package for v${REVISION} (git ${GIT_HASH}):"
 find "$OUT" -type f | sort
